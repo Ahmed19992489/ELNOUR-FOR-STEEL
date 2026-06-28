@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="النور للحديد - ديكورات معدنية فاخرة مقطوعة بالليزر بتشطيب راقٍ وضمان ضد الصدأ. اكتشف تصاميم الماندالا واللوحات الجدارية الفاخرة للفئة الراقية في مصر.">
+    <title>النور للحديد | ديكورات معدنية جدارية فاخرة</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS variables for the color system and fonts */
+        :root {
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #121212;
+            --bg-card: #1A1A1A;
+            --gold-primary: #D4AF37;
+            --gold-secondary: #C5A880;
+            --gold-dark: #AA7C11;
+            --gold-light: #F3E5AB;
+            --text-primary: #FFFFFF;
+            --text-secondary: #CCCCCC;
+            --text-muted: #888888;
+            --border-color: #2D2D2D;
+            --glow-color: rgba(212, 175, 55, 0.15);
+            --font-arabic: 'Tajawal', sans-serif;
+            --font-english: 'Playfair Display', serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-arabic);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Container helper */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .gold-text {
+            color: var(--gold-primary);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Elegant Navbar */
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .logo-title {
+            font-family: var(--font-english);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        .nav-cta-btn {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .nav-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px 0;
+            position: relative;
+            background: radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .badge {
+            background-color: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            padding: 15px 35px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 15px 35px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold-secondary);
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-img-container {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 50px var(--glow-color);
+            transition: var(--transition-smooth);
+            max-width: 100%;
+        }
+
+        .hero-img-container:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212, 175, 55, 0.3);
+            transform: scale(1.02);
+        }
+
+        .hero-img {
+            width: 100%;
+            height: auto;
+            max-height: 480px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-subtitle {
+            color: var(--gold-primary);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 25px var(--glow-color);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-container {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px auto;
+            color: var(--gold-primary);
+            font-size: 1.8rem;
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover .feature-icon-container {
+            background-color: var(--gold-primary);
+            color: #000;
+            transform: rotateY(180deg);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* Product Gallery Section */
+        .gallery-section {
+            padding: 100px 0;
+            background-color: var(--bg-primary);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px var(--glow-color);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* Square aspect ratio */
+            overflow: hidden;
+            background-color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        .product-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.08);
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            padding: 20px;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .view-btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .product-spec {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .order-btn-sm {
+            background-color: transparent;
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .order-btn-sm:hover {
+            background-color: var(--gold-primary);
+            color: #000;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Launch Offer & Pricing Section */
+        .pricing-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .offer-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px var(--glow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-card::after {
+            content: 'خصم 35%';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background-color: var(--gold-primary);
+            color: #000;
+            font-weight: 700;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .offer-badge {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .pricing-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 20px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .price-new {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .price-currency {
+            font-size: 1.4rem;
+            color: var(--gold-primary);
+            margin-right: 5px;
+            font-weight: 700;
+        }
+
+        .price-old {
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .offer-note {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        /* Countdown Timer */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .countdown-item {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            min-width: 70px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Lead Form Section */
+        .booking-section {
+            padding: 100px 0;
+            background-color: var(--bg-primary);
+            position: relative;
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .booking-info h2 {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .booking-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .steps-list {
+            list-style: none;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .step-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .step-text p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        /* Glassmorphism Card Form */
+        .form-card {
+            background: rgba(26, 26, 26, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, transparent 50%, rgba(212, 175, 55, 0.1) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-family: var(--font-arabic);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+            background-color: #0A0A0A;
+        }
+
+        select.form-input {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+            background-size: 18px;
+            padding-left: 45px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            padding: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+        }
+
+        .form-footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Interactive Lightbox / Modal for Image Zoom */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content-wrapper {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-caption {
+            margin-top: 15px;
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover {
+            color: var(--gold-primary);
+            transform: scale(1.1);
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+            background-color: #20ba5a;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #050505;
+            border-top: 1px solid var(--border-color);
+            padding: 50px 0 30px 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-english);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            margin-bottom: 10px;
+        }
+
+        .footer-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            font-weight: 300;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .social-link:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 25px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .booking-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .booking-info {
+                text-align: center;
+            }
+
+            .step-item {
+                text-align: right;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 130px 0 60px 0;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pricing-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .price-new {
+                font-size: 2.8rem;
+            }
+
+            .form-card {
+                padding: 25px 20px;
+            }
+
+            .countdown-container {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                min-width: 60px;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="#" class="logo" style="text-decoration: none;">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">النور للحديد والـديكـور</span>
+            </a>
+            <a href="#booking" class="nav-cta-btn" id="nav-cta">احجز الآن</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="badge">انطلاقة حصرية بالسوق المصري</span>
+                <h1 class="hero-title">فن تشكيل المعادن الفاخر لجدران <span class="gold-text">تنبض بالحياة</span></h1>
+                <p class="hero-description">لوحات جدارية وماندالا مقطوعة بدقة الليزر المتناهية من الفولاذ المقاوم للصدأ. تصاميم تجسد هيبة الفخامة وتناسب أرقى المنازل والفلل المصرية.</p>
+                <div class="hero-actions">
+                    <a href="#gallery" class="btn-primary" id="hero-cta-gallery"><i class="fa-solid fa-images"></i> تصفح المعرض الفني</a>
+                    <a href="#booking" class="btn-secondary" id="hero-cta-book">احجز تصميمك الآن</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <div class="hero-img-container">
+                    <!-- Displaying the first mandala image as the hero visual -->
+                    <img src="./161841924_3741716299278845_3895684170105190938_n.jpg" alt="لوحة الماندالا الفاخرة" class="hero-img" loading="eager">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">دقة وفخامة تدوم</span>
+                <h2 class="section-title">لماذا تختار النور للحديد؟</h2>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1: Anti Rust -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="feature-title">ضمان ضد الصدأ</h3>
+                    <p class="feature-desc">جميع قطعنا معالجة كيميائياً ومطلية بدهان إلكتروستاتيك حراري فاخر مقاوم للرطوبة وعوامل التآكل مدى الحياة.</p>
+                </div>
+                
+                <!-- Feature 2: High Protection Box -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <h3 class="feature-title">تغليف حماية فاخر</h3>
+                    <p class="feature-desc">تصلك القطع الفنية داخل صناديق خشبية مبطنة بالإسفنج لحمايتها بالكامل لضمان تسليمها بحالة ممتازة وكأنها خرجت للتو من المصنع.</p>
+                </div>
+                
+                <!-- Feature 3: Delivery -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h3 class="feature-title">توصيل سريع للدعم</h3>
+                    <p class="feature-desc">توصيل آمن وبسعر مخفض لـ 4 محافظات رئيسية (القاهرة، الجيزة، الإسكندرية، القليوبية) خلال 4 إلى 7 أيام فقط.</p>
+                </div>
+
+                <!-- Feature 4: Price & Value -->
+                <div class="feature-card">
+                    <div class="feature-icon-container">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <h3 class="feature-title">سعر منافس وممتاز</h3>
+                    <p class="feature-desc">نقدم لك نفس سماكة وجودة الحديد المستورد التركي (2 مم إلى 3 مم)، ولكن بنصف التكلفة الإجمالية ودون انتظار شهور شحن.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">الفخامة بين يديك</span>
+                <h2 class="section-title">معرض التصاميم الحصرية</h2>
+            </div>
+            
+            <div class="gallery-grid">
+                
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./161841924_3741716299278845_3895684170105190938_n.jpg', 'لوحة الماندالا الإمبراطورية')">
+                        <img src="./161841924_3741716299278845_3895684170105190938_n.jpg" alt="لوحة الماندالا الإمبراطورية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة الماندالا الإمبراطورية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تصميم هندسي متماثل يعكس الفلسفة الهندية والجمال المعماري.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود مطفي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة الماندالا الإمبراطورية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./147027646_3634796373304172_1994186618855657670_n.jpg', 'شجرة الحياة العصرية')">
+                        <img src="./147027646_3634796373304172_1994186618855657670_n.jpg" alt="شجرة الحياة العصرية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">شجرة الحياة العصرية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تعبر عن النماء والترابط بتفاصيل غصون وأوراق دقيقة للغاية.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود مطفي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('شجرة الحياة العصرية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./147048085_3637165356400607_8500838532714615099_n.jpg', 'تجريد هندسي فاخر')">
+                        <img src="./147048085_3637165356400607_8500838532714615099_n.jpg" alt="تجريد هندسي فاخر" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">تجريد هندسي فاخر</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">مزيج راقٍ من المربعات المتداخلة تناسب المكاتب والصالونات الكبرى.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | أسود مع لمسة ذهبية</span>
+                            <button class="order-btn-sm" onclick="selectProduct('تجريد هندسي فاخر')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./147461279_3637165129733963_8065104657155936065_n.jpg', 'لوحة أوراق النخيل النحاسية')">
+                        <img src="./147461279_3637165129733963_8065104657155936065_n.jpg" alt="لوحة أوراق النخيل النحاسية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة أوراق النخيل النحاسية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">ثلاثية مميزة تمنح الجدار شعوراً بالطبيعة والحيوية المطلقة.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | لون أسود كربوني</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة أوراق النخيل النحاسية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./147761050_3637165273067282_1986388173094055197_n.jpg', 'رسم الخط العربي الفاخر')">
+                        <img src="./147761050_3637165273067282_1986388173094055197_n.jpg" alt="رسم الخط العربي الفاخر" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">رسم الخط العربي الفاخر</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">آيات قرآنية وتفاصيل خطوط ثلث وديواني بتناغم وتجسيد رائع.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 3 مم | طلاء ذهبي ملكي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('رسم الخط العربي الفاخر')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./148077638_3644916748958801_578184065420658285_n.jpg', 'أوريجامي معدني ثلاثي الأبعاد')">
+                        <img src="./148077638_3644916748958801_578184065420658285_n.jpg" alt="أوريجامي معدني ثلاثي الأبعاد" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">أوريجامي معدني ثلاثي الأبعاد</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تصميم هندسي متقاطع يوحي بالعمق والمستقبلية والابتكار البصري.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود داكن</span>
+                            <button class="order-btn-sm" onclick="selectProduct('أوريجامي معدني ثلاثي الأبعاد')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./149283602_3657800764337066_3353076662042815228_n.jpg', 'ساعة حائط ليزر كلاسيك')">
+                        <img src="./149283602_3657800764337066_3353076662042815228_n.jpg" alt="ساعة حائط ليزر كلاسيك" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">ساعة حائط ليزر كلاسيك</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تجمع بين دقة ضبط الوقت والديكور الجداري الضخم والمبهر.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | ذهبي عتيق</span>
+                            <button class="order-btn-sm" onclick="selectProduct('ساعة حائط ليزر كلاسيك')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./149285864_3657799814337161_851325079872750151_n.jpg', 'بوابة الماندالا المضيئة')">
+                        <img src="./149285864_3657799814337161_851325079872750151_n.jpg" alt="بوابة الماندالا المضيئة" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">بوابة الماندالا المضيئة</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">نصف ماندالا متقاطعة تناسب وضعها أعلى الأثاث والكونسول الفخم.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | أسود مع حواف نحاسية</span>
+                            <button class="order-btn-sm" onclick="selectProduct('بوابة الماندالا المضيئة')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 9 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./149304511_3657799997670476_4523278991004266834_n.jpg', 'لوحة غابة الصنوبر المعدنية')">
+                        <img src="./149304511_3657799997670476_4523278991004266834_n.jpg" alt="لوحة غابة الصنوبر المعدنية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة غابة الصنوبر المعدنية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تجسد هدوء الغابة وسحر الجبال في لوحة جدارية ثلاثية التجميع.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود داكن</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة غابة الصنوبر المعدنية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 10 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./149460830_3657797761004033_2264862436402025805_n.jpg', 'بوصلة الجدران الفاخرة')">
+                        <img src="./149460830_3657797761004033_2264862436402025805_n.jpg" alt="بوصلة الجدران الفاخرة" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">بوصلة الجدران الفاخرة</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تصميم يعبر عن الاتجاهات والقوة، يعطي انطباعاً فريداً لمدخل المنزل.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود وفولاذ</span>
+                            <button class="order-btn-sm" onclick="selectProduct('بوصلة الجدران الفاخرة')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 11 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./149823765_3657798654337277_3023586860438066297_n.jpg', 'لوحة أجنحة الملاك الذهبية')">
+                        <img src="./149823765_3657798654337277_3023586860438066297_n.jpg" alt="لوحة أجنحة الملاك الذهبية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة أجنحة الملاك الذهبية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">ثنائية فاخرة تبرز الدقة والجمال الملائكي في تفاصيل الريش المعدني.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | طلاء ذهبي متلألئ</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة أجنحة الملاك الذهبية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 12 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./150581359_3657800951003714_5774651280782390148_n.jpg', 'لوحة التماثل الإسلامي المعاصر')">
+                        <img src="./150581359_3657800951003714_5774651280782390148_n.jpg" alt="لوحة التماثل الإسلامي المعاصر" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة التماثل الإسلامي المعاصر</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">أشكال مستوحاة من الأرابيسك العتيق برؤية عصرية تناسب الحائط المودرن.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود داكن</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة التماثل الإسلامي المعاصر')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 13 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./150896222_3657800674337075_2627193728236000839_n.jpg', 'لوحة أوراق الخريف الذهبية')">
+                        <img src="./150896222_3657800674337075_2627193728236000839_n.jpg" alt="لوحة أوراق الخريف الذهبية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة أوراق الخريف الذهبية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تصوير فني رائع لتساقط الأوراق يضفي دفئاً ورونقاً لأي جدار.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | تدرج ذهبي برونزي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة أوراق الخريف الذهبية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 14 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./138415094_3570390389744771_4471194102370214083_n.jpg', 'ماندالا زهرة اللوتس')">
+                        <img src="./138415094_3570390389744771_4471194102370214083_n.jpg" alt="ماندالا زهرة اللوتس" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">ماندالا زهرة اللوتس</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تعبير عن النقاء والصفاء الروحي في انحناءات بالغة التعقيد والجمال.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود فاخر</span>
+                            <button class="order-btn-sm" onclick="selectProduct('ماندالا زهرة اللوتس')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 15 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./177246292_3853255551458252_4296967141844374899_n.jpg', 'ساعة فلكية ذهبية فاخرة')">
+                        <img src="./177246292_3853255551458252_4296967141844374899_n.jpg" alt="ساعة فلكية ذهبية فاخرة" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">ساعة فلكية ذهبية فاخرة</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تصميم رائع يدمج النجوم والمسارات فلكية مع الأرقام الرومانية المذهبة.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | طلاء ذهبي مقاوم للخدش</span>
+                            <button class="order-btn-sm" onclick="selectProduct('ساعة فلكية ذهبية فاخرة')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 16 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./177259325_3853255114791629_3146672698085540784_n.jpg', 'لوحة خريطة العالم المعدنية')">
+                        <img src="./177259325_3853255114791629_3146672698085540784_n.jpg" alt="لوحة خريطة العالم المعدنية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة خريطة العالم المعدنية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">خيار عشاق السفر والترحال بمظهر ثلاثي الأبعاد يعلو قطع الأثاث الكبرى.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | لون أسود داكن</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة خريطة العالم المعدنية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 17 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./177522937_3853255888124885_1799276773283670991_n.jpg', 'المجموعة الهندسية المتداخلة')">
+                        <img src="./177522937_3853255888124885_1799276773283670991_n.jpg" alt="المجموعة الهندسية المتداخلة" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">المجموعة الهندسية المتداخلة</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">ترابط هندسي معقد يجذب الأبصار ويلائم غرف الجلوس والشركات الراقية.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | لون أسود برونزي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('المجموعة الهندسية المتداخلة')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 18 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./177609579_3853255728124901_8842065650060331883_n.jpg', 'أبراج وكواكب معدنية')">
+                        <img src="./177609579_3853255728124901_8842065650060331883_n.jpg" alt="أبراج وكواكب معدنية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">أبراج وكواكب معدنية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">لوحة تجمع بين الخطوط الفلكية والكواكب في تحفة فريدة لعشاق الفلك.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2.5 مم | أسود مع تدرج ذهبي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('أبراج وكواكب معدنية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 19 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./177778125_3853255384791602_4698410874283073780_n.jpg', 'لوحة السنابل والخيرات')">
+                        <img src="./177778125_3853255384791602_4698410874283073780_n.jpg" alt="لوحة السنابل والخيرات" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">لوحة السنابل والخيرات</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">تفاصيل حقل القمح تتمايل بجمال وهدوء على جدران صالونك الدافئ.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | لون ذهبي كلاسيكي</span>
+                            <button class="order-btn-sm" onclick="selectProduct('لوحة السنابل والخيرات')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 20 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper" onclick="openLightbox('./181091750_3881372841979856_2988810552694393247_n.jpg', 'تجريد أوراق الموز الاستوائية')">
+                        <img src="./181091750_3881372841979856_2988810552694393247_n.jpg" alt="تجريد أوراق الموز الاستوائية" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> تكبير الصورة</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">تجريد أوراق الموز الاستوائية</h3>
+                        <p class="product-desc" style="font-size:0.85rem; color:var(--text-secondary);">عصرية، خفيفة وأنيقة للغاية، مناسبة للتصاميم المعاصرة والاسكندنافية.</p>
+                        <div class="product-meta">
+                            <span class="product-spec">حديد 2 مم | أسود مع لمعة حرارية</span>
+                            <button class="order-btn-sm" onclick="selectProduct('تجريد أوراق الموز الاستوائية')">اطلب الآن</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Special Offer Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">عرض إطلاق البراند</span>
+                <h2 class="section-title">استمتع بالفخامة بسعر لا يُقارن</h2>
+            </div>
+            
+            <div class="offer-card">
+                <span class="offer-badge">عرض لفترة محدودة جداً</span>
+                <h3 style="font-size:1.8rem; margin-bottom:15px; color:var(--text-primary);">أي لوحة أو ماندالا من المعرض</h3>
+                <div class="pricing-wrapper">
+                    <div class="price-new">3,600 <span class="price-currency">جنيه مصري</span></div>
+                    <div class="price-old">5,600 جنيه</div>
+                </div>
+                <p class="offer-note">خصم فوري بقيمة 2000 جنيه للطلب المبكر بمناسبة الافتتاح، مع <strong>توصيل مجاني بالكامل</strong> لأربع محافظات ومعاينة المنتج قبل الاستلام والدفع.</p>
+                
+                <!-- Countdown Timer -->
+                <div class="countdown-container" id="countdown">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">02</span>
+                        <span class="countdown-label">أيام</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">14</span>
+                        <span class="countdown-label">ساعات</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">45</span>
+                        <span class="countdown-label">دقائق</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">50</span>
+                        <span class="countdown-label">ثواني</span>
+                    </div>
+                </div>
+
+                <a href="#booking" class="btn-primary"><i class="fa-solid fa-cart-shopping"></i> احجز عرضك الآن وسجل طلبك</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lead Form / Booking Section -->
+    <section class="booking-section" id="booking">
+        <div class="container booking-grid">
+            <div class="booking-info">
+                <span class="section-subtitle">خطوتك التالية</span>
+                <h2>احجز تصميمك المفضل في ثوانٍ معدودة</h2>
+                <p>املأ بياناتك أدناه وسيتولى فريق خدمة العملاء بالتواصل معك مباشرة عبر الواتساب لتأكيد المقاسات، اختيار الألوان، وتفاصيل موعد التوصيل.</p>
+                
+                <ul class="steps-list">
+                    <li class="step-item">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <h4>املأ نموذج الحجز</h4>
+                            <p>أدخل اسمك، هاتفك، وافرز التصميم الذي تريده.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <h4>مكالمة وتأكيد واتساب</h4>
+                            <p>يتواصل معك منسقنا الفني لاختيار اللون وسماكة الحديد والمقاس النهائي.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num">3</div>
+                        <div class="step-text">
+                            <h4>التصنيع والشحن الفاخر</h4>
+                            <p>يتم التصنيع بالليزر والطلاء الكهربائي والفرن ووصوله إليك مغلفاً بالخشب.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-num">4</div>
+                        <div class="step-text">
+                            <h4>المعاينة والدفع عند الاستلام</h4>
+                            <p>افتح الصندوق، عاين المنتج، تأكد من الجودة المطلقة ثم ادفع للمندوب.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Glassmorphism Form Card -->
+            <div class="form-card" id="form-container">
+                <h3 class="form-title"><i class="fa-solid fa-paper-plane gold-text"></i> استمارة الحجز الفوري</h3>
+                
+                <!-- Formspree Integration -->
+                <form action="https://formspree.io/f/xzdrvblp" method="POST" id="lead-form">
+                    <!-- Redirects to thankyou.html after submission -->
+                    <input type="hidden" name="_next" value="">
+                    <input type="hidden" name="_subject" value="طلب حجز جديد - النور للحديد">
+                    
+                    <!-- Form Fields -->
+                    <div class="form-group">
+                        <label for="name" class="form-label">الاسم بالكامل <span style="color:var(--gold-primary);">*</span></label>
+                        <input type="text" id="name" name="الاسم" class="form-input" placeholder="مثال: أحمد محمد علي" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="whatsapp" class="form-label">رقم الهاتف / الواتساب <span style="color:var(--gold-primary);">*</span></label>
+                        <input type="tel" id="whatsapp" name="الواتساب" class="form-input" placeholder="مثال: 01012345678" pattern="^(01)[0-9]{9}$" title="يرجى إدخال رقم هاتف مصري صحيح مكون من 11 رقماً يبدأ بـ 01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="governorate" class="form-label">المحافظة <span style="color:var(--gold-primary);">*</span></label>
+                        <select id="governorate" name="المحافظة" class="form-input" required>
+                            <option value="" disabled selected>اختر محافظتك</option>
+                            <option value="القاهرة">القاهرة (توصيل من 4 إلى 7 أيام)</option>
+                            <option value="الجيزة">الجيزة (توصيل من 4 إلى 7 أيام)</option>
+                            <option value="الإسكندرية">الإسكندرية (توصيل من 4 إلى 7 أيام)</option>
+                            <option value="القليوبية">القليوبية (توصيل من 4 إلى 7 أيام)</option>
+                            <option value="أخرى">محافظة أخرى (سنتواصل معك للتأكيد)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="product" class="form-label">التصميم المطلوب</label>
+                        <select id="product" name="التصميم" class="form-input">
+                            <option value="لم يتم اختيار تصميم محدد">اختر تصميماً أو اتركه للمعاينة لاحقاً</option>
+                            <option value="لوحة الماندالا الإمبراطورية">لوحة الماندالا الإمبراطورية</option>
+                            <option value="شجرة الحياة العصرية">شجرة الحياة العصرية</option>
+                            <option value="تجريد هندسي فاخر">تجريد هندسي فاخر</option>
+                            <option value="لوحة أوراق النخيل النحاسية">لوحة أوراق النخيل النحاسية</option>
+                            <option value="رسم الخط العربي الفاخر">رسم الخط العربي الفاخر</option>
+                            <option value="أوريجامي معدني ثلاثي الأبعاد">أوريجامي معدني ثلاثي الأبعاد</option>
+                            <option value="ساعة حائط ليزر كلاسيك">ساعة حائط ليزر كلاسيك</option>
+                            <option value="بوابة الماندالا المضيئة">بوابة الماندالا المضيئة</option>
+                            <option value="لوحة غابة الصنوبر المعدنية">لوحة غابة الصنوبر المعدنية</option>
+                            <option value="بوصلة الجدران الفاخرة">بوصلة الجدران الفاخرة</option>
+                            <option value="لوحة أجنحة الملاك الذهبية">لوحة أجنحة الملاك الذهبية</option>
+                            <option value="لوحة التماثل الإسلامي المعاصر">لوحة التماثل الإسلامي المعاصر</option>
+                            <option value="لوحة أوراق الخريف الذهبية">لوحة أوراق الخريف الذهبية</option>
+                            <option value="ماندالا زهرة اللوتس">ماندالا زهرة اللوتس</option>
+                            <option value="ساعة فلكية ذهبية فاخرة">ساعة فلكية ذهبية فاخرة</option>
+                            <option value="لوحة خريطة العالم المعدنية">لوحة خريطة العالم المعدنية</option>
+                            <option value="المجموعة الهندسية المتداخلة">المجموعة الهندسية المتداخلة</option>
+                            <option value="أبراج وكواكب معدنية">أبراج وكواكب معدنية</option>
+                            <option value="لوحة السنابل والخيرات">لوحة السنابل والخيرات</option>
+                            <option value="تجريد أوراق الموز الاستوائية">تجريد أوراق الموز الاستوائية</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes" class="form-label">ملاحظات أو تعديلات خاصة (المقاس / اللون)</label>
+                        <textarea id="notes" name="ملاحظات" class="form-input" rows="3" placeholder="اكتب أي ملاحظة تريدها هنا (مثال: أريد مقاس 80x80 سم بلون ذهبي مطفي)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submit-button">احجز الآن واحصل على العرض</button>
+                    
+                    <div class="form-footer-note">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>معلوماتك آمنة ومحمية، الدفع فقط بعد الاستلام والمعاينة.</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zoom Interactive Lightbox / Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content-wrapper">
+            <button class="modal-close" onclick="closeLightbox()">&times;</button>
+            <img id="modal-img" src="" alt="" class="modal-img">
+            <div id="modal-caption" class="modal-caption"></div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201000000000?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20الديكورات%20المعدنية%20المعروضة" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Elnour for Steel</div>
+            <p class="footer-desc">تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-link" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link" aria-label="بينتريست"><i class="fa-brands fa-pinterest-p"></i></a>
+            </div>
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Countdown Timer Logic
+        function startCountdown() {
+            // Set date to 3 days from now
+            let countdownDate = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
+            
+            const timer = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById("days").innerHTML = String(days).padStart(2, '0');
+                document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+                
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("countdown").innerHTML = "انتهى العرض الفوري، تواصل معنا للحصول على آخر الخصومات.";
+                }
+            }, 1000);
+        }
+        
+        startCountdown();
+
+        // Product Selection Helper
+        function selectProduct(productName) {
+            const productSelect = document.getElementById('product');
+            productSelect.value = productName;
+            
+            // Scroll smoothly to form
+            document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+            
+            // Add a small highlighting glow to the form card
+            const formCard = document.getElementById('form-container');
+            formCard.style.boxShadow = '0 0 35px var(--gold-primary)';
+            setTimeout(() => {
+                formCard.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.5)';
+            }, 1500);
+        }
+
+        // Image Lightbox Logic
+        function openLightbox(imgSrc, captionText) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalCaption = document.getElementById('modal-caption');
+            
+            modal.style.display = 'flex';
+            modalImg.src = imgSrc;
+            modalCaption.innerText = captionText;
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = 'none';
+        }
+
+        // Close lightbox on clicking outside the image
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('image-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Set the dynamic redirect location based on the current window location to thank you page
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+            const thankYouPath = window.location.origin + currentDir + '/thankyou.html';
+            const nextInput = document.querySelector('input[name="_next"]');
+            if (nextInput) {
+                nextInput.value = thankYouPath;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="شكراً لتسجيل طلبك في النور للحديد. سيقوم فريقنا بالتواصل معك لتأكيد التفاصيل.">
+    <title>تم استقبال طلبك بنجاح | النور للحديد</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #121212;
+            --bg-card: #1A1A1A;
+            --gold-primary: #D4AF37;
+            --gold-secondary: #C5A880;
+            --gold-dark: #AA7C11;
+            --gold-light: #F3E5AB;
+            --text-primary: #FFFFFF;
+            --text-secondary: #CCCCCC;
+            --text-muted: #888888;
+            --border-color: #2D2D2D;
+            --font-arabic: 'Tajawal', sans-serif;
+            --font-english: 'Playfair Display', serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-arabic);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Elegant Navbar */
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-title {
+            font-family: var(--font-english);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        /* Main Content */
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            padding: 60px 0;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+        }
+
+        .thankyou-card {
+            background: rgba(26, 26, 26, 0.65);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            background-color: rgba(212, 175, 55, 0.08);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.8rem;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+            }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--gold-primary);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .info-box {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 40px;
+            text-align: right;
+        }
+
+        .info-box-title {
+            color: var(--gold-secondary);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box-item {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .actions-wrapper {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            border: none;
+            padding: 14px 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            background-color: #20ba5a;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #050505;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 576px) {
+            .thankyou-card {
+                padding: 35px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .actions-wrapper {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">النور للحديد والـديكـور</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Thank You Card -->
+    <main>
+        <div class="container">
+            <div class="thankyou-card">
+                <div class="success-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h1>تم استلام طلبك بنجاح!</h1>
+                <p>شكراً لثقتك في "النور للحديد". لقد تم تسجيل طلب حجز الديكور المعدني الخاص بك بنجاح، وستصلك رسالة تأكيد عبر البريد الإلكتروني.</p>
+                
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fa-solid fa-bell gold-text"></i>
+                        <span>ما هي الخطوة التالية؟</span>
+                    </div>
+                    <div class="info-box-item">
+                        <i class="fa-solid fa-comment-dots gold-text"></i>
+                        <span>سيقوم مستشار الديكور الفني لدينا بمراسلتك عبر الواتساب خلال ساعة واحدة للتأكيد.</span>
+                    </div>
+                    <div class="info-box-item">
+                        <i class="fa-solid fa-palette gold-text"></i>
+                        <span>سنقوم بتحديد سماكة القطعة، المقاس النهائي المطلوب، واختيار تدرج اللون (ذهبي/أسود/نحاسي).</span>
+                    </div>
+                    <div class="info-box-item">
+                        <i class="fa-solid fa-box gold-text"></i>
+                        <span>يتم تصنيع وتغليف طلبك شحن فخم وآمن وخلال 4 إلى 7 أيام يكون المنتج بين يديك للمعاينة قبل الدفع.</span>
+                    </div>
+                </div>
+
+                <div class="actions-wrapper">
+                    <a href="https://wa.me/201000000000?text=مرحباً%20النور%20للحديد،%20لقد%20قمت%20بالحجز%20عبر%20الموقع%20وأود%20متابعة%20طلبي" class="btn-whatsapp" target="_blank">
+                        <i class="fa-brands fa-whatsapp"></i> تواصل سريع معنا واتساب
+                    </a>
+                    <a href="index.html" class="btn-primary">
+                        <i class="fa-solid fa-house"></i> العودة للرئيسية
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

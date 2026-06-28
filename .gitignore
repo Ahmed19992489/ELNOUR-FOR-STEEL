@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
+.git/
+(3) Facebook.html
+(3) Facebook_files/
+
