@@ -384,21 +384,20 @@
 
     <!-- Supabase Integration & Fallback Script -->
     <script>
-        // --- 1. Supabase Configurations (Paste your keys here) ---
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+        // --- 1. Supabase Configurations ---
+        const SUPABASE_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
         
         let supabase = null;
         let isSupabaseConnected = false;
 
-        // Initialize Supabase if keys are provided
-        if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
-            try {
-                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                isSupabaseConnected = true;
-            } catch (err) {
-                console.error("Supabase initialization failed:", err);
-            }
+        // Initialize Supabase client
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            isSupabaseConnected = true;
+            console.log("Supabase client initialized successfully!");
+        } catch (err) {
+            console.error("Supabase initialization failed:", err);
         }
 
         // --- 2. Static Product Fallback Array (20 Premium Items) ---
