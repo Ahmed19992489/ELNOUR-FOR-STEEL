@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم والـ CRM | النور للحديد</title>
+    <title>Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ… ÙˆØ§Ù„Ù€ CRM | Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø­Ø¯ÙŠØ¯</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,8 +13,8 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Supabase Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- supabaseClient Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabaseClient/supabaseClient-js@2"></script>
     
     <!-- Unified Stylesheet -->
     <link rel="stylesheet" href="./style.css">
@@ -333,19 +333,19 @@
         <div class="container nav-container">
             <a href="index.html" class="logo">
                 <span class="logo-title">Elnour for Steel</span>
-                <span class="logo-subtitle">لوحة التحكم والـ CRM</span>
+                <span class="logo-subtitle">Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ… ÙˆØ§Ù„Ù€ CRM</span>
             </a>
             
             <ul class="nav-menu" id="nav-menu">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="about.html">من نحن</a></li>
-                <li><a href="products.html">المنتجات</a></li>
-                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
+                <li><a href="index.html">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a></li>
+                <li><a href="about.html">Ù…Ù† Ù†Ø­Ù†</a></li>
+                <li><a href="products.html">Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª</a></li>
+                <li><a href="portfolio.html">Ø³Ø§Ø¨Ù‚Ø© Ø£Ø¹Ù…Ø§Ù„Ù†Ø§</a></li>
+                <li><a href="contact.html">Ø§ØªØµÙ„ Ø¨Ù†Ø§</a></li>
             </ul>
 
             <div style="display: flex; align-items: center; gap: 15px;">
-                <button class="nav-cta-btn" id="logout-btn" style="display: none;" onclick="handleLogout()">تسجيل الخروج</button>
+                <button class="nav-cta-btn" id="logout-btn" style="display: none;" onclick="handleLogout()">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>
                 <div class="menu-toggle" id="menu-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </div>
@@ -362,21 +362,21 @@
             <!-- --- SECTION 1: LOGIN PANEL --- -->
             <div id="auth-panel" class="auth-container">
                 <div class="form-card">
-                    <h3 class="form-title"><i class="fa-solid fa-lock gold-text"></i> تسجيل دخول المشرف</h3>
+                    <h3 class="form-title"><i class="fa-solid fa-lock gold-text"></i> ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„ Ø§Ù„Ù…Ø´Ø±Ù</h3>
                     <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;" id="login-helper-text"></p>
                     
                     <form onsubmit="handleLoginSubmit(event)">
                         <div class="form-group">
-                            <label for="admin-email" class="form-label">البريد الإلكتروني للمشرف</label>
+                            <label for="admin-email" class="form-label">Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù„Ù„Ù…Ø´Ø±Ù</label>
                             <input type="email" id="admin-email" class="form-input" placeholder="admin@elnour.com" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="admin-password" class="form-label">كلمة المرور</label>
-                            <input type="password" id="admin-password" class="form-input" placeholder="••••••••" required>
+                            <label for="admin-password" class="form-label">ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</label>
+                            <input type="password" id="admin-password" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
                         </div>
 
-                        <button type="submit" class="btn-submit" style="margin-top: 10px;">تسجيل الدخول للوحة التحكم</button>
+                        <button type="submit" class="btn-submit" style="margin-top: 10px;">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…</button>
                     </form>
                 </div>
             </div>
@@ -388,7 +388,7 @@
                 <div class="metrics-grid">
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">إجمالي الحجوزات</div>
+                            <div class="metric-title">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª</div>
                             <div class="metric-value" id="stat-total-bookings">0</div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-receipt"></i></div>
@@ -396,7 +396,7 @@
 
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">الطلبات الجديدة (المعلقة)</div>
+                            <div class="metric-title">Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø© (Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©)</div>
                             <div class="metric-value" id="stat-new-bookings" style="color: #ffc107;">0</div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
@@ -404,8 +404,8 @@
 
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">الإيرادات المتوقعة</div>
-                            <div class="metric-value" id="stat-expected-revenue" style="color: var(--gold-primary);">0 <span style="font-size:0.95rem;">ج.م</span></div>
+                            <div class="metric-title">Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯Ø§Øª Ø§Ù„Ù…ØªÙˆÙ‚Ø¹Ø©</div>
+                            <div class="metric-value" id="stat-expected-revenue" style="color: var(--gold-primary);">0 <span style="font-size:0.95rem;">Ø¬.Ù…</span></div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                     </div>
@@ -413,8 +413,8 @@
 
                 <!-- Admin Tabs for choosing between CRM (Bookings) and Catalog (Prices) -->
                 <div class="admin-tabs">
-                    <button class="admin-tab-btn active" onclick="switchAdminTab('crm-pane', this)">إدارة طلبات العملاء (CRM)</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('catalog-pane', this)">تعديل الأسعار والمنتجات</button>
+                    <button class="admin-tab-btn active" onclick="switchAdminTab('crm-pane', this)">Ø¥Ø¯Ø§Ø±Ø© Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡ (CRM)</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('catalog-pane', this)">ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø£Ø³Ø¹Ø§Ø± ÙˆØ§Ù„Ù…Ù†ØªØ¬Ø§Øª</button>
                 </div>
 
                 <!-- CRM PANE (Bookings Manager) -->
@@ -423,30 +423,30 @@
                         <!-- Search Box -->
                         <div class="search-input-wrapper">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="crm-search" class="form-input" placeholder="ابحث باسم العميل، الواتساب، أو اللوحة..." oninput="handleCrmSearch()">
+                            <input type="text" id="crm-search" class="form-input" placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ØŒ Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨ØŒ Ø£Ùˆ Ø§Ù„Ù„ÙˆØ­Ø©..." oninput="handleCrmSearch()">
                         </div>
                         
                         <!-- Filters -->
                         <div class="filter-controls">
                             <select id="filter-gov" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
-                                <option value="الكل">كل المحافظات</option>
-                                <option value="القاهرة">القاهرة</option>
-                                <option value="الجيزة">الجيزة</option>
-                                <option value="الإسكندرية">الإسكندرية</option>
-                                <option value="القليوبية">القليوبية</option>
-                                <option value="أخرى">محافظة أخرى</option>
+                                <option value="Ø§Ù„ÙƒÙ„">ÙƒÙ„ Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø§Øª</option>
+                                <option value="Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©">Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©</option>
+                                <option value="Ø§Ù„Ø¬ÙŠØ²Ø©">Ø§Ù„Ø¬ÙŠØ²Ø©</option>
+                                <option value="Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©">Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©</option>
+                                <option value="Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©">Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©</option>
+                                <option value="Ø£Ø®Ø±Ù‰">Ù…Ø­Ø§ÙØ¸Ø© Ø£Ø®Ø±Ù‰</option>
                             </select>
 
                             <select id="filter-status" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
-                                <option value="الكل">كل الحالات</option>
-                                <option value="جديد">جديد</option>
-                                <option value="قيد التأكيد">قيد التأكيد</option>
-                                <option value="تم الشحن">تم الشحن</option>
-                                <option value="تم الاستلام">تم الاستلام</option>
-                                <option value="ملغي">ملغي</option>
+                                <option value="Ø§Ù„ÙƒÙ„">ÙƒÙ„ Ø§Ù„Ø­Ø§Ù„Ø§Øª</option>
+                                <option value="Ø¬Ø¯ÙŠØ¯">Ø¬Ø¯ÙŠØ¯</option>
+                                <option value="Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯">Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯</option>
+                                <option value="ØªÙ… Ø§Ù„Ø´Ø­Ù†">ØªÙ… Ø§Ù„Ø´Ø­Ù†</option>
+                                <option value="ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…">ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…</option>
+                                <option value="Ù…Ù„ØºÙŠ">Ù…Ù„ØºÙŠ</option>
                             </select>
 
-                            <button class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;" onclick="exportToCsv()"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
+                            <button class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;" onclick="exportToCsv()"><i class="fa-solid fa-file-excel"></i> ØªØµØ¯ÙŠØ± Excel</button>
                         </div>
                     </div>
 
@@ -455,14 +455,14 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>تاريخ الطلب</th>
-                                    <th>اسم العميل</th>
-                                    <th>رقم الواتساب</th>
-                                    <th>المحافظة</th>
-                                    <th>التصميم المطلوبة</th>
-                                    <th>حالة الطلب</th>
-                                    <th>ملاحظات</th>
-                                    <th>حذف</th>
+                                    <th>ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨</th>
+                                    <th>Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„</th>
+                                    <th>Ø±Ù‚Ù… Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨</th>
+                                    <th>Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©</th>
+                                    <th>Ø§Ù„ØªØµÙ…ÙŠÙ… Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©</th>
+                                    <th>Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨</th>
+                                    <th>Ù…Ù„Ø§Ø­Ø¸Ø§Øª</th>
+                                    <th>Ø­Ø°Ù</th>
                                 </tr>
                             </thead>
                             <tbody id="crm-table-body">
@@ -478,70 +478,70 @@
                         
                         <!-- Form to Edit/Add Product -->
                         <div class="manager-form-card">
-                            <h4 class="manager-form-title" id="form-action-title">تحديث بيانات منتج</h4>
+                            <h4 class="manager-form-title" id="form-action-title">ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù†ØªØ¬</h4>
                             
                             <form id="product-update-form" onsubmit="handleProductSave(event)">
                                 <input type="hidden" id="prod-id" value="">
                                 
                                 <div class="form-group" id="product-select-group">
-                                    <label class="form-label" for="prod-select-picker">اختر منتجاً لتعديله</label>
+                                    <label class="form-label" for="prod-select-picker">Ø§Ø®ØªØ± Ù…Ù†ØªØ¬Ø§Ù‹ Ù„ØªØ¹Ø¯ÙŠÙ„Ù‡</label>
                                     <select id="prod-select-picker" class="form-input" onchange="loadProductToForm(this.value)">
-                                        <option value="" selected disabled>-- اختر لوحة لتعديل سعرها أو مواصفاتها --</option>
+                                        <option value="" selected disabled>-- Ø§Ø®ØªØ± Ù„ÙˆØ­Ø© Ù„ØªØ¹Ø¯ÙŠÙ„ Ø³Ø¹Ø±Ù‡Ø§ Ø£Ùˆ Ù…ÙˆØ§ØµÙØ§ØªÙ‡Ø§ --</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-title">اسم اللوحة / المنتج <span style="color:var(--gold-primary);">*</span></label>
+                                    <label class="form-label" for="prod-title">Ø§Ø³Ù… Ø§Ù„Ù„ÙˆØ­Ø© / Ø§Ù„Ù…Ù†ØªØ¬ <span style="color:var(--gold-primary);">*</span></label>
                                     <input type="text" id="prod-title" class="form-input" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-category">القسم الرئيسي <span style="color:var(--gold-primary);">*</span></label>
+                                    <label class="form-label" for="prod-category">Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ <span style="color:var(--gold-primary);">*</span></label>
                                     <select id="prod-category" class="form-input" required>
-                                        <option value="ماندالا">ماندالا</option>
-                                        <option value="ساعات حائط">ساعات حائط</option>
-                                        <option value="جداريات طبيعة">جداريات طبيعة</option>
-                                        <option value="تجريد وهندسة">تجريد وهندسة</option>
-                                        <option value="خط عربي وإسلامي">خط عربي وإسلامي</option>
+                                        <option value="Ù…Ø§Ù†Ø¯Ø§Ù„Ø§">Ù…Ø§Ù†Ø¯Ø§Ù„Ø§</option>
+                                        <option value="Ø³Ø§Ø¹Ø§Øª Ø­Ø§Ø¦Ø·">Ø³Ø§Ø¹Ø§Øª Ø­Ø§Ø¦Ø·</option>
+                                        <option value="Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©">Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©</option>
+                                        <option value="ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©">ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©</option>
+                                        <option value="Ø®Ø· Ø¹Ø±Ø¨ÙŠ ÙˆØ¥Ø³Ù„Ø§Ù…ÙŠ">Ø®Ø· Ø¹Ø±Ø¨ÙŠ ÙˆØ¥Ø³Ù„Ø§Ù…ÙŠ</option>
                                     </select>
                                 </div>
 
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                                     <div class="form-group">
-                                        <label class="form-label" for="prod-price">سعر العرض (ج.م) <span style="color:var(--gold-primary);">*</span></label>
+                                        <label class="form-label" for="prod-price">Ø³Ø¹Ø± Ø§Ù„Ø¹Ø±Ø¶ (Ø¬.Ù…) <span style="color:var(--gold-primary);">*</span></label>
                                         <input type="number" id="prod-price" class="form-input" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="prod-orig-price">السعر الأصلي (ج.م)</label>
+                                        <label class="form-label" for="prod-orig-price">Ø§Ù„Ø³Ø¹Ø± Ø§Ù„Ø£ØµÙ„ÙŠ (Ø¬.Ù…)</label>
                                         <input type="number" id="prod-orig-price" class="form-input">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-spec">المواصفات المختصرة</label>
-                                    <input type="text" id="prod-spec" class="form-input" placeholder="مثال: حديد 2.5 مم | لون أسود مطفي">
+                                    <label class="form-label" for="prod-spec">Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª Ø§Ù„Ù…Ø®ØªØµØ±Ø©</label>
+                                    <input type="text" id="prod-spec" class="form-input" placeholder="Ù…Ø«Ø§Ù„: Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ">
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-desc">الوصف التفصيلي للمنتج</label>
-                                    <textarea id="prod-desc" class="form-input" rows="3" placeholder="تفاصيل دقة الليزر وتأثيره على الحائط..."></textarea>
+                                    <label class="form-label" for="prod-desc">Ø§Ù„ÙˆØµÙ Ø§Ù„ØªÙØµÙŠÙ„ÙŠ Ù„Ù„Ù…Ù†ØªØ¬</label>
+                                    <textarea id="prod-desc" class="form-input" rows="3" placeholder="ØªÙØ§ØµÙŠÙ„ Ø¯Ù‚Ø© Ø§Ù„Ù„ÙŠØ²Ø± ÙˆØªØ£Ø«ÙŠØ±Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø­Ø§Ø¦Ø·..."></textarea>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-img">رابط صورة المنتج (محلية أو إنترنت)</label>
-                                    <input type="text" id="prod-img" class="form-input" placeholder="مثال: ./161841924_3741716299278845_3895684170105190938_n.jpg">
+                                    <label class="form-label" for="prod-img">Ø±Ø§Ø¨Ø· ØµÙˆØ±Ø© Ø§Ù„Ù…Ù†ØªØ¬ (Ù…Ø­Ù„ÙŠØ© Ø£Ùˆ Ø¥Ù†ØªØ±Ù†Øª)</label>
+                                    <input type="text" id="prod-img" class="form-input" placeholder="Ù…Ø«Ø§Ù„: ./161841924_3741716299278845_3895684170105190938_n.jpg">
                                 </div>
 
                                 <div style="display: flex; gap: 15px; margin-top: 15px;">
-                                    <button type="submit" class="btn-submit" id="product-save-btn" style="flex-grow: 1;">حفظ وتحديث البيانات</button>
-                                    <button type="button" class="btn-secondary" style="padding: 10px 20px;" onclick="resetProductForm()">جديد / إلغاء</button>
+                                    <button type="submit" class="btn-submit" id="product-save-btn" style="flex-grow: 1;">Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª</button>
+                                    <button type="button" class="btn-secondary" style="padding: 10px 20px;" onclick="resetProductForm()">Ø¬Ø¯ÙŠØ¯ / Ø¥Ù„ØºØ§Ø¡</button>
                                 </div>
                             </form>
                         </div>
 
                         <!-- Grid/List of current products -->
                         <div class="manager-list-card">
-                            <h4 style="font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom: 10px;">قائمة الأسعار والمنتجات الحالية</h4>
+                            <h4 style="font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom: 10px;">Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø£Ø³Ø¹Ø§Ø± ÙˆØ§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©</h4>
                             <div id="manager-products-list">
                                 <!-- Products list will render here -->
                             </div>
@@ -557,91 +557,80 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+            <p class="copyright">&copy; 2026 Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø­Ø¯ÙŠØ¯ ÙˆØ§Ù„Ø¯ÙŠÙƒÙˆØ± (Elnour for Steel). Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.</p>
         </div>
     </footer>
 
-    <!-- Supabase Integration & CRM Code -->
+    <!-- supabaseClient Integration & CRM Code -->
     <script>
-        // --- 1. Supabase Configurations (Paste your keys here) ---
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+        // --- 1. supabaseClient Configurations ---
+        const SUPABASE_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
 
-        let supabase = null;
+        // IMPORTANT: use 'supabaseClient' not 'supabaseClient' to avoid conflict with window.supabaseClient library
+        let supabaseClient = null;
         let isSupabaseConnected = false;
         let adminUser = null;
 
-        // --- 2. Mock Data for Demo/Preview Mode (So it runs immediately without Supabase setup) ---
+        // --- 2. Mock Data for Demo/Preview Mode (So it runs immediately without supabaseClient setup) ---
         let mockBookings = [
-            { id: 'b1', created_at: new Date(Date.now() - 3600000).toISOString(), customer_name: 'أحمد محمود القاضي', whatsapp: '01012345678', governorate: 'القاهرة', product_title: 'لوحة الماندالا الإمبراطورية', notes: 'مقاس 100x100 سم بلون ذهبي مطفي لو أمكن', status: 'جديد' },
-            { id: 'b2', created_at: new Date(Date.now() - 86400000).toISOString(), customer_name: 'المهندس شريف عبد العزيز', whatsapp: '01234567890', governorate: 'الجيزة', product_title: 'شجرة الحياة العصرية', notes: 'الشحن عاجل لمدخل فيلا', status: 'تم الشحن' },
-            { id: 'b3', created_at: new Date(Date.now() - 172800000).toISOString(), customer_name: 'د. نادية الشافعي', whatsapp: '01118182424', governorate: 'الإسكندرية', product_title: 'ساعة فلكية ذهبية فاخرة', notes: '', status: 'تم الاستلام' },
-            { id: 'b4', created_at: new Date(Date.now() - 259200000).toISOString(), customer_name: 'الأستاذ كريم الجبالي', whatsapp: '01512345678', governorate: 'القليوبية', product_title: 'رسم الخط العربي الفاخر', notes: 'تعديل آية الكرسي كاملة', status: 'جديد' }
+            { id: 'b1', created_at: new Date(Date.now() - 3600000).toISOString(), customer_name: 'Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…ÙˆØ¯ Ø§Ù„Ù‚Ø§Ø¶ÙŠ', whatsapp: '01012345678', governorate: 'Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©', product_title: 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø§Ù†Ø¯Ø§Ù„Ø§ Ø§Ù„Ø¥Ù…Ø¨Ø±Ø§Ø·ÙˆØ±ÙŠØ©', notes: 'Ù…Ù‚Ø§Ø³ 100x100 Ø³Ù… Ø¨Ù„ÙˆÙ† Ø°Ù‡Ø¨ÙŠ Ù…Ø·ÙÙŠ Ù„Ùˆ Ø£Ù…ÙƒÙ†', status: 'Ø¬Ø¯ÙŠØ¯' },
+            { id: 'b2', created_at: new Date(Date.now() - 86400000).toISOString(), customer_name: 'Ø§Ù„Ù…Ù‡Ù†Ø¯Ø³ Ø´Ø±ÙŠÙ Ø¹Ø¨Ø¯ Ø§Ù„Ø¹Ø²ÙŠØ²', whatsapp: '01234567890', governorate: 'Ø§Ù„Ø¬ÙŠØ²Ø©', product_title: 'Ø´Ø¬Ø±Ø© Ø§Ù„Ø­ÙŠØ§Ø© Ø§Ù„Ø¹ØµØ±ÙŠØ©', notes: 'Ø§Ù„Ø´Ø­Ù† Ø¹Ø§Ø¬Ù„ Ù„Ù…Ø¯Ø®Ù„ ÙÙŠÙ„Ø§', status: 'ØªÙ… Ø§Ù„Ø´Ø­Ù†' },
+            { id: 'b3', created_at: new Date(Date.now() - 172800000).toISOString(), customer_name: 'Ø¯. Ù†Ø§Ø¯ÙŠØ© Ø§Ù„Ø´Ø§ÙØ¹ÙŠ', whatsapp: '01118182424', governorate: 'Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©', product_title: 'Ø³Ø§Ø¹Ø© ÙÙ„ÙƒÙŠØ© Ø°Ù‡Ø¨ÙŠØ© ÙØ§Ø®Ø±Ø©', notes: '', status: 'ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…' },
+            { id: 'b4', created_at: new Date(Date.now() - 259200000).toISOString(), customer_name: 'Ø§Ù„Ø£Ø³ØªØ§Ø° ÙƒØ±ÙŠÙ… Ø§Ù„Ø¬Ø¨Ø§Ù„ÙŠ', whatsapp: '01512345678', governorate: 'Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©', product_title: 'Ø±Ø³Ù… Ø§Ù„Ø®Ø· Ø§Ù„Ø¹Ø±Ø¨ÙŠ Ø§Ù„ÙØ§Ø®Ø±', notes: 'ØªØ¹Ø¯ÙŠÙ„ Ø¢ÙŠØ© Ø§Ù„ÙƒØ±Ø³ÙŠ ÙƒØ§Ù…Ù„Ø©', status: 'Ø¬Ø¯ÙŠØ¯' }
         ];
 
         let mockProducts = [
-            { id: 1, title: 'لوحة الماندالا الإمبراطورية', category: 'ماندالا', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تصميم هندسي متماثل يعكس الفلسفة الهندية والجمال المعماري العريق.', image_url: './161841924_3741716299278845_3895684170105190938_n.jpg' },
-            { id: 2, title: 'شجرة الحياة العصرية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تعبر عن النماء والترابط بتفاصيل غصون وأوراق دقيقة للغاية تلائم الريسبشن المودرن.', image_url: './147027646_3634796373304172_1994186618855657670_n.jpg' },
-            { id: 3, title: 'تجريد هندسي فاخر', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | أسود مع لمسة ذهبية', description: 'مزيج راقٍ من المربعات المتداخلة تناسب المكاتب والصالونات الكبرى وتوحي بالعمق البصري.', image_url: './147048085_3637165356400607_8500838532714615099_n.jpg' }
+            { id: 1, title: 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø§Ù†Ø¯Ø§Ù„Ø§ Ø§Ù„Ø¥Ù…Ø¨Ø±Ø§Ø·ÙˆØ±ÙŠØ©', category: 'Ù…Ø§Ù†Ø¯Ø§Ù„Ø§', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ', description: 'ØªØµÙ…ÙŠÙ… Ù‡Ù†Ø¯Ø³ÙŠ Ù…ØªÙ…Ø§Ø«Ù„ ÙŠØ¹ÙƒØ³ Ø§Ù„ÙÙ„Ø³ÙØ© Ø§Ù„Ù‡Ù†Ø¯ÙŠØ© ÙˆØ§Ù„Ø¬Ù…Ø§Ù„ Ø§Ù„Ù…Ø¹Ù…Ø§Ø±ÙŠ Ø§Ù„Ø¹Ø±ÙŠÙ‚.', image_url: './161841924_3741716299278845_3895684170105190938_n.jpg' },
+            { id: 2, title: 'Ø´Ø¬Ø±Ø© Ø§Ù„Ø­ÙŠØ§Ø© Ø§Ù„Ø¹ØµØ±ÙŠØ©', category: 'Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ', description: 'ØªØ¹Ø¨Ø± Ø¹Ù† Ø§Ù„Ù†Ù…Ø§Ø¡ ÙˆØ§Ù„ØªØ±Ø§Ø¨Ø· Ø¨ØªÙØ§ØµÙŠÙ„ ØºØµÙˆÙ† ÙˆØ£ÙˆØ±Ø§Ù‚ Ø¯Ù‚ÙŠÙ‚Ø© Ù„Ù„ØºØ§ÙŠØ© ØªÙ„Ø§Ø¦Ù… Ø§Ù„Ø±ÙŠØ³Ø¨Ø´Ù† Ø§Ù„Ù…ÙˆØ¯Ø±Ù†.', image_url: './147027646_3634796373304172_1994186618855657670_n.jpg' },
+            { id: 3, title: 'ØªØ¬Ø±ÙŠØ¯ Ù‡Ù†Ø¯Ø³ÙŠ ÙØ§Ø®Ø±', category: 'ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2 Ù…Ù… | Ø£Ø³ÙˆØ¯ Ù…Ø¹ Ù„Ù…Ø³Ø© Ø°Ù‡Ø¨ÙŠØ©', description: 'Ù…Ø²ÙŠØ¬ Ø±Ø§Ù‚Ù Ù…Ù† Ø§Ù„Ù…Ø±Ø¨Ø¹Ø§Øª Ø§Ù„Ù…ØªØ¯Ø§Ø®Ù„Ø© ØªÙ†Ø§Ø³Ø¨ Ø§Ù„Ù…ÙƒØ§ØªØ¨ ÙˆØ§Ù„ØµØ§Ù„ÙˆÙ†Ø§Øª Ø§Ù„ÙƒØ¨Ø±Ù‰ ÙˆØªÙˆØ­ÙŠ Ø¨Ø§Ù„Ø¹Ù…Ù‚ Ø§Ù„Ø¨ØµØ±ÙŠ.', image_url: './147048085_3637165356400607_8500838532714615099_n.jpg' }
         ];
 
         let bookingsList = [];
         let productsList = [];
 
-        // Initialize Supabase Connection
-        const setupWarning = document.getElementById('setup-warning');
-        const loginHelperText = document.getElementById('login-helper-text');
-
-        if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
+        // --- Initialize supabaseClient safely AFTER DOM loads ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const setupWarning = document.getElementById('setup-warning');
+            const loginHelperText = document.getElementById('login-helper-text');
             try {
-                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseClient = window.supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 isSupabaseConnected = true;
-                loginHelperText.innerText = "أدخل بيانات حساب Supabase Auth الخاص بك.";
+                if (loginHelperText) loginHelperText.innerText = "Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯ Ø§Ù„Ù…Ø´Ø±Ù ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ù…Ø³Ø¬Ù„Ø© ÙÙŠ supabaseClient Auth.";
+                console.log("Admin supabaseClient client initialized OK!");
             } catch (err) {
-                console.error("Supabase fail:", err);
-                setupWarning.style.display = 'block';
-                setupWarning.innerHTML = 'خطأ في تهيئة مكتبة Supabase. تم تشغيل وضع المعاينة التجريبي تلقائياً.';
+                console.error("supabaseClient init error:", err);
+                if (setupWarning) {
+                    setupWarning.style.display = 'block';
+                    setupWarning.innerHTML = 'Ø®Ø·Ø£ ÙÙŠ ØªÙ‡ÙŠØ¦Ø© supabaseClient: ' + err.message;
+                }
             }
-        } else {
-            // Fallback mode info
-            setupWarning.style.display = 'block';
-            setupWarning.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>وضع المعاينة التجريبي نشط:</strong> لم يتم ربط Supabase بعد. يمكنك تسجيل الدخول باستخدام البريد الإلكتروني: <code style="color:var(--gold-primary);">admin@elnour.com</code> وكلمة المرور: <code style="color:var(--gold-primary);">admin</code> لاستكشاف لوحة التحكم و CRM فورا.';
-            loginHelperText.innerHTML = "استخدم البريد الإلكتروني: <code>admin@elnour.com</code> وكلمة المرور: <code>admin</code>";
-        }
+        });
 
-        // --- 3. Login Handlers ---
+        // --- 3. Login Handler ---
         async function handleLoginSubmit(event) {
             event.preventDefault();
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            if (submitBtn) { submitBtn.innerText = 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù‚Ù‚...'; submitBtn.disabled = true; }
 
-            if (isSupabaseConnected && supabase) {
-                // Real authentication via Supabase Auth
+            if (isSupabaseConnected && supabaseClient) {
                 try {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
-
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                     if (error) throw error;
-                    
                     adminUser = data.user;
-                    console.log("Logged in successfully to Supabase Auth!");
-                    setupWarning.style.display = 'none';
+                    console.log("Logged in to supabaseClient Auth!");
+                    const sw = document.getElementById('setup-warning');
+                    if (sw) sw.style.display = 'none';
                     initDashboard();
                 } catch (err) {
-                    alert("خطأ في تسجيل الدخول: " + err.message);
+                    alert("Ø®Ø·Ø£ ÙÙŠ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„: " + err.message);
+                    if (submitBtn) { submitBtn.innerText = 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…'; submitBtn.disabled = false; }
                 }
             } else {
-                // Demo / Mock Login
-                if (email === 'admin@elnour.com' && password === 'admin') {
-                    console.log("Logged into Demo Mode!");
-                    bookingsList = mockBookings;
-                    productsList = mockProducts;
-                    initDashboard();
-                } else {
-                    alert("البريد الإلكتروني أو كلمة المرور غير صحيحة لوضع المعاينة (استخدم admin@elnour.com و admin)");
-                }
+                alert("Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯. ÙŠØ±Ø¬Ù‰ ØªØ­Ø¯ÙŠØ« Ø§Ù„ØµÙØ­Ø© ÙˆØ§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.");
+                if (submitBtn) { submitBtn.innerText = 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…'; submitBtn.disabled = false; }
             }
         }
 
@@ -655,8 +644,8 @@
         }
 
         function handleLogout() {
-            if (isSupabaseConnected && supabase) {
-                supabase.auth.signOut();
+            if (isSupabaseConnected && supabaseClient) {
+                supabaseClient.auth.signOut();
             }
             location.reload();
         }
@@ -680,17 +669,17 @@
             const govFilter = document.getElementById('filter-gov').value;
             const statusFilter = document.getElementById('filter-status').value;
 
-            if (isSupabaseConnected && supabase) {
+            if (isSupabaseConnected && supabaseClient) {
                 try {
-                    let query = supabase
+                    let query = supabaseClient
                         .from('bookings')
                         .select('*')
                         .order('created_at', { ascending: false });
 
-                    if (govFilter !== 'الكل') {
+                    if (govFilter !== 'Ø§Ù„ÙƒÙ„') {
                         query = query.eq('governorate', govFilter);
                     }
-                    if (statusFilter !== 'الكل') {
+                    if (statusFilter !== 'Ø§Ù„ÙƒÙ„') {
                         query = query.eq('status', statusFilter);
                     }
 
@@ -703,8 +692,8 @@
             } else {
                 // Filter mock bookings locally
                 bookingsList = mockBookings.filter(b => {
-                    const matchGov = govFilter === 'الكل' || b.governorate === govFilter;
-                    const matchStatus = statusFilter === 'الكل' || b.status === statusFilter;
+                    const matchGov = govFilter === 'Ø§Ù„ÙƒÙ„' || b.governorate === govFilter;
+                    const matchStatus = statusFilter === 'Ø§Ù„ÙƒÙ„' || b.status === statusFilter;
                     return matchGov && matchStatus;
                 });
             }
@@ -714,9 +703,9 @@
         }
 
         async function fetchProducts() {
-            if (isSupabaseConnected && supabase) {
+            if (isSupabaseConnected && supabaseClient) {
                 try {
-                    const { data, error } = await supabase
+                    const { data, error } = await supabaseClient
                         .from('products')
                         .select('*')
                         .order('created_at', { ascending: false });
@@ -743,7 +732,7 @@
             crmTableBody.innerHTML = '';
 
             if (bookingsList.length === 0) {
-                crmTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">لا توجد طلبات تطابق الفلترة الحالية.</td></tr>';
+                crmTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª ØªØ·Ø§Ø¨Ù‚ Ø§Ù„ÙÙ„ØªØ±Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ©.</td></tr>';
                 return;
             }
 
@@ -765,14 +754,14 @@
                     <td style="color:var(--gold-secondary); font-weight:700;">${b.product_title}</td>
                     <td>
                         <select class="status-select" onchange="updateBookingStatus('${b.id}', this.value)">
-                            <option value="جديد" ${b.status === 'جديد' ? 'selected' : ''}>جديد</option>
-                            <option value="قيد التأكيد" ${b.status === 'قيد التأكيد' ? 'selected' : ''}>قيد التأكيد</option>
-                            <option value="تم الشحن" ${b.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
-                            <option value="تم الاستلام" ${b.status === 'تم الاستلام' ? 'selected' : ''}>تم الاستلام</option>
-                            <option value="ملغي" ${b.status === 'ملغي' ? 'selected' : ''}>ملغي</option>
+                            <option value="Ø¬Ø¯ÙŠØ¯" ${b.status === 'Ø¬Ø¯ÙŠØ¯' ? 'selected' : ''}>Ø¬Ø¯ÙŠØ¯</option>
+                            <option value="Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯" ${b.status === 'Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯' ? 'selected' : ''}>Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯</option>
+                            <option value="ØªÙ… Ø§Ù„Ø´Ø­Ù†" ${b.status === 'ØªÙ… Ø§Ù„Ø´Ø­Ù†' ? 'selected' : ''}>ØªÙ… Ø§Ù„Ø´Ø­Ù†</option>
+                            <option value="ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…" ${b.status === 'ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…' ? 'selected' : ''}>ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…</option>
+                            <option value="Ù…Ù„ØºÙŠ" ${b.status === 'Ù…Ù„ØºÙŠ' ? 'selected' : ''}>Ù…Ù„ØºÙŠ</option>
                         </select>
                     </td>
-                    <td style="font-size:0.85rem; max-width:180px; color:var(--text-secondary);">${b.notes || '<span style="color:var(--text-muted); font-size:0.75rem;">لا يوجد</span>'}</td>
+                    <td style="font-size:0.85rem; max-width:180px; color:var(--text-secondary);">${b.notes || '<span style="color:var(--text-muted); font-size:0.75rem;">Ù„Ø§ ÙŠÙˆØ¬Ø¯</span>'}</td>
                     <td>
                         <button class="action-btn-danger" onclick="deleteBooking('${b.id}')"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
@@ -800,15 +789,15 @@
         async function updateBookingStatus(bookingId, newStatus) {
             console.log(`Updating booking ${bookingId} status to ${newStatus}`);
 
-            if (isSupabaseConnected && supabase) {
+            if (isSupabaseConnected && supabaseClient) {
                 try {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('bookings')
                         .update({ status: newStatus })
                         .eq('id', bookingId);
                     if (error) throw error;
                 } catch (err) {
-                    alert("فشل تحديث الحالة في قاعدة البيانات: " + err.message);
+                    alert("ÙØ´Ù„ ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø­Ø§Ù„Ø© ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª: " + err.message);
                 }
             } else {
                 // Mock update
@@ -821,17 +810,17 @@
 
         // --- 9. Delete Booking ---
         async function deleteBooking(bookingId) {
-            if (!confirm("هل أنت متأكد من رغبتك في حذف هذا الطلب نهائياً من النظام؟")) return;
+            if (!confirm("Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø±ØºØ¨ØªÙƒ ÙÙŠ Ø­Ø°Ù Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ù†Ù‡Ø§Ø¦ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ù†Ø¸Ø§Ù…ØŸ")) return;
 
-            if (isSupabaseConnected && supabase) {
+            if (isSupabaseConnected && supabaseClient) {
                 try {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('bookings')
                         .delete()
                         .eq('id', bookingId);
                     if (error) throw error;
                 } catch (err) {
-                    alert("فشل حذف الطلب: " + err.message);
+                    alert("ÙØ´Ù„ Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨: " + err.message);
                 }
             } else {
                 // Mock delete
@@ -845,11 +834,11 @@
         function updateMetrics() {
             // We compute values based on bookingsList or overall bookings
             const total = bookingsList.length;
-            const newOrders = bookingsList.filter(b => b.status === 'جديد').length;
+            const newOrders = bookingsList.filter(b => b.status === 'Ø¬Ø¯ÙŠØ¯').length;
             
             // Expected revenue (all non-cancelled orders * 3600 EGP or dynamic price if stored)
             // For now let's assume a default MVP price of 3600 EGP for orders
-            const expected = bookingsList.filter(b => b.status !== 'ملغي').length * 3600;
+            const expected = bookingsList.filter(b => b.status !== 'Ù…Ù„ØºÙŠ').length * 3600;
 
             document.getElementById('stat-total-bookings').innerText = total;
             document.getElementById('stat-new-bookings').innerText = newOrders;
@@ -870,10 +859,10 @@
                         <div>
                             <span style="font-size:0.7rem; color:var(--text-muted);">${p.category}</span>
                             <div class="manager-product-title">${p.title}</div>
-                            <div class="manager-product-price">${p.price.toLocaleString()} ج.م ${p.original_price ? `<span style="text-decoration:line-through; font-size:0.75rem; color:var(--text-muted); margin-right:5px;">${p.original_price.toLocaleString()} ج.م</span>` : ''}</div>
+                            <div class="manager-product-price">${p.price.toLocaleString()} Ø¬.Ù… ${p.original_price ? `<span style="text-decoration:line-through; font-size:0.75rem; color:var(--text-muted); margin-right:5px;">${p.original_price.toLocaleString()} Ø¬.Ù…</span>` : ''}</div>
                         </div>
                     </div>
-                    <button class="edit-btn" onclick="loadProductToForm('${p.id}')">تعديل</button>
+                    <button class="edit-btn" onclick="loadProductToForm('${p.id}')">ØªØ¹Ø¯ÙŠÙ„</button>
                 `;
                 managerList.appendChild(item);
             });
@@ -882,12 +871,12 @@
         // --- 12. Populate product picker select ---
         function populateProductPicker() {
             const picker = document.getElementById('prod-select-picker');
-            picker.innerHTML = '<option value="" selected disabled>-- اختر لوحة لتعديل سعرها أو مواصفاتها --</option>';
+            picker.innerHTML = '<option value="" selected disabled>-- Ø§Ø®ØªØ± Ù„ÙˆØ­Ø© Ù„ØªØ¹Ø¯ÙŠÙ„ Ø³Ø¹Ø±Ù‡Ø§ Ø£Ùˆ Ù…ÙˆØ§ØµÙØ§ØªÙ‡Ø§ --</option>';
 
             productsList.forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.id;
-                opt.innerText = `${p.title} (${p.price} ج.م)`;
+                opt.innerText = `${p.title} (${p.price} Ø¬.Ù…)`;
                 picker.appendChild(opt);
             });
         }
@@ -897,7 +886,7 @@
             const prod = productsList.find(p => p.id == productId);
             if (!prod) return;
 
-            document.getElementById('form-action-title').innerText = `تعديل بيانات: ${prod.title}`;
+            document.getElementById('form-action-title').innerText = `ØªØ¹Ø¯ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª: ${prod.title}`;
             document.getElementById('prod-id').value = prod.id;
             document.getElementById('prod-title').value = prod.title;
             document.getElementById('prod-category').value = prod.category;
@@ -912,7 +901,7 @@
         }
 
         function resetProductForm() {
-            document.getElementById('form-action-title').innerText = "إضافة لوحة / منتج جديد";
+            document.getElementById('form-action-title').innerText = "Ø¥Ø¶Ø§ÙØ© Ù„ÙˆØ­Ø© / Ù…Ù†ØªØ¬ Ø¬Ø¯ÙŠØ¯";
             document.getElementById('product-update-form').reset();
             document.getElementById('prod-id').value = '';
             document.getElementById('prod-select-picker').value = '';
@@ -923,7 +912,7 @@
             event.preventDefault();
 
             const saveBtn = document.getElementById('product-save-btn');
-            saveBtn.innerText = 'جاري الحفظ وتحديث قاعدة البيانات...';
+            saveBtn.innerText = 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª...';
             saveBtn.disabled = true;
 
             const id = document.getElementById('prod-id').value;
@@ -945,25 +934,25 @@
                 image_url
             };
 
-            if (isSupabaseConnected && supabase) {
+            if (isSupabaseConnected && supabaseClient) {
                 try {
                     if (id) {
                         // UPDATE existing
-                        const { error } = await supabase
+                        const { error } = await supabaseClient
                             .from('products')
                             .update(payload)
                             .eq('id', id);
                         if (error) throw error;
                     } else {
                         // INSERT new
-                        const { error } = await supabase
+                        const { error } = await supabaseClient
                             .from('products')
                             .insert([payload]);
                         if (error) throw error;
                     }
-                    console.log("Catalog update synced with Supabase PostgreSQL database.");
+                    console.log("Catalog update synced with supabaseClient PostgreSQL database.");
                 } catch (err) {
-                    alert("فشل حفظ المنتج: " + err.message);
+                    alert("ÙØ´Ù„ Ø­ÙØ¸ Ø§Ù„Ù…Ù†ØªØ¬: " + err.message);
                 }
             } else {
                 // Mock Save
@@ -985,14 +974,14 @@
             resetProductForm();
             fetchProducts();
             
-            saveBtn.innerText = 'حفظ وتحديث البيانات';
+            saveBtn.innerText = 'Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª';
             saveBtn.disabled = false;
         }
 
         // --- 15. Export to CSV (Excel compatible) ---
         function exportToCsv() {
             if (bookingsList.length === 0) {
-                alert("لا توجد حجوزات لتصديرها حالياً.");
+                alert("Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø¬ÙˆØ²Ø§Øª Ù„ØªØµØ¯ÙŠØ±Ù‡Ø§ Ø­Ø§Ù„ÙŠØ§Ù‹.");
                 return;
             }
 
@@ -1000,7 +989,7 @@
             let csvContent = "\uFEFF";
             
             // Header Row
-            csvContent += "تاريخ الطلب,اسم العميل,رقم الواتساب,المحافظة,المنتج المطلوب,الحالة,الملاحظات\n";
+            csvContent += "ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨,Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„,Ø±Ù‚Ù… Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨,Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©,Ø§Ù„Ù…Ù†ØªØ¬ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨,Ø§Ù„Ø­Ø§Ù„Ø©,Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª\n";
 
             bookingsList.forEach(b => {
                 const dateObj = new Date(b.created_at);
@@ -1025,7 +1014,7 @@
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", `حجوزات_النور_للحديد_${new Date().toLocaleDateString('ar-EG').replace(/\//g, '-')}.csv`);
+            link.setAttribute("download", `Ø­Ø¬ÙˆØ²Ø§Øª_Ø§Ù„Ù†ÙˆØ±_Ù„Ù„Ø­Ø¯ÙŠØ¯_${new Date().toLocaleDateString('ar-EG').replace(/\//g, '-')}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
