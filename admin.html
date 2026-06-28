@@ -1,1031 +1,524 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ… ÙˆØ§Ù„Ù€ CRM | Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø­Ø¯ÙŠØ¯</title>
+    <title>لوحة التحكم والـ CRM | النور للحديد</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- supabaseClient Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabaseClient/supabaseClient-js@2"></script>
+    <!-- Supabase UMD build - correctly exposes window.supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     
-    <!-- Unified Stylesheet -->
     <link rel="stylesheet" href="./style.css">
     
     <style>
-        /* Admin specific styles */
-        .admin-main {
-            padding: 130px 0 80px 0;
-            min-height: 85vh;
-        }
-
-        /* Auth Panel styling */
-        .auth-container {
-            max-width: 450px;
-            margin: 60px auto;
-            position: relative;
-        }
-
-        /* Dashboard Overview Grid */
-        .admin-dashboard {
-            display: none; /* Shown after auth */
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .metric-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--gold-light), var(--gold-primary));
-        }
-
-        .metric-info {
-            text-align: right;
-        }
-
-        .metric-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .metric-value {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--text-primary);
-        }
-
-        .metric-icon {
-            font-size: 2.2rem;
-            color: rgba(212, 175, 55, 0.2);
-        }
-
-        /* Tabs for Admin View */
-        .admin-tabs {
-            display: flex;
-            gap: 10px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 30px;
-        }
-
-        .admin-tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-family: var(--font-arabic);
-            position: relative;
-        }
-
-        .admin-tab-btn.active {
-            color: var(--gold-primary);
-        }
-
-        .admin-tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            right: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--gold-primary);
-        }
-
-        .admin-pane {
-            display: none;
-        }
-
-        .admin-pane.active {
-            display: block;
-        }
-
-        /* CRM Table styling */
-        .table-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .search-input-wrapper {
-            position: relative;
-            flex-grow: 1;
-            max-width: 400px;
-        }
-
-        .search-input-wrapper i {
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        .search-input-wrapper input {
-            padding-right: 45px;
-        }
-
-        .filter-controls {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--bg-card);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.95rem;
-        }
-
-        th {
-            background-color: rgba(255, 255, 255, 0.02);
-            color: var(--gold-secondary);
-            font-weight: 700;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background-color: rgba(255, 255, 255, 0.01);
-        }
-
-        /* Status badges */
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .status-new { background-color: rgba(0, 123, 255, 0.15); color: #007bff; border: 1px solid rgba(0, 123, 255, 0.3); }
-        .status-pending { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3); }
-        .status-shipped { background-color: rgba(23, 162, 184, 0.15); color: #17a2b8; border: 1px solid rgba(23, 162, 184, 0.3); }
-        .status-delivered { background-color: rgba(40, 167, 69, 0.15); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.3); }
-        .status-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3); }
-
-        .status-select {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 4px;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-family: var(--font-arabic);
-            font-size: 0.85rem;
-        }
-
-        .action-btn-danger {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: var(--transition-smooth);
-        }
-
-        .action-btn-danger:hover {
-            color: #bd2130;
-            transform: scale(1.1);
-        }
-
-        /* Products Management Styles */
-        .products-manager-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        .manager-form-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-        }
-
-        .manager-form-title {
-            font-size: 1.3rem;
-            color: var(--gold-secondary);
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .manager-list-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            max-height: 700px;
-            overflow-y: auto;
-        }
-
-        .manager-product-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .manager-product-item:last-child {
-            border-bottom: none;
-        }
-
-        .manager-product-meta {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .manager-product-img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .manager-product-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-
-        .manager-product-price {
-            font-size: 0.85rem;
-            color: var(--gold-primary);
-        }
-
-        .edit-btn {
-            background: none;
-            border: 1px solid var(--gold-primary);
-            color: var(--gold-primary);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .edit-btn:hover {
-            background-color: var(--gold-primary);
-            color: #000;
-        }
+        .admin-main { padding: 130px 0 80px 0; min-height: 85vh; }
+        .auth-container { max-width: 450px; margin: 60px auto; }
+        .admin-dashboard { display: none; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .metric-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px 25px; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
+        .metric-card::before { content: ''; position: absolute; top: 0; right: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--gold-light), var(--gold-primary)); }
+        .metric-info { text-align: right; }
+        .metric-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
+        .metric-value { font-size: 1.8rem; font-weight: 900; color: var(--text-primary); }
+        .metric-icon { font-size: 2.2rem; color: rgba(212, 175, 55, 0.2); }
+        .admin-tabs { display: flex; gap: 10px; border-bottom: 1px solid var(--border-color); margin-bottom: 30px; }
+        .admin-tab-btn { background: none; border: none; color: var(--text-secondary); padding: 12px 25px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); font-family: var(--font-arabic); position: relative; }
+        .admin-tab-btn.active { color: var(--gold-primary); }
+        .admin-tab-btn.active::after { content: ''; position: absolute; bottom: -1px; right: 0; width: 100%; height: 2px; background-color: var(--gold-primary); }
+        .admin-pane { display: none; }
+        .admin-pane.active { display: block; }
+        .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap; }
+        .table-responsive { width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-card); }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        th { background-color: rgba(255, 255, 255, 0.02); color: var(--gold-secondary); font-weight: 700; }
+        tr:last-child td { border-bottom: none; }
+        .status-select { background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-family: var(--font-arabic); font-size: 0.85rem; }
+        .action-btn-danger { background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1.1rem; }
+        .products-manager-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; align-items: start; }
+        .manager-form-card, .manager-list-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; }
+        .manager-list-card { max-height: 700px; overflow-y: auto; }
+        .manager-form-title { font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .manager-product-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        .manager-product-item:last-child { border-bottom: none; }
+        .manager-product-meta { display: flex; align-items: center; gap: 15px; }
+        .manager-product-img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .edit-btn { background: none; border: 1px solid var(--gold-primary); color: var(--gold-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: var(--transition-smooth); }
+        .edit-btn:hover { background-color: var(--gold-primary); color: #000; }
+        .alert-banner { padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; display: none; }
+        .alert-success { background: rgba(40,167,69,0.1); border: 1px solid #28a745; color: #28a745; }
+        .alert-error { background: rgba(220,53,69,0.1); border: 1px solid #dc3545; color: #dc3545; }
+        .alert-info { background: rgba(212,175,55,0.07); border: 1px solid rgba(212,175,55,0.3); color: var(--gold-secondary); }
+        @media(max-width: 850px) { .products-manager-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- Header / Navbar -->
     <header id="main-header">
         <div class="container nav-container">
             <a href="index.html" class="logo">
                 <span class="logo-title">Elnour for Steel</span>
-                <span class="logo-subtitle">Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ… ÙˆØ§Ù„Ù€ CRM</span>
+                <span class="logo-subtitle">لوحة التحكم والـ CRM</span>
             </a>
-            
             <ul class="nav-menu" id="nav-menu">
-                <li><a href="index.html">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a></li>
-                <li><a href="about.html">Ù…Ù† Ù†Ø­Ù†</a></li>
-                <li><a href="products.html">Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª</a></li>
-                <li><a href="portfolio.html">Ø³Ø§Ø¨Ù‚Ø© Ø£Ø¹Ù…Ø§Ù„Ù†Ø§</a></li>
-                <li><a href="contact.html">Ø§ØªØµÙ„ Ø¨Ù†Ø§</a></li>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="products.html">المنتجات</a></li>
+                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
             </ul>
-
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <button class="nav-cta-btn" id="logout-btn" style="display: none;" onclick="handleLogout()">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</button>
-                <div class="menu-toggle" id="menu-toggle">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <button class="nav-cta-btn" id="logout-btn" style="display:none;" onclick="handleLogout()">تسجيل الخروج</button>
+                <div class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
             </div>
         </div>
     </header>
 
     <main class="admin-main">
         <div class="container">
-            
-            <!-- Connection Setup Warning Overlay -->
-            <div id="setup-warning" class="status-banner" style="display: none; border-color: #dc3545; color: #dc3545; background-color: rgba(220,53,69,0.05);"></div>
 
-            <!-- --- SECTION 1: LOGIN PANEL --- -->
+            <!-- Status Banner -->
+            <div id="status-banner" class="alert-banner alert-info"></div>
+
+            <!-- LOGIN PANEL -->
             <div id="auth-panel" class="auth-container">
                 <div class="form-card">
-                    <h3 class="form-title"><i class="fa-solid fa-lock gold-text"></i> ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„ Ø§Ù„Ù…Ø´Ø±Ù</h3>
-                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;" id="login-helper-text"></p>
-                    
-                    <form onsubmit="handleLoginSubmit(event)">
+                    <h3 class="form-title"><i class="fa-solid fa-lock gold-text"></i> تسجيل دخول المشرف</h3>
+                    <p id="login-hint" style="text-align:center;font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;"></p>
+                    <form id="login-form">
                         <div class="form-group">
-                            <label for="admin-email" class="form-label">Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù„Ù„Ù…Ø´Ø±Ù</label>
+                            <label class="form-label" for="admin-email">البريد الإلكتروني للمشرف</label>
                             <input type="email" id="admin-email" class="form-input" placeholder="admin@elnour.com" required>
                         </div>
-
                         <div class="form-group">
-                            <label for="admin-password" class="form-label">ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</label>
-                            <input type="password" id="admin-password" class="form-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+                            <label class="form-label" for="admin-password">كلمة المرور</label>
+                            <input type="password" id="admin-password" class="form-input" placeholder="••••••••" required>
                         </div>
-
-                        <button type="submit" class="btn-submit" style="margin-top: 10px;">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…</button>
+                        <button type="submit" class="btn-submit" id="login-btn" style="margin-top:10px;">تسجيل الدخول للوحة التحكم</button>
                     </form>
                 </div>
             </div>
 
-            <!-- --- SECTION 2: CRM DASHBOARD (Hidden by default) --- -->
+            <!-- CRM DASHBOARD -->
             <div id="dashboard-panel" class="admin-dashboard">
                 
-                <!-- Overview Stats Metrics -->
+                <!-- Metrics -->
                 <div class="metrics-grid">
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø­Ø¬ÙˆØ²Ø§Øª</div>
-                            <div class="metric-value" id="stat-total-bookings">0</div>
+                            <div class="metric-title">إجمالي الحجوزات</div>
+                            <div class="metric-value" id="stat-total">0</div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-receipt"></i></div>
                     </div>
-
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">Ø§Ù„Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø© (Ø§Ù„Ù…Ø¹Ù„Ù‚Ø©)</div>
-                            <div class="metric-value" id="stat-new-bookings" style="color: #ffc107;">0</div>
+                            <div class="metric-title">الطلبات الجديدة</div>
+                            <div class="metric-value" id="stat-new" style="color:#ffc107;">0</div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
                     </div>
-
                     <div class="metric-card">
                         <div class="metric-info">
-                            <div class="metric-title">Ø§Ù„Ø¥ÙŠØ±Ø§Ø¯Ø§Øª Ø§Ù„Ù…ØªÙˆÙ‚Ø¹Ø©</div>
-                            <div class="metric-value" id="stat-expected-revenue" style="color: var(--gold-primary);">0 <span style="font-size:0.95rem;">Ø¬.Ù…</span></div>
+                            <div class="metric-title">الإيرادات المتوقعة</div>
+                            <div class="metric-value" id="stat-revenue" style="color:var(--gold-primary);">0 ج.م</div>
                         </div>
                         <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                     </div>
                 </div>
 
-                <!-- Admin Tabs for choosing between CRM (Bookings) and Catalog (Prices) -->
+                <!-- Admin Tabs -->
                 <div class="admin-tabs">
-                    <button class="admin-tab-btn active" onclick="switchAdminTab('crm-pane', this)">Ø¥Ø¯Ø§Ø±Ø© Ø·Ù„Ø¨Ø§Øª Ø§Ù„Ø¹Ù…Ù„Ø§Ø¡ (CRM)</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('catalog-pane', this)">ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø£Ø³Ø¹Ø§Ø± ÙˆØ§Ù„Ù…Ù†ØªØ¬Ø§Øª</button>
+                    <button class="admin-tab-btn active" onclick="switchTab('crm-pane', this)">إدارة طلبات العملاء (CRM)</button>
+                    <button class="admin-tab-btn" onclick="switchTab('catalog-pane', this)">تعديل الأسعار والمنتجات</button>
                 </div>
 
-                <!-- CRM PANE (Bookings Manager) -->
+                <!-- CRM Pane -->
                 <div id="crm-pane" class="admin-pane active">
                     <div class="table-controls">
-                        <!-- Search Box -->
-                        <div class="search-input-wrapper">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="crm-search" class="form-input" placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„ØŒ Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨ØŒ Ø£Ùˆ Ø§Ù„Ù„ÙˆØ­Ø©..." oninput="handleCrmSearch()">
-                        </div>
-                        
-                        <!-- Filters -->
-                        <div class="filter-controls">
-                            <select id="filter-gov" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
-                                <option value="Ø§Ù„ÙƒÙ„">ÙƒÙ„ Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø§Øª</option>
-                                <option value="Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©">Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©</option>
-                                <option value="Ø§Ù„Ø¬ÙŠØ²Ø©">Ø§Ù„Ø¬ÙŠØ²Ø©</option>
-                                <option value="Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©">Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©</option>
-                                <option value="Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©">Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©</option>
-                                <option value="Ø£Ø®Ø±Ù‰">Ù…Ø­Ø§ÙØ¸Ø© Ø£Ø®Ø±Ù‰</option>
+                        <input type="text" id="crm-search" class="form-input" style="max-width:350px;" placeholder="ابحث باسم العميل أو رقم الواتساب..." oninput="searchTable()">
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <select id="filter-gov" class="form-input" style="width:140px;padding:10px;" onchange="loadBookings()">
+                                <option value="all">كل المحافظات</option>
+                                <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>القليوبية</option><option>أخرى</option>
                             </select>
-
-                            <select id="filter-status" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
-                                <option value="Ø§Ù„ÙƒÙ„">ÙƒÙ„ Ø§Ù„Ø­Ø§Ù„Ø§Øª</option>
-                                <option value="Ø¬Ø¯ÙŠØ¯">Ø¬Ø¯ÙŠØ¯</option>
-                                <option value="Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯">Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯</option>
-                                <option value="ØªÙ… Ø§Ù„Ø´Ø­Ù†">ØªÙ… Ø§Ù„Ø´Ø­Ù†</option>
-                                <option value="ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…">ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…</option>
-                                <option value="Ù…Ù„ØºÙŠ">Ù…Ù„ØºÙŠ</option>
+                            <select id="filter-status" class="form-input" style="width:140px;padding:10px;" onchange="loadBookings()">
+                                <option value="all">كل الحالات</option>
+                                <option>جديد</option><option>قيد التأكيد</option><option>تم الشحن</option><option>تم الاستلام</option><option>ملغي</option>
                             </select>
-
-                            <button class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;" onclick="exportToCsv()"><i class="fa-solid fa-file-excel"></i> ØªØµØ¯ÙŠØ± Excel</button>
+                            <button class="btn-secondary" style="padding:10px 18px;" onclick="exportCsv()"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
                         </div>
                     </div>
-
-                    <!-- Bookings CRM Table -->
                     <div class="table-responsive">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨</th>
-                                    <th>Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„</th>
-                                    <th>Ø±Ù‚Ù… Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨</th>
-                                    <th>Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©</th>
-                                    <th>Ø§Ù„ØªØµÙ…ÙŠÙ… Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©</th>
-                                    <th>Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù„Ø¨</th>
-                                    <th>Ù…Ù„Ø§Ø­Ø¸Ø§Øª</th>
-                                    <th>Ø­Ø°Ù</th>
+                                    <th>تاريخ الطلب</th><th>اسم العميل</th><th>الواتساب</th><th>المحافظة</th><th>اللوحة المطلوبة</th><th>الحالة</th><th>ملاحظات</th><th>حذف</th>
                                 </tr>
                             </thead>
-                            <tbody id="crm-table-body">
-                                <!-- Bookings list loads here -->
-                            </tbody>
+                            <tbody id="bookings-table"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- CATALOG PANE (Price and specs updater) -->
+                <!-- Catalog Pane -->
                 <div id="catalog-pane" class="admin-pane">
                     <div class="products-manager-grid">
-                        
-                        <!-- Form to Edit/Add Product -->
                         <div class="manager-form-card">
-                            <h4 class="manager-form-title" id="form-action-title">ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù†ØªØ¬</h4>
-                            
-                            <form id="product-update-form" onsubmit="handleProductSave(event)">
-                                <input type="hidden" id="prod-id" value="">
-                                
-                                <div class="form-group" id="product-select-group">
-                                    <label class="form-label" for="prod-select-picker">Ø§Ø®ØªØ± Ù…Ù†ØªØ¬Ø§Ù‹ Ù„ØªØ¹Ø¯ÙŠÙ„Ù‡</label>
-                                    <select id="prod-select-picker" class="form-input" onchange="loadProductToForm(this.value)">
-                                        <option value="" selected disabled>-- Ø§Ø®ØªØ± Ù„ÙˆØ­Ø© Ù„ØªØ¹Ø¯ÙŠÙ„ Ø³Ø¹Ø±Ù‡Ø§ Ø£Ùˆ Ù…ÙˆØ§ØµÙØ§ØªÙ‡Ø§ --</option>
+                            <h4 class="manager-form-title" id="form-title">تعديل بيانات منتج</h4>
+                            <form id="product-form" onsubmit="saveProduct(event)">
+                                <input type="hidden" id="prod-id">
+                                <div class="form-group">
+                                    <label class="form-label">اختر منتجاً للتعديل</label>
+                                    <select id="prod-picker" class="form-input" onchange="loadProduct(this.value)">
+                                        <option value="">-- اختر لوحة --</option>
                                     </select>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-title">Ø§Ø³Ù… Ø§Ù„Ù„ÙˆØ­Ø© / Ø§Ù„Ù…Ù†ØªØ¬ <span style="color:var(--gold-primary);">*</span></label>
+                                    <label class="form-label" for="prod-title">اسم اللوحة *</label>
                                     <input type="text" id="prod-title" class="form-input" required>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-category">Ø§Ù„Ù‚Ø³Ù… Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ <span style="color:var(--gold-primary);">*</span></label>
-                                    <select id="prod-category" class="form-input" required>
-                                        <option value="Ù…Ø§Ù†Ø¯Ø§Ù„Ø§">Ù…Ø§Ù†Ø¯Ø§Ù„Ø§</option>
-                                        <option value="Ø³Ø§Ø¹Ø§Øª Ø­Ø§Ø¦Ø·">Ø³Ø§Ø¹Ø§Øª Ø­Ø§Ø¦Ø·</option>
-                                        <option value="Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©">Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©</option>
-                                        <option value="ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©">ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©</option>
-                                        <option value="Ø®Ø· Ø¹Ø±Ø¨ÙŠ ÙˆØ¥Ø³Ù„Ø§Ù…ÙŠ">Ø®Ø· Ø¹Ø±Ø¨ÙŠ ÙˆØ¥Ø³Ù„Ø§Ù…ÙŠ</option>
+                                    <label class="form-label" for="prod-cat">القسم *</label>
+                                    <select id="prod-cat" class="form-input" required>
+                                        <option value="ماندالا">ماندالا</option>
+                                        <option value="ساعات حائط">ساعات حائط</option>
+                                        <option value="جداريات طبيعة">جداريات طبيعة</option>
+                                        <option value="تجريد وهندسة">تجريد وهندسة</option>
+                                        <option value="خط عربي وإسلامي">خط عربي وإسلامي</option>
                                     </select>
                                 </div>
-
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
                                     <div class="form-group">
-                                        <label class="form-label" for="prod-price">Ø³Ø¹Ø± Ø§Ù„Ø¹Ø±Ø¶ (Ø¬.Ù…) <span style="color:var(--gold-primary);">*</span></label>
+                                        <label class="form-label" for="prod-price">سعر البيع (ج.م) *</label>
                                         <input type="number" id="prod-price" class="form-input" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="prod-orig-price">Ø§Ù„Ø³Ø¹Ø± Ø§Ù„Ø£ØµÙ„ÙŠ (Ø¬.Ù…)</label>
-                                        <input type="number" id="prod-orig-price" class="form-input">
+                                        <label class="form-label" for="prod-orig">السعر قبل الخصم</label>
+                                        <input type="number" id="prod-orig" class="form-input">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-spec">Ø§Ù„Ù…ÙˆØ§ØµÙØ§Øª Ø§Ù„Ù…Ø®ØªØµØ±Ø©</label>
-                                    <input type="text" id="prod-spec" class="form-input" placeholder="Ù…Ø«Ø§Ù„: Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ">
+                                    <label class="form-label" for="prod-spec">المواصفات</label>
+                                    <input type="text" id="prod-spec" class="form-input" placeholder="حديد 2.5 مم | أسود مطفي">
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-desc">Ø§Ù„ÙˆØµÙ Ø§Ù„ØªÙØµÙŠÙ„ÙŠ Ù„Ù„Ù…Ù†ØªØ¬</label>
-                                    <textarea id="prod-desc" class="form-input" rows="3" placeholder="ØªÙØ§ØµÙŠÙ„ Ø¯Ù‚Ø© Ø§Ù„Ù„ÙŠØ²Ø± ÙˆØªØ£Ø«ÙŠØ±Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø­Ø§Ø¦Ø·..."></textarea>
+                                    <label class="form-label" for="prod-desc">الوصف</label>
+                                    <textarea id="prod-desc" class="form-input" rows="3"></textarea>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="form-label" for="prod-img">Ø±Ø§Ø¨Ø· ØµÙˆØ±Ø© Ø§Ù„Ù…Ù†ØªØ¬ (Ù…Ø­Ù„ÙŠØ© Ø£Ùˆ Ø¥Ù†ØªØ±Ù†Øª)</label>
-                                    <input type="text" id="prod-img" class="form-input" placeholder="Ù…Ø«Ø§Ù„: ./161841924_3741716299278845_3895684170105190938_n.jpg">
+                                    <label class="form-label" for="prod-img">مسار الصورة</label>
+                                    <input type="text" id="prod-img" class="form-input" placeholder="./اسم_الصورة.jpg">
                                 </div>
-
-                                <div style="display: flex; gap: 15px; margin-top: 15px;">
-                                    <button type="submit" class="btn-submit" id="product-save-btn" style="flex-grow: 1;">Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª</button>
-                                    <button type="button" class="btn-secondary" style="padding: 10px 20px;" onclick="resetProductForm()">Ø¬Ø¯ÙŠØ¯ / Ø¥Ù„ØºØ§Ø¡</button>
+                                <div style="display:flex;gap:10px;margin-top:15px;">
+                                    <button type="submit" class="btn-submit" style="flex-grow:1;">حفظ التغييرات</button>
+                                    <button type="button" class="btn-secondary" style="padding:10px 18px;" onclick="resetForm()">إلغاء</button>
                                 </div>
                             </form>
                         </div>
-
-                        <!-- Grid/List of current products -->
                         <div class="manager-list-card">
-                            <h4 style="font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom: 10px;">Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø£Ø³Ø¹Ø§Ø± ÙˆØ§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©</h4>
-                            <div id="manager-products-list">
-                                <!-- Products list will render here -->
-                            </div>
+                            <h4 style="font-size:1.2rem;color:var(--gold-secondary);margin-bottom:15px;border-bottom:1px solid var(--border-color);padding-bottom:10px;">قائمة المنتجات الحالية</h4>
+                            <div id="products-list"></div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
-            <p class="copyright">&copy; 2026 Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø­Ø¯ÙŠØ¯ ÙˆØ§Ù„Ø¯ÙŠÙƒÙˆØ± (Elnour for Steel). Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.</p>
+            <p class="copyright">&copy; 2026 النور للحديد والديكور. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
 
-    <!-- supabaseClient Integration & CRM Code -->
     <script>
-        // --- 1. supabaseClient Configurations ---
-        const SUPABASE_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const SUPABASE_URL  = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+        const SUPABASE_ANON = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
 
-        // IMPORTANT: use 'supabaseClient' not 'supabaseClient' to avoid conflict with window.supabaseClient library
-        let supabaseClient = null;
-        let isSupabaseConnected = false;
-        let adminUser = null;
+        let db = null;          // Supabase client
+        let isConnected = false;
+        let bookings = [];
+        let products = [];
 
-        // --- 2. Mock Data for Demo/Preview Mode (So it runs immediately without supabaseClient setup) ---
-        let mockBookings = [
-            { id: 'b1', created_at: new Date(Date.now() - 3600000).toISOString(), customer_name: 'Ø£Ø­Ù…Ø¯ Ù…Ø­Ù…ÙˆØ¯ Ø§Ù„Ù‚Ø§Ø¶ÙŠ', whatsapp: '01012345678', governorate: 'Ø§Ù„Ù‚Ø§Ù‡Ø±Ø©', product_title: 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø§Ù†Ø¯Ø§Ù„Ø§ Ø§Ù„Ø¥Ù…Ø¨Ø±Ø§Ø·ÙˆØ±ÙŠØ©', notes: 'Ù…Ù‚Ø§Ø³ 100x100 Ø³Ù… Ø¨Ù„ÙˆÙ† Ø°Ù‡Ø¨ÙŠ Ù…Ø·ÙÙŠ Ù„Ùˆ Ø£Ù…ÙƒÙ†', status: 'Ø¬Ø¯ÙŠØ¯' },
-            { id: 'b2', created_at: new Date(Date.now() - 86400000).toISOString(), customer_name: 'Ø§Ù„Ù…Ù‡Ù†Ø¯Ø³ Ø´Ø±ÙŠÙ Ø¹Ø¨Ø¯ Ø§Ù„Ø¹Ø²ÙŠØ²', whatsapp: '01234567890', governorate: 'Ø§Ù„Ø¬ÙŠØ²Ø©', product_title: 'Ø´Ø¬Ø±Ø© Ø§Ù„Ø­ÙŠØ§Ø© Ø§Ù„Ø¹ØµØ±ÙŠØ©', notes: 'Ø§Ù„Ø´Ø­Ù† Ø¹Ø§Ø¬Ù„ Ù„Ù…Ø¯Ø®Ù„ ÙÙŠÙ„Ø§', status: 'ØªÙ… Ø§Ù„Ø´Ø­Ù†' },
-            { id: 'b3', created_at: new Date(Date.now() - 172800000).toISOString(), customer_name: 'Ø¯. Ù†Ø§Ø¯ÙŠØ© Ø§Ù„Ø´Ø§ÙØ¹ÙŠ', whatsapp: '01118182424', governorate: 'Ø§Ù„Ø¥Ø³ÙƒÙ†Ø¯Ø±ÙŠØ©', product_title: 'Ø³Ø§Ø¹Ø© ÙÙ„ÙƒÙŠØ© Ø°Ù‡Ø¨ÙŠØ© ÙØ§Ø®Ø±Ø©', notes: '', status: 'ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…' },
-            { id: 'b4', created_at: new Date(Date.now() - 259200000).toISOString(), customer_name: 'Ø§Ù„Ø£Ø³ØªØ§Ø° ÙƒØ±ÙŠÙ… Ø§Ù„Ø¬Ø¨Ø§Ù„ÙŠ', whatsapp: '01512345678', governorate: 'Ø§Ù„Ù‚Ù„ÙŠÙˆØ¨ÙŠØ©', product_title: 'Ø±Ø³Ù… Ø§Ù„Ø®Ø· Ø§Ù„Ø¹Ø±Ø¨ÙŠ Ø§Ù„ÙØ§Ø®Ø±', notes: 'ØªØ¹Ø¯ÙŠÙ„ Ø¢ÙŠØ© Ø§Ù„ÙƒØ±Ø³ÙŠ ÙƒØ§Ù…Ù„Ø©', status: 'Ø¬Ø¯ÙŠØ¯' }
-        ];
+        // ============================================================
+        // INITIALIZE SUPABASE AFTER DOM IS READY
+        // ============================================================
+        window.addEventListener('load', function() {
+            const banner = document.getElementById('status-banner');
+            const hint   = document.getElementById('login-hint');
 
-        let mockProducts = [
-            { id: 1, title: 'Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø§Ù†Ø¯Ø§Ù„Ø§ Ø§Ù„Ø¥Ù…Ø¨Ø±Ø§Ø·ÙˆØ±ÙŠØ©', category: 'Ù…Ø§Ù†Ø¯Ø§Ù„Ø§', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ', description: 'ØªØµÙ…ÙŠÙ… Ù‡Ù†Ø¯Ø³ÙŠ Ù…ØªÙ…Ø§Ø«Ù„ ÙŠØ¹ÙƒØ³ Ø§Ù„ÙÙ„Ø³ÙØ© Ø§Ù„Ù‡Ù†Ø¯ÙŠØ© ÙˆØ§Ù„Ø¬Ù…Ø§Ù„ Ø§Ù„Ù…Ø¹Ù…Ø§Ø±ÙŠ Ø§Ù„Ø¹Ø±ÙŠÙ‚.', image_url: './161841924_3741716299278845_3895684170105190938_n.jpg' },
-            { id: 2, title: 'Ø´Ø¬Ø±Ø© Ø§Ù„Ø­ÙŠØ§Ø© Ø§Ù„Ø¹ØµØ±ÙŠØ©', category: 'Ø¬Ø¯Ø§Ø±ÙŠØ§Øª Ø·Ø¨ÙŠØ¹Ø©', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2.5 Ù…Ù… | Ù„ÙˆÙ† Ø£Ø³ÙˆØ¯ Ù…Ø·ÙÙŠ', description: 'ØªØ¹Ø¨Ø± Ø¹Ù† Ø§Ù„Ù†Ù…Ø§Ø¡ ÙˆØ§Ù„ØªØ±Ø§Ø¨Ø· Ø¨ØªÙØ§ØµÙŠÙ„ ØºØµÙˆÙ† ÙˆØ£ÙˆØ±Ø§Ù‚ Ø¯Ù‚ÙŠÙ‚Ø© Ù„Ù„ØºØ§ÙŠØ© ØªÙ„Ø§Ø¦Ù… Ø§Ù„Ø±ÙŠØ³Ø¨Ø´Ù† Ø§Ù„Ù…ÙˆØ¯Ø±Ù†.', image_url: './147027646_3634796373304172_1994186618855657670_n.jpg' },
-            { id: 3, title: 'ØªØ¬Ø±ÙŠØ¯ Ù‡Ù†Ø¯Ø³ÙŠ ÙØ§Ø®Ø±', category: 'ØªØ¬Ø±ÙŠØ¯ ÙˆÙ‡Ù†Ø¯Ø³Ø©', price: 3600, original_price: 5600, specifications: 'Ø­Ø¯ÙŠØ¯ 2 Ù…Ù… | Ø£Ø³ÙˆØ¯ Ù…Ø¹ Ù„Ù…Ø³Ø© Ø°Ù‡Ø¨ÙŠØ©', description: 'Ù…Ø²ÙŠØ¬ Ø±Ø§Ù‚Ù Ù…Ù† Ø§Ù„Ù…Ø±Ø¨Ø¹Ø§Øª Ø§Ù„Ù…ØªØ¯Ø§Ø®Ù„Ø© ØªÙ†Ø§Ø³Ø¨ Ø§Ù„Ù…ÙƒØ§ØªØ¨ ÙˆØ§Ù„ØµØ§Ù„ÙˆÙ†Ø§Øª Ø§Ù„ÙƒØ¨Ø±Ù‰ ÙˆØªÙˆØ­ÙŠ Ø¨Ø§Ù„Ø¹Ù…Ù‚ Ø§Ù„Ø¨ØµØ±ÙŠ.', image_url: './147048085_3637165356400607_8500838532714615099_n.jpg' }
-        ];
-
-        let bookingsList = [];
-        let productsList = [];
-
-        // --- Initialize supabaseClient safely AFTER DOM loads ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const setupWarning = document.getElementById('setup-warning');
-            const loginHelperText = document.getElementById('login-helper-text');
             try {
-                supabaseClient = window.supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                isSupabaseConnected = true;
-                if (loginHelperText) loginHelperText.innerText = "Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯ Ø§Ù„Ù…Ø´Ø±Ù ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ù…Ø³Ø¬Ù„Ø© ÙÙŠ supabaseClient Auth.";
-                console.log("Admin supabaseClient client initialized OK!");
+                // window.supabase is exposed by the UMD build CDN script
+                db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+                isConnected = true;
+                banner.className = 'alert-banner alert-success';
+                banner.style.display = 'block';
+                banner.innerHTML = '<i class="fa-solid fa-circle-check"></i> تم الاتصال بقاعدة البيانات السحابية بنجاح! أدخل بيانات حساب Supabase Auth للدخول.';
+                if (hint) hint.innerText = 'أدخل البريد وكلمة المرور المسجلة في Supabase Auth.';
             } catch (err) {
-                console.error("supabaseClient init error:", err);
-                if (setupWarning) {
-                    setupWarning.style.display = 'block';
-                    setupWarning.innerHTML = 'Ø®Ø·Ø£ ÙÙŠ ØªÙ‡ÙŠØ¦Ø© supabaseClient: ' + err.message;
-                }
+                console.error('Supabase init failed:', err);
+                banner.className = 'alert-banner alert-error';
+                banner.style.display = 'block';
+                banner.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> فشل الاتصال: ' + err.message;
             }
+
+            // Setup form listener
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
         });
 
-        // --- 3. Login Handler ---
-        async function handleLoginSubmit(event) {
-            event.preventDefault();
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        async function handleLogin(e) {
+            e.preventDefault();
             const email = document.getElementById('admin-email').value;
-            const password = document.getElementById('admin-password').value;
-            const submitBtn = event.target.querySelector('button[type="submit"]');
-            if (submitBtn) { submitBtn.innerText = 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù‚Ù‚...'; submitBtn.disabled = true; }
+            const pass  = document.getElementById('admin-password').value;
+            const btn   = document.getElementById('login-btn');
+            btn.innerText = 'جاري التحقق...';
+            btn.disabled = true;
 
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if (error) throw error;
-                    adminUser = data.user;
-                    console.log("Logged in to supabaseClient Auth!");
-                    const sw = document.getElementById('setup-warning');
-                    if (sw) sw.style.display = 'none';
-                    initDashboard();
-                } catch (err) {
-                    alert("Ø®Ø·Ø£ ÙÙŠ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„: " + err.message);
-                    if (submitBtn) { submitBtn.innerText = 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…'; submitBtn.disabled = false; }
-                }
-            } else {
-                alert("Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯. ÙŠØ±Ø¬Ù‰ ØªØ­Ø¯ÙŠØ« Ø§Ù„ØµÙØ­Ø© ÙˆØ§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.");
-                if (submitBtn) { submitBtn.innerText = 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„ÙˆØ­Ø© Ø§Ù„ØªØ­ÙƒÙ…'; submitBtn.disabled = false; }
+            if (!isConnected || !db) {
+                alert('لم يتم الاتصال بقاعدة البيانات. يرجى تحديث الصفحة والمحاولة مجدداً.');
+                btn.innerText = 'تسجيل الدخول للوحة التحكم';
+                btn.disabled = false;
+                return;
+            }
+
+            try {
+                const { data, error } = await db.auth.signInWithPassword({ email, password: pass });
+                if (error) throw error;
+
+                console.log('Logged in:', data.user.email);
+                const banner = document.getElementById('status-banner');
+                if (banner) banner.style.display = 'none';
+                showDashboard();
+            } catch (err) {
+                alert('خطأ في تسجيل الدخول: ' + err.message);
+                btn.innerText = 'تسجيل الدخول للوحة التحكم';
+                btn.disabled = false;
             }
         }
 
-        function initDashboard() {
+        function showDashboard() {
             document.getElementById('auth-panel').style.display = 'none';
             document.getElementById('dashboard-panel').style.display = 'block';
             document.getElementById('logout-btn').style.display = 'block';
-            
-            fetchBookings();
-            fetchProducts();
+            loadBookings();
+            loadProducts();
         }
 
         function handleLogout() {
-            if (isSupabaseConnected && supabaseClient) {
-                supabaseClient.auth.signOut();
-            }
+            if (db) db.auth.signOut();
             location.reload();
         }
 
-        // --- 4. Switch Tabs ---
-        function switchAdminTab(paneId, btnElement) {
-            // Deactivate all tabs
-            const panes = document.querySelectorAll('.admin-pane');
-            panes.forEach(pane => pane.classList.remove('active'));
-
-            const buttons = document.querySelectorAll('.admin-tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-
-            // Activate chosen
+        // ============================================================
+        // TABS
+        // ============================================================
+        function switchTab(paneId, btn) {
+            document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(paneId).classList.add('active');
-            btnElement.classList.add('active');
+            btn.classList.add('active');
         }
 
-        // --- 5. Fetch Data Functions ---
-        async function fetchBookings() {
-            const govFilter = document.getElementById('filter-gov').value;
-            const statusFilter = document.getElementById('filter-status').value;
+        // ============================================================
+        // BOOKINGS (CRM)
+        // ============================================================
+        async function loadBookings() {
+            if (!isConnected || !db) return;
 
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    let query = supabaseClient
-                        .from('bookings')
-                        .select('*')
-                        .order('created_at', { ascending: false });
+            const gov    = document.getElementById('filter-gov').value;
+            const status = document.getElementById('filter-status').value;
 
-                    if (govFilter !== 'Ø§Ù„ÙƒÙ„') {
-                        query = query.eq('governorate', govFilter);
-                    }
-                    if (statusFilter !== 'Ø§Ù„ÙƒÙ„') {
-                        query = query.eq('status', statusFilter);
-                    }
+            let q = db.from('bookings').select('*').order('created_at', { ascending: false });
+            if (gov    !== 'all') q = q.eq('governorate', gov);
+            if (status !== 'all') q = q.eq('status', status);
 
-                    const { data, error } = await query;
-                    if (error) throw error;
-                    bookingsList = data || [];
-                } catch (err) {
-                    console.error("Fetch bookings failed:", err);
-                }
-            } else {
-                // Filter mock bookings locally
-                bookingsList = mockBookings.filter(b => {
-                    const matchGov = govFilter === 'Ø§Ù„ÙƒÙ„' || b.governorate === govFilter;
-                    const matchStatus = statusFilter === 'Ø§Ù„ÙƒÙ„' || b.status === statusFilter;
-                    return matchGov && matchStatus;
-                });
-            }
+            const { data, error } = await q;
+            if (error) { console.error(error); return; }
 
+            bookings = data || [];
             renderBookings();
             updateMetrics();
         }
 
-        async function fetchProducts() {
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    const { data, error } = await supabaseClient
-                        .from('products')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                    
-                    if (error) throw error;
-                    productsList = data || [];
-                } catch (err) {
-                    console.error("Fetch products failed:", err);
-                }
-            } else {
-                // Use static list as mock products
-                if (productsList.length === 0) {
-                    productsList = mockProducts;
-                }
-            }
-
-            renderProducts();
-            populateProductPicker();
-        }
-
-        // --- 6. Render Bookings (CRM) ---
         function renderBookings() {
-            const crmTableBody = document.getElementById('crm-table-body');
-            crmTableBody.innerHTML = '';
+            const tbody = document.getElementById('bookings-table');
+            if (!tbody) return;
+            tbody.innerHTML = '';
 
-            if (bookingsList.length === 0) {
-                crmTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª ØªØ·Ø§Ø¨Ù‚ Ø§Ù„ÙÙ„ØªØ±Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ©.</td></tr>';
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:30px;">لا توجد طلبات بهذه الفلترة</td></tr>';
                 return;
             }
 
-            bookingsList.forEach(b => {
-                const dateObj = new Date(b.created_at);
-                const formattedDate = `${dateObj.toLocaleDateString('ar-EG')} - ${dateObj.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'})}`;
-                
+            bookings.forEach(b => {
+                const d = new Date(b.created_at).toLocaleDateString('ar-EG');
                 const tr = document.createElement('tr');
-                tr.id = `booking-row-${b.id}`;
+                tr.id = 'row-' + b.id;
                 tr.innerHTML = `
-                    <td style="font-size:0.8rem; color:var(--text-muted);">${formattedDate}</td>
+                    <td style="font-size:0.8rem;color:var(--text-muted);">${d}</td>
                     <td style="font-weight:700;">${b.customer_name}</td>
-                    <td>
-                        <a href="https://wa.me/20${b.whatsapp.replace(/^0+/, '')}" target="_blank" style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:5px;">
-                            <i class="fa-brands fa-whatsapp"></i> ${b.whatsapp}
-                        </a>
-                    </td>
+                    <td><a href="https://wa.me/20${b.whatsapp.replace(/^0/,'')}" target="_blank" style="color:#25D366;"><i class="fa-brands fa-whatsapp"></i> ${b.whatsapp}</a></td>
                     <td>${b.governorate}</td>
-                    <td style="color:var(--gold-secondary); font-weight:700;">${b.product_title}</td>
+                    <td style="color:var(--gold-secondary);font-weight:700;">${b.product_title}</td>
                     <td>
-                        <select class="status-select" onchange="updateBookingStatus('${b.id}', this.value)">
-                            <option value="Ø¬Ø¯ÙŠØ¯" ${b.status === 'Ø¬Ø¯ÙŠØ¯' ? 'selected' : ''}>Ø¬Ø¯ÙŠØ¯</option>
-                            <option value="Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯" ${b.status === 'Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯' ? 'selected' : ''}>Ù‚ÙŠØ¯ Ø§Ù„ØªØ£ÙƒÙŠØ¯</option>
-                            <option value="ØªÙ… Ø§Ù„Ø´Ø­Ù†" ${b.status === 'ØªÙ… Ø§Ù„Ø´Ø­Ù†' ? 'selected' : ''}>ØªÙ… Ø§Ù„Ø´Ø­Ù†</option>
-                            <option value="ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…" ${b.status === 'ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…' ? 'selected' : ''}>ØªÙ… Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…</option>
-                            <option value="Ù…Ù„ØºÙŠ" ${b.status === 'Ù…Ù„ØºÙŠ' ? 'selected' : ''}>Ù…Ù„ØºÙŠ</option>
+                        <select class="status-select" onchange="updateStatus('${b.id}', this.value)">
+                            ${['جديد','قيد التأكيد','تم الشحن','تم الاستلام','ملغي'].map(s => `<option ${b.status===s?'selected':''}>${s}</option>`).join('')}
                         </select>
                     </td>
-                    <td style="font-size:0.85rem; max-width:180px; color:var(--text-secondary);">${b.notes || '<span style="color:var(--text-muted); font-size:0.75rem;">Ù„Ø§ ÙŠÙˆØ¬Ø¯</span>'}</td>
-                    <td>
-                        <button class="action-btn-danger" onclick="deleteBooking('${b.id}')"><i class="fa-solid fa-trash-can"></i></button>
-                    </td>
+                    <td style="font-size:0.82rem;max-width:160px;">${b.notes||'<span style="color:var(--text-muted)">—</span>'}</td>
+                    <td><button class="action-btn-danger" onclick="deleteBooking('${b.id}')"><i class="fa-solid fa-trash-can"></i></button></td>
                 `;
-                crmTableBody.appendChild(tr);
+                tbody.appendChild(tr);
             });
         }
 
-        // --- 7. Search Bookings locally (Real-time Filter) ---
-        function handleCrmSearch() {
-            const query = document.getElementById('crm-search').value.toLowerCase();
-            const rows = document.querySelectorAll('#crm-table-body tr');
-
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                if (text.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+        function searchTable() {
+            const q = document.getElementById('crm-search').value.toLowerCase();
+            document.querySelectorAll('#bookings-table tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
             });
         }
 
-        // --- 8. Update Booking Status (CRM) ---
-        async function updateBookingStatus(bookingId, newStatus) {
-            console.log(`Updating booking ${bookingId} status to ${newStatus}`);
-
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('bookings')
-                        .update({ status: newStatus })
-                        .eq('id', bookingId);
-                    if (error) throw error;
-                } catch (err) {
-                    alert("ÙØ´Ù„ ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø­Ø§Ù„Ø© ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª: " + err.message);
-                }
-            } else {
-                // Mock update
-                const b = mockBookings.find(x => x.id === bookingId);
-                if (b) b.status = newStatus;
-            }
-
-            fetchBookings(); // Refresh stats and lists
+        async function updateStatus(id, status) {
+            if (!db) return;
+            await db.from('bookings').update({ status }).eq('id', id);
+            loadBookings();
         }
 
-        // --- 9. Delete Booking ---
-        async function deleteBooking(bookingId) {
-            if (!confirm("Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø±ØºØ¨ØªÙƒ ÙÙŠ Ø­Ø°Ù Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ù†Ù‡Ø§Ø¦ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ù†Ø¸Ø§Ù…ØŸ")) return;
-
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('bookings')
-                        .delete()
-                        .eq('id', bookingId);
-                    if (error) throw error;
-                } catch (err) {
-                    alert("ÙØ´Ù„ Ø­Ø°Ù Ø§Ù„Ø·Ù„Ø¨: " + err.message);
-                }
-            } else {
-                // Mock delete
-                mockBookings = mockBookings.filter(x => x.id !== bookingId);
-            }
-
-            fetchBookings();
+        async function deleteBooking(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+            if (!db) return;
+            await db.from('bookings').delete().eq('id', id);
+            loadBookings();
         }
 
-        // --- 10. Update Dashboard Metrics ---
         function updateMetrics() {
-            // We compute values based on bookingsList or overall bookings
-            const total = bookingsList.length;
-            const newOrders = bookingsList.filter(b => b.status === 'Ø¬Ø¯ÙŠØ¯').length;
-            
-            // Expected revenue (all non-cancelled orders * 3600 EGP or dynamic price if stored)
-            // For now let's assume a default MVP price of 3600 EGP for orders
-            const expected = bookingsList.filter(b => b.status !== 'Ù…Ù„ØºÙŠ').length * 3600;
-
-            document.getElementById('stat-total-bookings').innerText = total;
-            document.getElementById('stat-new-bookings').innerText = newOrders;
-            document.getElementById('stat-expected-revenue').innerText = expected.toLocaleString();
+            document.getElementById('stat-total').innerText   = bookings.length;
+            document.getElementById('stat-new').innerText     = bookings.filter(b => b.status === 'جديد').length;
+            const rev = bookings.filter(b => b.status !== 'ملغي').length * 3600;
+            document.getElementById('stat-revenue').innerText = rev.toLocaleString() + ' ج.م';
         }
 
-        // --- 11. Render Products (Catalog) ---
-        function renderProducts() {
-            const managerList = document.getElementById('manager-products-list');
-            managerList.innerHTML = '';
+        function exportCsv() {
+            if (!bookings.length) { alert('لا توجد حجوزات للتصدير'); return; }
+            let csv = '\uFEFFتاريخ الطلب,اسم العميل,الواتساب,المحافظة,اللوحة,الحالة,الملاحظات\n';
+            bookings.forEach(b => {
+                const d = new Date(b.created_at).toLocaleDateString('ar-EG');
+                csv += `"${d}","${b.customer_name}","${b.whatsapp}","${b.governorate}","${b.product_title}","${b.status}","${(b.notes||'').replace(/"/g,'""')}"\n`;
+            });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+            a.download = 'حجوزات_النور.csv';
+            a.click();
+        }
 
-            productsList.forEach(p => {
-                const item = document.createElement('div');
-                item.className = 'manager-product-item';
-                item.innerHTML = `
+        // ============================================================
+        // PRODUCTS (Catalog Manager)
+        // ============================================================
+        async function loadProducts() {
+            if (!isConnected || !db) return;
+            const { data } = await db.from('products').select('*').order('created_at');
+            products = data || [];
+            renderProductsList();
+            fillPicker();
+        }
+
+        function renderProductsList() {
+            const list = document.getElementById('products-list');
+            if (!list) return;
+            list.innerHTML = products.map(p => `
+                <div class="manager-product-item">
                     <div class="manager-product-meta">
-                        <img src="${p.image_url}" alt="" class="manager-product-img">
+                        <img src="${p.image_url}" class="manager-product-img" alt="">
                         <div>
-                            <span style="font-size:0.7rem; color:var(--text-muted);">${p.category}</span>
-                            <div class="manager-product-title">${p.title}</div>
-                            <div class="manager-product-price">${p.price.toLocaleString()} Ø¬.Ù… ${p.original_price ? `<span style="text-decoration:line-through; font-size:0.75rem; color:var(--text-muted); margin-right:5px;">${p.original_price.toLocaleString()} Ø¬.Ù…</span>` : ''}</div>
+                            <div style="font-size:0.7rem;color:var(--text-muted);">${p.category}</div>
+                            <div style="font-weight:700;font-size:0.92rem;">${p.title}</div>
+                            <div style="color:var(--gold-primary);font-size:0.85rem;">${p.price.toLocaleString()} ج.م
+                                ${p.original_price ? `<span style="text-decoration:line-through;color:var(--text-muted);margin-right:6px;">${p.original_price.toLocaleString()}</span>` : ''}
+                            </div>
                         </div>
                     </div>
-                    <button class="edit-btn" onclick="loadProductToForm('${p.id}')">ØªØ¹Ø¯ÙŠÙ„</button>
-                `;
-                managerList.appendChild(item);
-            });
+                    <button class="edit-btn" onclick="loadProduct('${p.id}')">تعديل</button>
+                </div>
+            `).join('');
         }
 
-        // --- 12. Populate product picker select ---
-        function populateProductPicker() {
-            const picker = document.getElementById('prod-select-picker');
-            picker.innerHTML = '<option value="" selected disabled>-- Ø§Ø®ØªØ± Ù„ÙˆØ­Ø© Ù„ØªØ¹Ø¯ÙŠÙ„ Ø³Ø¹Ø±Ù‡Ø§ Ø£Ùˆ Ù…ÙˆØ§ØµÙØ§ØªÙ‡Ø§ --</option>';
-
-            productsList.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.innerText = `${p.title} (${p.price} Ø¬.Ù…)`;
-                picker.appendChild(opt);
-            });
+        function fillPicker() {
+            const picker = document.getElementById('prod-picker');
+            picker.innerHTML = '<option value="">-- اختر لوحة --</option>' +
+                products.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
         }
 
-        // --- 13. Load Product details into editing Form ---
-        function loadProductToForm(productId) {
-            const prod = productsList.find(p => p.id == productId);
-            if (!prod) return;
-
-            document.getElementById('form-action-title').innerText = `ØªØ¹Ø¯ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª: ${prod.title}`;
-            document.getElementById('prod-id').value = prod.id;
-            document.getElementById('prod-title').value = prod.title;
-            document.getElementById('prod-category').value = prod.category;
-            document.getElementById('prod-price').value = prod.price;
-            document.getElementById('prod-orig-price').value = prod.original_price || '';
-            document.getElementById('prod-spec').value = prod.specifications || '';
-            document.getElementById('prod-desc').value = prod.description || '';
-            document.getElementById('prod-img').value = prod.image_url || '';
-            
-            // Set select option picker matching
-            document.getElementById('prod-select-picker').value = prod.id;
+        function loadProduct(id) {
+            const p = products.find(x => x.id == id);
+            if (!p) return;
+            document.getElementById('prod-id').value    = p.id;
+            document.getElementById('prod-title').value = p.title;
+            document.getElementById('prod-cat').value   = p.category;
+            document.getElementById('prod-price').value = p.price;
+            document.getElementById('prod-orig').value  = p.original_price || '';
+            document.getElementById('prod-spec').value  = p.specifications || '';
+            document.getElementById('prod-desc').value  = p.description || '';
+            document.getElementById('prod-img').value   = p.image_url || '';
+            document.getElementById('prod-picker').value = id;
+            document.getElementById('form-title').innerText = 'تعديل: ' + p.title;
         }
 
-        function resetProductForm() {
-            document.getElementById('form-action-title').innerText = "Ø¥Ø¶Ø§ÙØ© Ù„ÙˆØ­Ø© / Ù…Ù†ØªØ¬ Ø¬Ø¯ÙŠØ¯";
-            document.getElementById('product-update-form').reset();
+        function resetForm() {
+            document.getElementById('product-form').reset();
             document.getElementById('prod-id').value = '';
-            document.getElementById('prod-select-picker').value = '';
+            document.getElementById('form-title').innerText = 'إضافة منتج جديد';
         }
 
-        // --- 14. Save Product ---
-        async function handleProductSave(event) {
-            event.preventDefault();
-
-            const saveBtn = document.getElementById('product-save-btn');
-            saveBtn.innerText = 'Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª...';
-            saveBtn.disabled = true;
+        async function saveProduct(e) {
+            e.preventDefault();
+            if (!db) { alert('غير متصل بقاعدة البيانات'); return; }
 
             const id = document.getElementById('prod-id').value;
-            const title = document.getElementById('prod-title').value;
-            const category = document.getElementById('prod-category').value;
-            const price = parseFloat(document.getElementById('prod-price').value);
-            const original_price = parseFloat(document.getElementById('prod-orig-price').value) || null;
-            const specifications = document.getElementById('prod-spec').value;
-            const description = document.getElementById('prod-desc').value;
-            const image_url = document.getElementById('prod-img').value;
-
             const payload = {
-                title,
-                category,
-                price,
-                original_price,
-                specifications,
-                description,
-                image_url
+                title:         document.getElementById('prod-title').value,
+                category:      document.getElementById('prod-cat').value,
+                price:         parseFloat(document.getElementById('prod-price').value),
+                original_price: parseFloat(document.getElementById('prod-orig').value) || null,
+                specifications: document.getElementById('prod-spec').value,
+                description:   document.getElementById('prod-desc').value,
+                image_url:     document.getElementById('prod-img').value
             };
 
-            if (isSupabaseConnected && supabaseClient) {
-                try {
-                    if (id) {
-                        // UPDATE existing
-                        const { error } = await supabaseClient
-                            .from('products')
-                            .update(payload)
-                            .eq('id', id);
-                        if (error) throw error;
-                    } else {
-                        // INSERT new
-                        const { error } = await supabaseClient
-                            .from('products')
-                            .insert([payload]);
-                        if (error) throw error;
-                    }
-                    console.log("Catalog update synced with supabaseClient PostgreSQL database.");
-                } catch (err) {
-                    alert("ÙØ´Ù„ Ø­ÙØ¸ Ø§Ù„Ù…Ù†ØªØ¬: " + err.message);
-                }
+            let err;
+            if (id) {
+                ({ error: err } = await db.from('products').update(payload).eq('id', id));
             } else {
-                // Mock Save
-                if (id) {
-                    // Update mock
-                    const prodIdx = mockProducts.findIndex(p => p.id == id);
-                    if (prodIdx !== -1) {
-                        mockProducts[prodIdx] = { ...mockProducts[prodIdx], ...payload };
-                    }
-                } else {
-                    // Add new mock
-                    const newId = mockProducts.length + 1;
-                    mockProducts.push({ id: newId, ...payload });
-                }
-                productsList = mockProducts;
+                ({ error: err } = await db.from('products').insert([payload]));
             }
 
-            // Reset and refresh
-            resetProductForm();
-            fetchProducts();
-            
-            saveBtn.innerText = 'Ø­ÙØ¸ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª';
-            saveBtn.disabled = false;
+            if (err) { alert('خطأ في الحفظ: ' + err.message); return; }
+            resetForm();
+            loadProducts();
         }
 
-        // --- 15. Export to CSV (Excel compatible) ---
-        function exportToCsv() {
-            if (bookingsList.length === 0) {
-                alert("Ù„Ø§ ØªÙˆØ¬Ø¯ Ø­Ø¬ÙˆØ²Ø§Øª Ù„ØªØµØ¯ÙŠØ±Ù‡Ø§ Ø­Ø§Ù„ÙŠØ§Ù‹.");
-                return;
-            }
+        // ============================================================
+        // NAVIGATION
+        // ============================================================
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            document.getElementById('nav-menu').classList.toggle('active');
+        });
 
-            // Excel compatible UTF-8 BOM
-            let csvContent = "\uFEFF";
-            
-            // Header Row
-            csvContent += "ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨,Ø§Ø³Ù… Ø§Ù„Ø¹Ù…ÙŠÙ„,Ø±Ù‚Ù… Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨,Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©,Ø§Ù„Ù…Ù†ØªØ¬ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨,Ø§Ù„Ø­Ø§Ù„Ø©,Ø§Ù„Ù…Ù„Ø§Ø­Ø¸Ø§Øª\n";
-
-            bookingsList.forEach(b => {
-                const dateObj = new Date(b.created_at);
-                const dateStr = dateObj.toLocaleDateString('ar-EG');
-                
-                // Escape values with quotes
-                const row = [
-                    `"${dateStr}"`,
-                    `"${b.customer_name}"`,
-                    `"${b.whatsapp}"`,
-                    `"${b.governorate}"`,
-                    `"${b.product_title}"`,
-                    `"${b.status}"`,
-                    `"${(b.notes || '').replace(/"/g, '""')}"`
-                ];
-                
-                csvContent += row.join(",") + "\n";
-            });
-
-            // Trigger Download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `Ø­Ø¬ÙˆØ²Ø§Øª_Ø§Ù„Ù†ÙˆØ±_Ù„Ù„Ø­Ø¯ÙŠØ¯_${new Date().toLocaleDateString('ar-EG').replace(/\//g, '-')}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        // Toggle mobile nav menu
-        const menuToggle = document.getElementById('menu-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        window.addEventListener('scroll', () => {
+            const h = document.getElementById('main-header');
+            h.classList.toggle('scrolled', window.scrollY > 50);
         });
     </script>
 </body>
