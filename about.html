@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تعرف على النور للحديد والـديكـور. قصة شغف وخبرة في تصنيع وتشكيل المعادن والديكورات الليزر الفاخرة لعملاء الـ A-Class في مصر.">
+    <title>من نحن | النور للحديد</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Unified Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--gold-secondary);
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .about-image {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
+            background-color: var(--bg-card);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Quality Process Grid */
+        .process-section {
+            padding: 80px 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .process-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 35px 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .process-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+            color: #000;
+            font-weight: 900;
+            font-size: 1.2rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .process-icon {
+            font-size: 2.2rem;
+            color: var(--gold-primary);
+            margin: 15px 0 20px 0;
+        }
+
+        .process-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .process-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .about-text {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">النور للحديد والـديكـور</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html" class="active">من نحن</a></li>
+                <li><a href="products.html">المنتجات</a></li>
+                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Title Section -->
+        <section class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">قصة الشغف والصلب</span>
+                    <h2 class="section-title">فخامة تُولد من رحم المعادن</h2>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h3>من نحن؟</h3>
+                        <p>تأسس براند <strong>"النور للحديد والـديكـور"</strong> برؤية طموحة تهدف إلى إدخال الفخامة والجمال المعماري الحديث للمنازل المصرية الراقية بالاعتماد على التشكيل الفني والقص الدقيق للحديد باستخدام تكنولوجيا الليزر المتقدمة.</p>
+                        <p>نحن نؤمن أن الديكور الجداري ليس مجرد قطعة زينة، بل هو تعبير فني عن هيبة ورقي أصحاب المنزل. لذلك، فإننا نولي كل تفصيلة في منتجاتنا عناية استثنائية، بدءاً من سماكة الفولاذ الكربوني المقاوم للصدمات، مروراً بالمعالجة ضد الرطوبة وعوامل التآكل، ووصولاً للتشطيب الفاخر بالأفران الكهربائية الحرارية.</p>
+                    </div>
+                    <div class="about-image">
+                        <!-- Use one of the mandala images for about page illustration -->
+                        <img src="./150581359_3657800951003714_5774651280782390148_n.jpg" alt="صناعة لوحات النور للحديد الفاخرة">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="process-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">معايير الجودة لدينا</span>
+                    <h2 class="section-title">كيف نصنع الفخامة؟</h2>
+                </div>
+
+                <div class="process-grid">
+                    <!-- Step 1 -->
+                    <div class="process-card">
+                        <div class="process-number">1</div>
+                        <div class="process-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+                        <h4 class="process-title">التصميم الفردي والتعديل</h4>
+                        <p class="process-desc">نقبل الطلبات الخاصة بمقاسات أو تعديلات مخصصة لتتناسب اللوحة بالمليمتر مع مساحة جدارك ونوع الديكور المحيط بها.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="process-card">
+                        <div class="process-number">2</div>
+                        <div class="process-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h4 class="process-title">القص بالليزر الفائق</h4>
+                        <p class="process-desc">نستخدم ماكينات Fiber Laser ذات دقة متناهية لضمان نعومة الحواف والتفاصيل الدقيقة والمنحنيات المعقدة بدون أي عيوب.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="process-card">
+                        <div class="process-number">3</div>
+                        <div class="process-icon"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+                        <h4 class="process-title">الدهان الحراري الإلكتروستاتيكي</h4>
+                        <p class="process-desc">تتم معالجة القطع كيميائياً وطلاؤها حرارياً في فرن خاص ليكون الطلاء متماسكاً ومقاوماً للرطوبة والخدش والصدأ مدى الحياة.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-card">
+                        <div class="process-number">4</div>
+                        <div class="process-icon"><i class="fa-solid fa-box"></i></div>
+                        <h4 class="process-title">التغليف الخشبي المتين</h4>
+                        <p class="process-desc">نقوم بتصنيع صندوق خشبي مخصص لكل قطعة مبطن بالكامل بالإسفنج والفوم لحماية الديكور وضمان وصوله إليك بحالة المصنع.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20الديكورات%20المعدنية%20المعروضة" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Elnour for Steel</div>
+            <p class="footer-desc">تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+            
+            <div class="footer-contacts">
+                <a href="https://wa.me/201114323218" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01114323218
+                </a>
+                <a href="https://wa.me/201118182424" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01118182424
+                </a>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Responsive Navigation JS -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

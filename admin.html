@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم والـ CRM | النور للحديد</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Unified Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Admin specific styles */
+        .admin-main {
+            padding: 130px 0 80px 0;
+            min-height: 85vh;
+        }
+
+        /* Auth Panel styling */
+        .auth-container {
+            max-width: 450px;
+            margin: 60px auto;
+            position: relative;
+        }
+
+        /* Dashboard Overview Grid */
+        .admin-dashboard {
+            display: none; /* Shown after auth */
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold-light), var(--gold-primary));
+        }
+
+        .metric-info {
+            text-align: right;
+        }
+
+        .metric-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .metric-icon {
+            font-size: 2.2rem;
+            color: rgba(212, 175, 55, 0.2);
+        }
+
+        /* Tabs for Admin View */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .admin-tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: var(--font-arabic);
+            position: relative;
+        }
+
+        .admin-tab-btn.active {
+            color: var(--gold-primary);
+        }
+
+        .admin-tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--gold-primary);
+        }
+
+        .admin-pane {
+            display: none;
+        }
+
+        .admin-pane.active {
+            display: block;
+        }
+
+        /* CRM Table styling */
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-input-wrapper i {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input-wrapper input {
+            padding-right: 45px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--gold-secondary);
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-new { background-color: rgba(0, 123, 255, 0.15); color: #007bff; border: 1px solid rgba(0, 123, 255, 0.3); }
+        .status-pending { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3); }
+        .status-shipped { background-color: rgba(23, 162, 184, 0.15); color: #17a2b8; border: 1px solid rgba(23, 162, 184, 0.3); }
+        .status-delivered { background-color: rgba(40, 167, 69, 0.15); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.3); }
+        .status-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3); }
+
+        .status-select {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-family: var(--font-arabic);
+            font-size: 0.85rem;
+        }
+
+        .action-btn-danger {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .action-btn-danger:hover {
+            color: #bd2130;
+            transform: scale(1.1);
+        }
+
+        /* Products Management Styles */
+        .products-manager-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .manager-form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .manager-form-title {
+            font-size: 1.3rem;
+            color: var(--gold-secondary);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .manager-list-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .manager-product-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .manager-product-item:last-child {
+            border-bottom: none;
+        }
+
+        .manager-product-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .manager-product-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .manager-product-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .manager-product-price {
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+        }
+
+        .edit-btn {
+            background: none;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .edit-btn:hover {
+            background-color: var(--gold-primary);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">لوحة التحكم والـ CRM</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="products.html">المنتجات</a></li>
+                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="nav-cta-btn" id="logout-btn" style="display: none;" onclick="handleLogout()">تسجيل الخروج</button>
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="container">
+            
+            <!-- Connection Setup Warning Overlay -->
+            <div id="setup-warning" class="status-banner" style="display: none; border-color: #dc3545; color: #dc3545; background-color: rgba(220,53,69,0.05);"></div>
+
+            <!-- --- SECTION 1: LOGIN PANEL --- -->
+            <div id="auth-panel" class="auth-container">
+                <div class="form-card">
+                    <h3 class="form-title"><i class="fa-solid fa-lock gold-text"></i> تسجيل دخول المشرف</h3>
+                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;" id="login-helper-text"></p>
+                    
+                    <form onsubmit="handleLoginSubmit(event)">
+                        <div class="form-group">
+                            <label for="admin-email" class="form-label">البريد الإلكتروني للمشرف</label>
+                            <input type="email" id="admin-email" class="form-input" placeholder="admin@elnour.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-password" class="form-label">كلمة المرور</label>
+                            <input type="password" id="admin-password" class="form-input" placeholder="••••••••" required>
+                        </div>
+
+                        <button type="submit" class="btn-submit" style="margin-top: 10px;">تسجيل الدخول للوحة التحكم</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- --- SECTION 2: CRM DASHBOARD (Hidden by default) --- -->
+            <div id="dashboard-panel" class="admin-dashboard">
+                
+                <!-- Overview Stats Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <div class="metric-title">إجمالي الحجوزات</div>
+                            <div class="metric-value" id="stat-total-bookings">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-receipt"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <div class="metric-title">الطلبات الجديدة (المعلقة)</div>
+                            <div class="metric-value" id="stat-new-bookings" style="color: #ffc107;">0</div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-clock"></i></div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <div class="metric-title">الإيرادات المتوقعة</div>
+                            <div class="metric-value" id="stat-expected-revenue" style="color: var(--gold-primary);">0 <span style="font-size:0.95rem;">ج.م</span></div>
+                        </div>
+                        <div class="metric-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                </div>
+
+                <!-- Admin Tabs for choosing between CRM (Bookings) and Catalog (Prices) -->
+                <div class="admin-tabs">
+                    <button class="admin-tab-btn active" onclick="switchAdminTab('crm-pane', this)">إدارة طلبات العملاء (CRM)</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('catalog-pane', this)">تعديل الأسعار والمنتجات</button>
+                </div>
+
+                <!-- CRM PANE (Bookings Manager) -->
+                <div id="crm-pane" class="admin-pane active">
+                    <div class="table-controls">
+                        <!-- Search Box -->
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="crm-search" class="form-input" placeholder="ابحث باسم العميل، الواتساب، أو اللوحة..." oninput="handleCrmSearch()">
+                        </div>
+                        
+                        <!-- Filters -->
+                        <div class="filter-controls">
+                            <select id="filter-gov" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
+                                <option value="الكل">كل المحافظات</option>
+                                <option value="القاهرة">القاهرة</option>
+                                <option value="الجيزة">الجيزة</option>
+                                <option value="الإسكندرية">الإسكندرية</option>
+                                <option value="القليوبية">القليوبية</option>
+                                <option value="أخرى">محافظة أخرى</option>
+                            </select>
+
+                            <select id="filter-status" class="form-input" style="padding: 10px 15px; width: 140px; font-size: 0.9rem;" onchange="fetchBookings()">
+                                <option value="الكل">كل الحالات</option>
+                                <option value="جديد">جديد</option>
+                                <option value="قيد التأكيد">قيد التأكيد</option>
+                                <option value="تم الشحن">تم الشحن</option>
+                                <option value="تم الاستلام">تم الاستلام</option>
+                                <option value="ملغي">ملغي</option>
+                            </select>
+
+                            <button class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem;" onclick="exportToCsv()"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
+                        </div>
+                    </div>
+
+                    <!-- Bookings CRM Table -->
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>تاريخ الطلب</th>
+                                    <th>اسم العميل</th>
+                                    <th>رقم الواتساب</th>
+                                    <th>المحافظة</th>
+                                    <th>التصميم المطلوبة</th>
+                                    <th>حالة الطلب</th>
+                                    <th>ملاحظات</th>
+                                    <th>حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crm-table-body">
+                                <!-- Bookings list loads here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CATALOG PANE (Price and specs updater) -->
+                <div id="catalog-pane" class="admin-pane">
+                    <div class="products-manager-grid">
+                        
+                        <!-- Form to Edit/Add Product -->
+                        <div class="manager-form-card">
+                            <h4 class="manager-form-title" id="form-action-title">تحديث بيانات منتج</h4>
+                            
+                            <form id="product-update-form" onsubmit="handleProductSave(event)">
+                                <input type="hidden" id="prod-id" value="">
+                                
+                                <div class="form-group" id="product-select-group">
+                                    <label class="form-label" for="prod-select-picker">اختر منتجاً لتعديله</label>
+                                    <select id="prod-select-picker" class="form-input" onchange="loadProductToForm(this.value)">
+                                        <option value="" selected disabled>-- اختر لوحة لتعديل سعرها أو مواصفاتها --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="prod-title">اسم اللوحة / المنتج <span style="color:var(--gold-primary);">*</span></label>
+                                    <input type="text" id="prod-title" class="form-input" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="prod-category">القسم الرئيسي <span style="color:var(--gold-primary);">*</span></label>
+                                    <select id="prod-category" class="form-input" required>
+                                        <option value="ماندالا">ماندالا</option>
+                                        <option value="ساعات حائط">ساعات حائط</option>
+                                        <option value="جداريات طبيعة">جداريات طبيعة</option>
+                                        <option value="تجريد وهندسة">تجريد وهندسة</option>
+                                        <option value="خط عربي وإسلامي">خط عربي وإسلامي</option>
+                                    </select>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <div class="form-group">
+                                        <label class="form-label" for="prod-price">سعر العرض (ج.م) <span style="color:var(--gold-primary);">*</span></label>
+                                        <input type="number" id="prod-price" class="form-input" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="prod-orig-price">السعر الأصلي (ج.م)</label>
+                                        <input type="number" id="prod-orig-price" class="form-input">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="prod-spec">المواصفات المختصرة</label>
+                                    <input type="text" id="prod-spec" class="form-input" placeholder="مثال: حديد 2.5 مم | لون أسود مطفي">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="prod-desc">الوصف التفصيلي للمنتج</label>
+                                    <textarea id="prod-desc" class="form-input" rows="3" placeholder="تفاصيل دقة الليزر وتأثيره على الحائط..."></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="prod-img">رابط صورة المنتج (محلية أو إنترنت)</label>
+                                    <input type="text" id="prod-img" class="form-input" placeholder="مثال: ./161841924_3741716299278845_3895684170105190938_n.jpg">
+                                </div>
+
+                                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                                    <button type="submit" class="btn-submit" id="product-save-btn" style="flex-grow: 1;">حفظ وتحديث البيانات</button>
+                                    <button type="button" class="btn-secondary" style="padding: 10px 20px;" onclick="resetProductForm()">جديد / إلغاء</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Grid/List of current products -->
+                        <div class="manager-list-card">
+                            <h4 style="font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 20px; border-bottom:1px solid var(--border-color); padding-bottom: 10px;">قائمة الأسعار والمنتجات الحالية</h4>
+                            <div id="manager-products-list">
+                                <!-- Products list will render here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Supabase Integration & CRM Code -->
+    <script>
+        // --- 1. Supabase Configurations (Paste your keys here) ---
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+
+        let supabase = null;
+        let isSupabaseConnected = false;
+        let adminUser = null;
+
+        // --- 2. Mock Data for Demo/Preview Mode (So it runs immediately without Supabase setup) ---
+        let mockBookings = [
+            { id: 'b1', created_at: new Date(Date.now() - 3600000).toISOString(), customer_name: 'أحمد محمود القاضي', whatsapp: '01012345678', governorate: 'القاهرة', product_title: 'لوحة الماندالا الإمبراطورية', notes: 'مقاس 100x100 سم بلون ذهبي مطفي لو أمكن', status: 'جديد' },
+            { id: 'b2', created_at: new Date(Date.now() - 86400000).toISOString(), customer_name: 'المهندس شريف عبد العزيز', whatsapp: '01234567890', governorate: 'الجيزة', product_title: 'شجرة الحياة العصرية', notes: 'الشحن عاجل لمدخل فيلا', status: 'تم الشحن' },
+            { id: 'b3', created_at: new Date(Date.now() - 172800000).toISOString(), customer_name: 'د. نادية الشافعي', whatsapp: '01118182424', governorate: 'الإسكندرية', product_title: 'ساعة فلكية ذهبية فاخرة', notes: '', status: 'تم الاستلام' },
+            { id: 'b4', created_at: new Date(Date.now() - 259200000).toISOString(), customer_name: 'الأستاذ كريم الجبالي', whatsapp: '01512345678', governorate: 'القليوبية', product_title: 'رسم الخط العربي الفاخر', notes: 'تعديل آية الكرسي كاملة', status: 'جديد' }
+        ];
+
+        let mockProducts = [
+            { id: 1, title: 'لوحة الماندالا الإمبراطورية', category: 'ماندالا', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تصميم هندسي متماثل يعكس الفلسفة الهندية والجمال المعماري العريق.', image_url: './161841924_3741716299278845_3895684170105190938_n.jpg' },
+            { id: 2, title: 'شجرة الحياة العصرية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تعبر عن النماء والترابط بتفاصيل غصون وأوراق دقيقة للغاية تلائم الريسبشن المودرن.', image_url: './147027646_3634796373304172_1994186618855657670_n.jpg' },
+            { id: 3, title: 'تجريد هندسي فاخر', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | أسود مع لمسة ذهبية', description: 'مزيج راقٍ من المربعات المتداخلة تناسب المكاتب والصالونات الكبرى وتوحي بالعمق البصري.', image_url: './147048085_3637165356400607_8500838532714615099_n.jpg' }
+        ];
+
+        let bookingsList = [];
+        let productsList = [];
+
+        // Initialize Supabase Connection
+        const setupWarning = document.getElementById('setup-warning');
+        const loginHelperText = document.getElementById('login-helper-text');
+
+        if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
+            try {
+                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                isSupabaseConnected = true;
+                loginHelperText.innerText = "أدخل بيانات حساب Supabase Auth الخاص بك.";
+            } catch (err) {
+                console.error("Supabase fail:", err);
+                setupWarning.style.display = 'block';
+                setupWarning.innerHTML = 'خطأ في تهيئة مكتبة Supabase. تم تشغيل وضع المعاينة التجريبي تلقائياً.';
+            }
+        } else {
+            // Fallback mode info
+            setupWarning.style.display = 'block';
+            setupWarning.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>وضع المعاينة التجريبي نشط:</strong> لم يتم ربط Supabase بعد. يمكنك تسجيل الدخول باستخدام البريد الإلكتروني: <code style="color:var(--gold-primary);">admin@elnour.com</code> وكلمة المرور: <code style="color:var(--gold-primary);">admin</code> لاستكشاف لوحة التحكم و CRM فورا.';
+            loginHelperText.innerHTML = "استخدم البريد الإلكتروني: <code>admin@elnour.com</code> وكلمة المرور: <code>admin</code>";
+        }
+
+        // --- 3. Login Handlers ---
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (isSupabaseConnected && supabase) {
+                // Real authentication via Supabase Auth
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+                    if (error) throw error;
+                    
+                    adminUser = data.user;
+                    console.log("Logged in successfully to Supabase Auth!");
+                    setupWarning.style.display = 'none';
+                    initDashboard();
+                } catch (err) {
+                    alert("خطأ في تسجيل الدخول: " + err.message);
+                }
+            } else {
+                // Demo / Mock Login
+                if (email === 'admin@elnour.com' && password === 'admin') {
+                    console.log("Logged into Demo Mode!");
+                    bookingsList = mockBookings;
+                    productsList = mockProducts;
+                    initDashboard();
+                } else {
+                    alert("البريد الإلكتروني أو كلمة المرور غير صحيحة لوضع المعاينة (استخدم admin@elnour.com و admin)");
+                }
+            }
+        }
+
+        function initDashboard() {
+            document.getElementById('auth-panel').style.display = 'none';
+            document.getElementById('dashboard-panel').style.display = 'block';
+            document.getElementById('logout-btn').style.display = 'block';
+            
+            fetchBookings();
+            fetchProducts();
+        }
+
+        function handleLogout() {
+            if (isSupabaseConnected && supabase) {
+                supabase.auth.signOut();
+            }
+            location.reload();
+        }
+
+        // --- 4. Switch Tabs ---
+        function switchAdminTab(paneId, btnElement) {
+            // Deactivate all tabs
+            const panes = document.querySelectorAll('.admin-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.admin-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Activate chosen
+            document.getElementById(paneId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // --- 5. Fetch Data Functions ---
+        async function fetchBookings() {
+            const govFilter = document.getElementById('filter-gov').value;
+            const statusFilter = document.getElementById('filter-status').value;
+
+            if (isSupabaseConnected && supabase) {
+                try {
+                    let query = supabase
+                        .from('bookings')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (govFilter !== 'الكل') {
+                        query = query.eq('governorate', govFilter);
+                    }
+                    if (statusFilter !== 'الكل') {
+                        query = query.eq('status', statusFilter);
+                    }
+
+                    const { data, error } = await query;
+                    if (error) throw error;
+                    bookingsList = data || [];
+                } catch (err) {
+                    console.error("Fetch bookings failed:", err);
+                }
+            } else {
+                // Filter mock bookings locally
+                bookingsList = mockBookings.filter(b => {
+                    const matchGov = govFilter === 'الكل' || b.governorate === govFilter;
+                    const matchStatus = statusFilter === 'الكل' || b.status === statusFilter;
+                    return matchGov && matchStatus;
+                });
+            }
+
+            renderBookings();
+            updateMetrics();
+        }
+
+        async function fetchProducts() {
+            if (isSupabaseConnected && supabase) {
+                try {
+                    const { data, error } = await supabase
+                        .from('products')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    productsList = data || [];
+                } catch (err) {
+                    console.error("Fetch products failed:", err);
+                }
+            } else {
+                // Use static list as mock products
+                if (productsList.length === 0) {
+                    productsList = mockProducts;
+                }
+            }
+
+            renderProducts();
+            populateProductPicker();
+        }
+
+        // --- 6. Render Bookings (CRM) ---
+        function renderBookings() {
+            const crmTableBody = document.getElementById('crm-table-body');
+            crmTableBody.innerHTML = '';
+
+            if (bookingsList.length === 0) {
+                crmTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">لا توجد طلبات تطابق الفلترة الحالية.</td></tr>';
+                return;
+            }
+
+            bookingsList.forEach(b => {
+                const dateObj = new Date(b.created_at);
+                const formattedDate = `${dateObj.toLocaleDateString('ar-EG')} - ${dateObj.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'})}`;
+                
+                const tr = document.createElement('tr');
+                tr.id = `booking-row-${b.id}`;
+                tr.innerHTML = `
+                    <td style="font-size:0.8rem; color:var(--text-muted);">${formattedDate}</td>
+                    <td style="font-weight:700;">${b.customer_name}</td>
+                    <td>
+                        <a href="https://wa.me/20${b.whatsapp.replace(/^0+/, '')}" target="_blank" style="color:#25D366; text-decoration:none; display:flex; align-items:center; gap:5px;">
+                            <i class="fa-brands fa-whatsapp"></i> ${b.whatsapp}
+                        </a>
+                    </td>
+                    <td>${b.governorate}</td>
+                    <td style="color:var(--gold-secondary); font-weight:700;">${b.product_title}</td>
+                    <td>
+                        <select class="status-select" onchange="updateBookingStatus('${b.id}', this.value)">
+                            <option value="جديد" ${b.status === 'جديد' ? 'selected' : ''}>جديد</option>
+                            <option value="قيد التأكيد" ${b.status === 'قيد التأكيد' ? 'selected' : ''}>قيد التأكيد</option>
+                            <option value="تم الشحن" ${b.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
+                            <option value="تم الاستلام" ${b.status === 'تم الاستلام' ? 'selected' : ''}>تم الاستلام</option>
+                            <option value="ملغي" ${b.status === 'ملغي' ? 'selected' : ''}>ملغي</option>
+                        </select>
+                    </td>
+                    <td style="font-size:0.85rem; max-width:180px; color:var(--text-secondary);">${b.notes || '<span style="color:var(--text-muted); font-size:0.75rem;">لا يوجد</span>'}</td>
+                    <td>
+                        <button class="action-btn-danger" onclick="deleteBooking('${b.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                `;
+                crmTableBody.appendChild(tr);
+            });
+        }
+
+        // --- 7. Search Bookings locally (Real-time Filter) ---
+        function handleCrmSearch() {
+            const query = document.getElementById('crm-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#crm-table-body tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 8. Update Booking Status (CRM) ---
+        async function updateBookingStatus(bookingId, newStatus) {
+            console.log(`Updating booking ${bookingId} status to ${newStatus}`);
+
+            if (isSupabaseConnected && supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('bookings')
+                        .update({ status: newStatus })
+                        .eq('id', bookingId);
+                    if (error) throw error;
+                } catch (err) {
+                    alert("فشل تحديث الحالة في قاعدة البيانات: " + err.message);
+                }
+            } else {
+                // Mock update
+                const b = mockBookings.find(x => x.id === bookingId);
+                if (b) b.status = newStatus;
+            }
+
+            fetchBookings(); // Refresh stats and lists
+        }
+
+        // --- 9. Delete Booking ---
+        async function deleteBooking(bookingId) {
+            if (!confirm("هل أنت متأكد من رغبتك في حذف هذا الطلب نهائياً من النظام؟")) return;
+
+            if (isSupabaseConnected && supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('bookings')
+                        .delete()
+                        .eq('id', bookingId);
+                    if (error) throw error;
+                } catch (err) {
+                    alert("فشل حذف الطلب: " + err.message);
+                }
+            } else {
+                // Mock delete
+                mockBookings = mockBookings.filter(x => x.id !== bookingId);
+            }
+
+            fetchBookings();
+        }
+
+        // --- 10. Update Dashboard Metrics ---
+        function updateMetrics() {
+            // We compute values based on bookingsList or overall bookings
+            const total = bookingsList.length;
+            const newOrders = bookingsList.filter(b => b.status === 'جديد').length;
+            
+            // Expected revenue (all non-cancelled orders * 3600 EGP or dynamic price if stored)
+            // For now let's assume a default MVP price of 3600 EGP for orders
+            const expected = bookingsList.filter(b => b.status !== 'ملغي').length * 3600;
+
+            document.getElementById('stat-total-bookings').innerText = total;
+            document.getElementById('stat-new-bookings').innerText = newOrders;
+            document.getElementById('stat-expected-revenue').innerText = expected.toLocaleString();
+        }
+
+        // --- 11. Render Products (Catalog) ---
+        function renderProducts() {
+            const managerList = document.getElementById('manager-products-list');
+            managerList.innerHTML = '';
+
+            productsList.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'manager-product-item';
+                item.innerHTML = `
+                    <div class="manager-product-meta">
+                        <img src="${p.image_url}" alt="" class="manager-product-img">
+                        <div>
+                            <span style="font-size:0.7rem; color:var(--text-muted);">${p.category}</span>
+                            <div class="manager-product-title">${p.title}</div>
+                            <div class="manager-product-price">${p.price.toLocaleString()} ج.م ${p.original_price ? `<span style="text-decoration:line-through; font-size:0.75rem; color:var(--text-muted); margin-right:5px;">${p.original_price.toLocaleString()} ج.م</span>` : ''}</div>
+                        </div>
+                    </div>
+                    <button class="edit-btn" onclick="loadProductToForm('${p.id}')">تعديل</button>
+                `;
+                managerList.appendChild(item);
+            });
+        }
+
+        // --- 12. Populate product picker select ---
+        function populateProductPicker() {
+            const picker = document.getElementById('prod-select-picker');
+            picker.innerHTML = '<option value="" selected disabled>-- اختر لوحة لتعديل سعرها أو مواصفاتها --</option>';
+
+            productsList.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.innerText = `${p.title} (${p.price} ج.م)`;
+                picker.appendChild(opt);
+            });
+        }
+
+        // --- 13. Load Product details into editing Form ---
+        function loadProductToForm(productId) {
+            const prod = productsList.find(p => p.id == productId);
+            if (!prod) return;
+
+            document.getElementById('form-action-title').innerText = `تعديل بيانات: ${prod.title}`;
+            document.getElementById('prod-id').value = prod.id;
+            document.getElementById('prod-title').value = prod.title;
+            document.getElementById('prod-category').value = prod.category;
+            document.getElementById('prod-price').value = prod.price;
+            document.getElementById('prod-orig-price').value = prod.original_price || '';
+            document.getElementById('prod-spec').value = prod.specifications || '';
+            document.getElementById('prod-desc').value = prod.description || '';
+            document.getElementById('prod-img').value = prod.image_url || '';
+            
+            // Set select option picker matching
+            document.getElementById('prod-select-picker').value = prod.id;
+        }
+
+        function resetProductForm() {
+            document.getElementById('form-action-title').innerText = "إضافة لوحة / منتج جديد";
+            document.getElementById('product-update-form').reset();
+            document.getElementById('prod-id').value = '';
+            document.getElementById('prod-select-picker').value = '';
+        }
+
+        // --- 14. Save Product ---
+        async function handleProductSave(event) {
+            event.preventDefault();
+
+            const saveBtn = document.getElementById('product-save-btn');
+            saveBtn.innerText = 'جاري الحفظ وتحديث قاعدة البيانات...';
+            saveBtn.disabled = true;
+
+            const id = document.getElementById('prod-id').value;
+            const title = document.getElementById('prod-title').value;
+            const category = document.getElementById('prod-category').value;
+            const price = parseFloat(document.getElementById('prod-price').value);
+            const original_price = parseFloat(document.getElementById('prod-orig-price').value) || null;
+            const specifications = document.getElementById('prod-spec').value;
+            const description = document.getElementById('prod-desc').value;
+            const image_url = document.getElementById('prod-img').value;
+
+            const payload = {
+                title,
+                category,
+                price,
+                original_price,
+                specifications,
+                description,
+                image_url
+            };
+
+            if (isSupabaseConnected && supabase) {
+                try {
+                    if (id) {
+                        // UPDATE existing
+                        const { error } = await supabase
+                            .from('products')
+                            .update(payload)
+                            .eq('id', id);
+                        if (error) throw error;
+                    } else {
+                        // INSERT new
+                        const { error } = await supabase
+                            .from('products')
+                            .insert([payload]);
+                        if (error) throw error;
+                    }
+                    console.log("Catalog update synced with Supabase PostgreSQL database.");
+                } catch (err) {
+                    alert("فشل حفظ المنتج: " + err.message);
+                }
+            } else {
+                // Mock Save
+                if (id) {
+                    // Update mock
+                    const prodIdx = mockProducts.findIndex(p => p.id == id);
+                    if (prodIdx !== -1) {
+                        mockProducts[prodIdx] = { ...mockProducts[prodIdx], ...payload };
+                    }
+                } else {
+                    // Add new mock
+                    const newId = mockProducts.length + 1;
+                    mockProducts.push({ id: newId, ...payload });
+                }
+                productsList = mockProducts;
+            }
+
+            // Reset and refresh
+            resetProductForm();
+            fetchProducts();
+            
+            saveBtn.innerText = 'حفظ وتحديث البيانات';
+            saveBtn.disabled = false;
+        }
+
+        // --- 15. Export to CSV (Excel compatible) ---
+        function exportToCsv() {
+            if (bookingsList.length === 0) {
+                alert("لا توجد حجوزات لتصديرها حالياً.");
+                return;
+            }
+
+            // Excel compatible UTF-8 BOM
+            let csvContent = "\uFEFF";
+            
+            // Header Row
+            csvContent += "تاريخ الطلب,اسم العميل,رقم الواتساب,المحافظة,المنتج المطلوب,الحالة,الملاحظات\n";
+
+            bookingsList.forEach(b => {
+                const dateObj = new Date(b.created_at);
+                const dateStr = dateObj.toLocaleDateString('ar-EG');
+                
+                // Escape values with quotes
+                const row = [
+                    `"${dateStr}"`,
+                    `"${b.customer_name}"`,
+                    `"${b.whatsapp}"`,
+                    `"${b.governorate}"`,
+                    `"${b.product_title}"`,
+                    `"${b.status}"`,
+                    `"${(b.notes || '').replace(/"/g, '""')}"`
+                ];
+                
+                csvContent += row.join(",") + "\n";
+            });
+
+            // Trigger Download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `حجوزات_النور_للحديد_${new Date().toLocaleDateString('ar-EG').replace(/\//g, '-')}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Toggle mobile nav menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

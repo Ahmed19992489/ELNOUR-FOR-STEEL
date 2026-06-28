@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تصفح كتالوج منتجات النور للحديد والديكور. اختر لوحتك المعدنية المفضلة من الماندالا، الساعات، أو لوحات الخط العربي واحجزها فوراً.">
+    <title>معرض المنتجات | النور للحديد</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Unified Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Category Tabs */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: var(--font-arabic);
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Products Grid */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            min-height: 400px;
+        }
+
+        /* Loading / Fallback Banner */
+        .status-banner {
+            grid-column: 1 / -1;
+            background-color: rgba(212, 175, 55, 0.05);
+            border: 1px dashed var(--gold-primary);
+            color: var(--gold-secondary);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* Product Detail Modal Specifics */
+        .detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .detail-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            max-height: 90vh;
+        }
+
+        .detail-close-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-smooth);
+        }
+
+        .detail-close-btn:hover {
+            color: var(--gold-primary);
+            transform: scale(1.1);
+        }
+
+        .detail-img-side {
+            background-color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .detail-img-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            max-height: 90vh;
+        }
+
+        .detail-info-side {
+            padding: 40px;
+            overflow-y: auto;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .detail-category {
+            color: var(--gold-primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .detail-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .detail-specifications {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .detail-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 25px;
+        }
+
+        .detail-pricing {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px;
+        }
+
+        .detail-price-new {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+
+        .detail-price-old {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Order Form inside Modal */
+        .booking-subform {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 25px;
+        }
+
+        .booking-subform h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--gold-secondary);
+        }
+
+        @media (max-width: 850px) {
+            .detail-card {
+                grid-template-columns: 1fr;
+                max-height: 85vh;
+            }
+            .detail-img-side {
+                max-height: 250px;
+            }
+            .detail-info-side {
+                padding: 25px;
+            }
+            .detail-close-btn {
+                background-color: rgba(0,0,0,0.6);
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">النور للحديد والـديكـور</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="products.html" class="active">المنتجات</a></li>
+                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Products Page Header -->
+        <section class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">المعرض الرقمي</span>
+                    <h2 class="section-title">اختر لوحتك الفنية الفاخرة</h2>
+                </div>
+
+                <!-- Supabase Connection State Banner -->
+                <div id="connection-banner" class="status-banner" style="display: none;"></div>
+
+                <!-- Category Filters -->
+                <div class="tabs-container">
+                    <button class="tab-btn active" onclick="filterCategory('الكل')">الكل</button>
+                    <button class="tab-btn" onclick="filterCategory('ماندالا')">ماندالا</button>
+                    <button class="tab-btn" onclick="filterCategory('ساعات حائط')">ساعات حائط</button>
+                    <button class="tab-btn" onclick="filterCategory('جداريات طبيعة')">جداريات طبيعة</button>
+                    <button class="tab-btn" onclick="filterCategory('تجريد وهندسة')">تجريد وهندسة</button>
+                    <button class="tab-btn" onclick="filterCategory('خط عربي وإسلامي')">خط عربي وإسلامي</button>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="catalog-grid" id="products-catalog">
+                    <!-- Products will load here dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Details & Booking Modal -->
+    <div id="detail-modal" class="detail-modal">
+        <div class="detail-card">
+            <button class="detail-close-btn" onclick="closeDetailsModal()">&times;</button>
+            
+            <!-- Column 1: Image -->
+            <div class="detail-img-side">
+                <img id="detail-image" src="" alt="">
+            </div>
+            
+            <!-- Column 2: Info & Booking -->
+            <div class="detail-info-side">
+                <div>
+                    <span class="detail-category" id="detail-category"></span>
+                    <h3 class="detail-title" id="detail-title"></h3>
+                    <div class="detail-specifications" id="detail-specifications"></div>
+                    <p class="detail-description" id="detail-description"></p>
+                    
+                    <div class="detail-pricing">
+                        <div class="detail-price-new"><span id="detail-price-new"></span> <span style="font-size:1rem; color:var(--gold-primary);">جنيه</span></div>
+                        <div class="detail-price-old" id="detail-price-old-wrapper"><span id="detail-price-old"></span> جنيه</div>
+                    </div>
+                </div>
+
+                <!-- Embedded Lead Form -->
+                <div class="booking-subform">
+                    <h4>احجز هذا المنتج الآن</h4>
+                    
+                    <form id="modal-booking-form" onsubmit="handleBookingSubmit(event)">
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="customer-name" class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">الاسم بالكامل <span style="color:var(--gold-primary);">*</span></label>
+                            <input type="text" id="customer-name" class="form-input" style="padding: 8px 12px; font-size: 0.9rem;" placeholder="أدخل اسمك الكريم" required>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="customer-whatsapp" class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">رقم الواتساب <span style="color:var(--gold-primary);">*</span></label>
+                            <input type="tel" id="customer-whatsapp" class="form-input" style="padding: 8px 12px; font-size: 0.9rem;" placeholder="مثال: 01114323218" pattern="^(01)[0-9]{9}$" title="يرجى إدخال رقم هاتف مصري صحيح" required>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 12px;">
+                            <label for="customer-gov" class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">المحافظة <span style="color:var(--gold-primary);">*</span></label>
+                            <select id="customer-gov" class="form-input" style="padding: 8px 12px; font-size: 0.9rem;" required>
+                                <option value="" disabled selected>اختر محافظتك</option>
+                                <option value="القاهرة">القاهرة</option>
+                                <option value="الجيزة">الجيزة</option>
+                                <option value="الإسكندرية">الإسكندرية</option>
+                                <option value="القليوبية">القليوبية</option>
+                                <option value="أخرى">محافظة أخرى</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="customer-notes" class="form-label" style="font-size: 0.8rem; margin-bottom: 4px;">ملاحظات خاصة (المقاس / اللون)</label>
+                            <textarea id="customer-notes" class="form-input" style="padding: 8px 12px; font-size: 0.9rem;" rows="2" placeholder="أريد تعديل المقاس أو اللون لـ..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="booking-submit-btn" style="padding: 10px;">احجز القطعة وسجل طلبك</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20الديكورات%20المعدنية%20المعروضة" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Elnour for Steel</div>
+            <p class="footer-desc">تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+            
+            <div class="footer-contacts">
+                <a href="https://wa.me/201114323218" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01114323218
+                </a>
+                <a href="https://wa.me/201118182424" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01118182424
+                </a>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Supabase Integration & Fallback Script -->
+    <script>
+        // --- 1. Supabase Configurations (Paste your keys here) ---
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+        
+        let supabase = null;
+        let isSupabaseConnected = false;
+
+        // Initialize Supabase if keys are provided
+        if (SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" && SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY") {
+            try {
+                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                isSupabaseConnected = true;
+            } catch (err) {
+                console.error("Supabase initialization failed:", err);
+            }
+        }
+
+        // --- 2. Static Product Fallback Array (20 Premium Items) ---
+        const staticProducts = [
+            { id: 1, title: 'لوحة الماندالا الإمبراطورية', category: 'ماندالا', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تصميم هندسي متماثل يعكس الفلسفة الهندية والجمال المعماري العريق.', image_url: './161841924_3741716299278845_3895684170105190938_n.jpg' },
+            { id: 2, title: 'شجرة الحياة العصرية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود مطفي', description: 'تعبر عن النماء والترابط بتفاصيل غصون وأوراق دقيقة للغاية تلائم الريسبشن المودرن.', image_url: './147027646_3634796373304172_1994186618855657670_n.jpg' },
+            { id: 3, title: 'تجريد هندسي فاخر', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | أسود مع لمسة ذهبية', description: 'مزيج راقٍ من المربعات المتداخلة تناسب المكاتب والصالونات الكبرى وتوحي بالعمق البصري.', image_url: './147048085_3637165356400607_8500838532714615099_n.jpg' },
+            { id: 4, title: 'لوحة أوراق النخيل النحاسية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | لون أسود كربوني', description: 'ثلاثية مميزة تمنح الجدار شعوراً بالطبيعة والحيوية المطلقة مع طلاء الكتروستاتيك فاخر.', image_url: './147461279_3637165129733963_8065104657155936065_n.jpg' },
+            { id: 5, title: 'رسم الخط العربي الفاخر', category: 'خط عربي وإسلامي', price: 3600, original_price: 5600, specifications: 'حديد 3 مم | طلاء ذهبي ملكي', description: 'آيات قرآنية وتفاصيل خطوط ثلث وديواني بتناغم وتجسيد رائع يعكس الهوية الإسلامية.', image_url: './147761050_3637165273067282_1986388173094055197_n.jpg' },
+            { id: 6, title: 'أوريجامي معدني ثلاثي الأبعاد', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود داكن', description: 'تصميم هندسي متقاطع يوحي بالعمق والمستقبلية والابتكار الفني والقص الميكانيكي الممتاز.', image_url: './148077638_3644916748958801_578184065420658285_n.jpg' },
+            { id: 7, title: 'ساعة حائط ليزر كلاسيك', category: 'ساعات حائط', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | ذهبي عتيق', description: 'تجمع بين دقة ضبط الوقت والديكور الجداري المعدني الضخم والمبهر بطلاء ذهبي عتيق حراري.', image_url: './149283602_3657800764337066_3353076662042815228_n.jpg' },
+            { id: 8, title: 'بوابة الماندالا المضيئة', category: 'ماندالا', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | أسود مع حواف نحاسية', description: 'نصف ماندالا متقاطعة تناسب وضعها أعلى الأثاث والكونسول الفخم وتبرز فخامة المدخل.', image_url: './149285864_3657799814337161_851325079872750151_n.jpg' },
+            { id: 9, title: 'لوحة غابة الصنوبر المعدنية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود داكن', description: 'تجسد هدوء الغابة وسحر الجبال في لوحة جدارية ثلاثية التجميع متناسقة الأبعاد.', image_url: './149304511_3657799997670476_4523278991004266834_n.jpg' },
+            { id: 10, title: 'بوصلة الجدران الفاخرة', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود وفولاذ', description: 'تصميم يعبر عن الاتجاهات والقوة، يعطي انطباعاً فريداً لمدخل المنزل والشركات الكبرى.', image_url: './149460830_3657797761004033_2264862436402025805_n.jpg' },
+            { id: 11, title: 'لوحة أجنحة الملاك الذهبية', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | طلاء ذهبي متلألئ', description: 'ثنائية فاخرة تبرز الدقة والجمال الملائكي في تفاصيل الريش المعدني المطلي ذهبياً.', image_url: './149823765_3657798654337277_3023586860438066297_n.jpg' },
+            { id: 12, title: 'لوحة التماثل الإسلامي المعاصر', category: 'خط عربي وإسلامي', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود داكن', description: 'أشكال مستوحاة من الأرابيسك العتيق برؤية عصرية تناسب الحائط المودرن وتوفر فخامة التراث.', image_url: './150581359_3657800951003714_5774651280782390148_n.jpg' },
+            { id: 13, title: 'لوحة أوراق الخريف الذهبية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | تدرج ذهبي برونزي', description: 'تصوير فني رائع لتساقط الأوراق يضفي دفئاً ورونقاً لأي جدار مع دهان مقاوم للرطوبة.', image_url: './150896222_3657800674337075_2627193728236000839_n.jpg' },
+            { id: 14, title: 'ماندالا زهرة اللوتس', category: 'ماندالا', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود فاخر', description: 'تعبير عن النقاء والصفاء الروحي في انحناءات بالغة التعقيد والجمال.', image_url: './138415094_3570390389744771_4471194102370214083_n.jpg' },
+            { id: 15, title: 'ساعة فلكية ذهبية فاخرة', category: 'ساعات حائط', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | طلاء ذهبي مقاوم للخدش', description: 'تصميم رائع يدمج النجوم والمسارات فلكية مع الأرقام الرومانية المذهبة لصالونك الفخم.', image_url: './177246292_3853255551458252_4296967141844374899_n.jpg' },
+            { id: 16, title: 'لوحة خريطة العالم المعدنية', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | لون أسود داكن', description: 'خيار عشاق السفر والترحال بمظهر ثلاثي الأبعاد يعلو قطع الأثاث الكبرى بشكل جذاب.', image_url: './177259325_3853255114791629_3146672698085540784_n.jpg' },
+            { id: 17, title: 'المجموعة الهندسية المتداخلة', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | لون أسود برونزي', description: 'ترابط هندسي معقد يجذب الأبصار ويلائم غرف الجلوس والشركات الراقية بنمط مودرن.', image_url: './177522937_3853255888124885_1799276773283670991_n.jpg' },
+            { id: 18, title: 'أبراج وكواكب معدنية', category: 'تجريد وهندسة', price: 3600, original_price: 5600, specifications: 'حديد 2.5 مم | أسود مع تدرج ذهبي', description: 'لوحة تجمع بين الخطوط الفلكية والكواكب في تحفة فريدة لعشاق الفلك والمستقبلية.', image_url: './177609579_3853255728124901_8842065650060331883_n.jpg' },
+            { id: 19, title: 'لوحة السنابل والخيرات', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | لون ذهبي كلاسيكي', description: 'تفاصيل حقل القمح تتمايل بجمال وهدوء على جدران صالونك الدافئ بأناقة بالغة.', image_url: './177778125_3853255384791602_4698410874283073780_n.jpg' },
+            { id: 20, title: 'تجريد أوراق الموز الاستوائية', category: 'جداريات طبيعة', price: 3600, original_price: 5600, specifications: 'حديد 2 مم | أسود مع لمعة حرارية', description: 'عصرية، خفيفة وأنيقة للغاية، مناسبة للتصاميم المعاصرة والاسكندنافية الفخمة.', image_url: './181091750_3881372841979856_2988810552694393247_n.jpg' }
+        ];
+
+        let allProducts = []; // Loaded products will reside here
+        let selectedProduct = null; // Currently clicked product for details
+
+        // --- 3. DOM Elements ---
+        const catalogContainer = document.getElementById('products-catalog');
+        const connectionBanner = document.getElementById('connection-banner');
+
+        // --- 4. Fetch Products Data ---
+        async function fetchProducts() {
+            if (isSupabaseConnected) {
+                try {
+                    connectionBanner.style.display = 'block';
+                    connectionBanner.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> جاري تحميل المنتجات والأسعار المحدثة من قاعدة البيانات السحابية...';
+                    
+                    const { data, error } = await supabase
+                        .from('products')
+                        .select('*')
+                        .eq('is_available', true);
+
+                    if (error) throw error;
+
+                    if (data && data.length > 0) {
+                        allProducts = data;
+                        connectionBanner.className = 'status-banner';
+                        connectionBanner.style.border = '1px solid #28a745';
+                        connectionBanner.style.color = '#28a745';
+                        connectionBanner.style.backgroundColor = 'rgba(40,167,69,0.05)';
+                        connectionBanner.innerHTML = '<i class="fa-solid fa-circle-check"></i> تم الاتصال بقاعدة البيانات؛ الأسعار والمنتجات مُحدثة لايف.';
+                    } else {
+                        // If DB is empty, use fallbacks
+                        allProducts = staticProducts;
+                        connectionBanner.innerHTML = '<i class="fa-solid fa-database"></i> لم يتم العثور على منتجات في قاعدة البيانات. تم تحميل المنتجات الافتراضية.';
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch from Supabase, loading fallbacks:", err);
+                    allProducts = staticProducts;
+                    connectionBanner.style.display = 'block';
+                    connectionBanner.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> عطل في الاتصال؛ تم تشغيل وضع الأمان غير المتصل والتحميل من المنتجات الافتراضية.';
+                }
+            } else {
+                // Supabase not configured yet, load static products silently
+                allProducts = staticProducts;
+                connectionBanner.style.display = 'block';
+                connectionBanner.innerHTML = '<i class="fa-solid fa-circle-info"></i> وضع الاستضافة الثابتة النشط (لم يتم ربط مفاتيح Supabase بعد).';
+            }
+            
+            renderProducts('الكل');
+            
+            // Check query param for category redirection
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryParam = urlParams.get('category');
+            if (categoryParam) {
+                filterCategory(categoryParam);
+            }
+        }
+
+        // --- 5. Render Products to Catalog ---
+        function renderProducts(categoryFilter) {
+            catalogContainer.innerHTML = '';
+            
+            const filtered = categoryFilter === 'الكل' 
+                ? allProducts 
+                : allProducts.filter(p => p.category === categoryFilter);
+
+            if (filtered.length === 0) {
+                catalogContainer.innerHTML = `<div class="status-banner" style="grid-column:1/-1;">لا توجد منتجات متوفرة حالياً في قسم: ${categoryFilter}</div>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-wrapper" onclick="openDetailsModal(${p.id})">
+                        <img src="${p.image_url}" alt="${p.title}" class="product-img" loading="lazy">
+                        <div class="product-overlay">
+                            <button class="view-btn"><i class="fa-solid fa-magnifying-glass-plus"></i> التفاصيل والحجز</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <span style="font-size:0.75rem; color:var(--gold-secondary); font-weight:700;">${p.category}</span>
+                            <h3 class="product-title">${p.title}</h3>
+                            <div class="product-price-row">
+                                <span class="product-price-new">${p.price.toLocaleString()} جنيه</span>
+                                ${p.original_price ? `<span class="product-price-old">${p.original_price.toLocaleString()} جنيه</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="product-meta">
+                            <span class="product-spec">${p.specifications || ''}</span>
+                            <button class="order-btn-sm" onclick="openDetailsModal(${p.id})">طلب</button>
+                        </div>
+                    </div>
+                `;
+                catalogContainer.appendChild(card);
+            });
+        }
+
+        // --- 6. Filter tabs logic ---
+        function filterCategory(categoryName) {
+            // Update active class on tab buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if (btn.innerText === categoryName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            renderProducts(categoryName);
+        }
+
+        // --- 7. Modal Logic for details ---
+        function openDetailsModal(productId) {
+            // Find product
+            selectedProduct = allProducts.find(p => p.id == productId);
+            if (!selectedProduct) return;
+
+            document.getElementById('detail-image').src = selectedProduct.image_url;
+            document.getElementById('detail-category').innerText = selectedProduct.category;
+            document.getElementById('detail-title').innerText = selectedProduct.title;
+            document.getElementById('detail-specifications').innerText = selectedProduct.specifications || 'حديد ممتاز مقاوم للصدأ';
+            document.getElementById('detail-description').innerText = selectedProduct.description || 'تصميم معدني مقطوع بالليزر فخم لتزيين ريسبشن منزلك.';
+            document.getElementById('detail-price-new').innerText = selectedProduct.price.toLocaleString();
+            
+            const oldPriceWrapper = document.getElementById('detail-price-old-wrapper');
+            if (selectedProduct.original_price) {
+                oldPriceWrapper.style.display = 'block';
+                document.getElementById('detail-price-old').innerText = selectedProduct.original_price.toLocaleString();
+            } else {
+                oldPriceWrapper.style.display = 'none';
+            }
+
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+            document.getElementById('modal-booking-form').reset();
+        }
+
+        // Close details modal on outer click
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('detail-modal');
+            if (event.target === modal) {
+                closeDetailsModal();
+            }
+        });
+
+        // --- 8. Handle Booking Submission ---
+        async function handleBookingSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('booking-submit-btn');
+            submitBtn.innerText = 'جاري إرسال حجزك الفاخر...';
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('customer-name').value;
+            const whatsapp = document.getElementById('customer-whatsapp').value;
+            const governorate = document.getElementById('customer-gov').value;
+            const notes = document.getElementById('customer-notes').value;
+            const productTitle = selectedProduct.title;
+            const productPrice = selectedProduct.price;
+
+            // Form payload
+            const payload = {
+                customer_name: name,
+                whatsapp: whatsapp,
+                governorate: governorate,
+                product_title: productTitle,
+                notes: notes,
+                status: 'جديد'
+            };
+
+            let isSavedInDb = false;
+
+            // 1. Submit to Supabase if connected
+            if (isSupabaseConnected && supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('bookings')
+                        .insert([payload]);
+                    if (error) throw error;
+                    isSavedInDb = true;
+                    console.log("Lead successfully inserted into Supabase CRM database.");
+                } catch (dbErr) {
+                    console.error("Supabase insert failed:", dbErr);
+                }
+            }
+
+            // 2. Submit to Formspree for dual email notification backup
+            const formspreeUrl = "https://formspree.io/f/xzdrvblp";
+            const formspreePayload = new FormData();
+            formspreePayload.append('الاسم', name);
+            formspreePayload.append('الواتساب', whatsapp);
+            formspreePayload.append('المحافظة', governorate);
+            formspreePayload.append('التصميم المطلوب', `${productTitle} - بسعر ${productPrice} جنيه`);
+            formspreePayload.append('ملاحظات خاصة', notes);
+            formspreePayload.append('الحفظ في قاعدة البيانات', isSavedInDb ? 'ناجح' : 'فشل/لم يتم الربط');
+
+            try {
+                await fetch(formspreeUrl, {
+                    method: 'POST',
+                    body: formspreePayload,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                console.log("Email notification successfully sent via Formspree.");
+            } catch (formspreeErr) {
+                console.error("Formspree submit failed:", formspreeErr);
+            }
+
+            // 3. Send confirmation email to client using EmailJS directly if set up (optional fallback)
+            // Redirect to thankyou page
+            const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+            window.location.href = window.location.origin + currentDir + `/thankyou.html?name=${encodeURIComponent(name)}&product=${encodeURIComponent(productTitle)}`;
+        }
+
+        // Run fetch on DOM Load
+        document.addEventListener('DOMContentLoaded', fetchProducts);
+
+        // Header and navbar scroll js
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Toggle mobile nav menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

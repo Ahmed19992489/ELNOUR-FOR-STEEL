@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تصفح سابقة أعمال النور للحديد والـديكـور. جداريات معدنية وماندالا حقيقية تم تسليمها وتركيبها في أرقى الفلل والمنازل المصرية.">
+    <title>سابقة أعمالنا | النور للحديد</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Unified Stylesheet -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .portfolio-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--glow-color);
+        }
+
+        .portfolio-img-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 75%; /* 4:3 Aspect Ratio for interior showcase */
+            overflow: hidden;
+        }
+
+        .portfolio-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .portfolio-card:hover .portfolio-img {
+            transform: scale(1.06);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            padding: 25px;
+            text-align: right;
+        }
+
+        .portfolio-card:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-location {
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .testimonial-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 35px;
+            position: relative;
+            text-align: right;
+        }
+
+        .testimonial-card::before {
+            content: "\f10e";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            font-size: 2.2rem;
+            color: rgba(212, 175, 55, 0.07);
+        }
+
+        .quote-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .client-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--gold-primary);
+            font-weight: 700;
+        }
+
+        .client-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .client-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-title">Elnour for Steel</span>
+                <span class="logo-subtitle">النور للحديد والـديكـور</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="products.html">المنتجات</a></li>
+                <li><a href="portfolio.html" class="active">سابقة أعمالنا</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Portfolio Gallery -->
+        <section class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">من واقع تسليماتنا</span>
+                    <h2 class="section-title">لوحاتنا تُزين جدران عملائنا</h2>
+                </div>
+
+                <div class="portfolio-grid">
+                    <!-- Installation 1 -->
+                    <div class="portfolio-card" onclick="openLightbox('./149285864_3657799814337161_851325079872750151_n.jpg', 'لوحة الماندالا المضيئة في صالون فيلا بالتجمع الخامس')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./149285864_3657799814337161_851325079872750151_n.jpg" alt="لوحة معدنية ليزر صالون" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">بوابة الماندالا المضيئة</h3>
+                            <span class="portfolio-location">فيلا - التجمع الخامس</span>
+                        </div>
+                    </div>
+
+                    <!-- Installation 2 -->
+                    <div class="portfolio-card" onclick="openLightbox('./147761050_3637165273067282_1986388173094055197_n.jpg', 'لوحة الخط العربي الإسلامي مذهبة في ريسيبشن بمدينتي')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./147761050_3637165273067282_1986388173094055197_n.jpg" alt="لوحة الخط العربي جدار" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">رسم الخط العربي الملكي</h3>
+                            <span class="portfolio-location">شقة فاخرة - مدينتي</span>
+                        </div>
+                    </div>
+
+                    <!-- Installation 3 -->
+                    <div class="portfolio-card" onclick="openLightbox('./147027646_3634796373304172_1994186618855657670_n.jpg', 'شجرة الحياة العصرية في ريسبشن فيلا بالشيخ زايد')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./147027646_3634796373304172_1994186618855657670_n.jpg" alt="شجرة الحياة ليزر حديد" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">شجرة الحياة العصرية</h3>
+                            <span class="portfolio-location">فيلا - الشيخ زايد</span>
+                        </div>
+                    </div>
+
+                    <!-- Installation 4 -->
+                    <div class="portfolio-card" onclick="openLightbox('./177246292_3853255551458252_4296967141844374899_n.jpg', 'الساعة الفلكية المذهبة فوق الكونسول بمدخل منزل بأكتوبر')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./177246292_3853255551458252_4296967141844374899_n.jpg" alt="ساعة ليزر جدارية" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">الساعة الفلكية الذهبية</h3>
+                            <span class="portfolio-location">شقة دوبلكس - 6 أكتوبر</span>
+                        </div>
+                    </div>
+
+                    <!-- Installation 5 -->
+                    <div class="portfolio-card" onclick="openLightbox('./177259325_3853255114791629_3146672698085540784_n.jpg', 'خريطة العالم المعدنية ثلاثية الأبعاد في مكتب فاخر بالمعادي')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./177259325_3853255114791629_3146672698085540784_n.jpg" alt="لوحة خريطة العالم حديد" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">لوحة خريطة العالم المعدنية</h3>
+                            <span class="portfolio-location">مكتب إداري - المعادي</span>
+                        </div>
+                    </div>
+
+                    <!-- Installation 6 -->
+                    <div class="portfolio-card" onclick="openLightbox('./149304511_3657799997670476_4523278991004266834_n.jpg', 'ثلاثية غابة الصنوبر ليزر معلقة على جدار صالون رمادي فخم بالإسكندرية')">
+                        <div class="portfolio-img-wrapper">
+                            <img src="./149304511_3657799997670476_4523278991004266834_n.jpg" alt="ثلاثية غابة ليزر جدار" class="portfolio-img" loading="lazy">
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h3 class="portfolio-title">لوحة غابة الصنوبر</h3>
+                            <span class="portfolio-location">شقة بحرية - الإسكندرية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">آراء عملائنا الراقيين</span>
+                    <h2 class="section-title">ماذا يقولون عن النور للحديد؟</h2>
+                </div>
+
+                <div class="testimonials-grid">
+                    <!-- Quote 1 -->
+                    <div class="testimonial-card">
+                        <p class="quote-text">"اللوحة تحفة فنية حقيقية والتفاصيل نظيفة جداً وبدون أي زوائد، دهان الإلكتروستاتيك ناعم وفاخر جداً. الشحن الخشبي مبطن ومحمي ومحترف للغاية. شكراً جزيلاً لكم."</p>
+                        <div class="client-info">
+                            <div class="client-avatar">ش</div>
+                            <div>
+                                <h4 class="client-name">المهندس شريف عبد العزيز</h4>
+                                <span class="client-meta">التجمع الخامس، القاهرة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote 2 -->
+                    <div class="testimonial-card">
+                        <p class="quote-text">"ساعة الحائط الفلكية مذهلة وخاطفة للأنظار وكل ضيوفي بيسألوني عنها. وزنها ممتاز وثباتها عالي. خدمة راقية وسرعة مدهشة في التنسيق والتوصيل."</p>
+                        <div class="client-info">
+                            <div class="client-avatar">ن</div>
+                            <div>
+                                <h4 class="client-name">د. نادية الشافعي</h4>
+                                <span class="client-meta">الشيخ زايد، الجيزة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote 3 -->
+                    <div class="testimonial-card">
+                        <p class="quote-text">"أفضل ما في المعاملة هو الأمان، عاينت اللوحة وفتحت الصندوق الخشبي للتأكد من المقاس وجودة الدهان وسماكة الحديد قبل أن أدفع للمندوب جنيهاً واحداً. تجربة ممتازة."</p>
+                        <div class="client-info">
+                            <div class="client-avatar">ك</div>
+                            <div>
+                                <h4 class="client-name">الأستاذ كريم الجبالي</h4>
+                                <span class="client-meta">لوران، الإسكندرية</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Zoom Interactive Lightbox / Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content-wrapper">
+            <button class="modal-close" onclick="closeLightbox()">&times;</button>
+            <img id="modal-img" src="" alt="" class="modal-img">
+            <div id="modal-caption" class="modal-caption"></div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20الديكورات%20المعدنية%20المعروضة" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Elnour for Steel</div>
+            <p class="footer-desc">تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+            
+            <div class="footer-contacts">
+                <a href="https://wa.me/201114323218" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01114323218
+                </a>
+                <a href="https://wa.me/201118182424" class="footer-contact-item" target="_blank">
+                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01118182424
+                </a>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            
+            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Image Lightbox Logic
+        function openLightbox(imgSrc, captionText) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalCaption = document.getElementById('modal-caption');
+            
+            modal.style.display = 'flex';
+            modalImg.src = imgSrc;
+            modalCaption.innerText = captionText;
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = 'none';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('image-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
