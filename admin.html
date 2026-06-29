@@ -319,11 +319,11 @@
 const SUPA_URL  = "https://tsdkhsgkqwaewfgldquj.supabase.co";
 const SUPA_KEY  = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
 
-let db         = null;
-let connected  = false;
-let bookings   = [];
-let products   = [];
-let categories = ['ماندالا','ساعات حائط','جداريات طبيعة','تجريد وهندسة','خط عربي وإسلامي'];
+let db             = null;
+let connected      = false;
+let bookings       = [];
+let products       = [];
+let categoriesData = [];  // loaded from Supabase categories table
 
 // ============================================================
 // INIT ON LOAD
@@ -660,29 +660,37 @@ async function saveProd(e) {
 }
 
 // ============================================================
-// CATEGORIES
+// CATEGORIES (from Supabase DB)
 // ============================================================
-function loadCategories() {
-    // Extract unique categories from products + default list
-    const fromDB = [...new Set(products.map(p => p.category).filter(Boolean))];
-    fromDB.forEach(c => { if (!categories.includes(c)) categories.push(c); });
+async function loadCategories() {
+    if (!db) return;
+    const { data, error } = await db.from('categories').select('*').order('sort_order');
+    if (error) {
+        console.warn('categories table not found, using products data as fallback');
+        // Fallback: extract from products
+        const fromProds = [...new Set(products.map(p => p.category).filter(Boolean))];
+        categoriesData = fromProds.map(name => ({ name }));
+    } else {
+        categoriesData = data || [];
+    }
     renderCategories();
+    updateCatSelect();
 }
 
 function renderCategories() {
     const grid = document.getElementById('cats-grid');
-    if (categories.length === 0) {
-        grid.innerHTML = '<div style="color:var(--text-muted);">لا توجد أقسام بعد</div>';
+    if (!categoriesData || categoriesData.length === 0) {
+        grid.innerHTML = '<div style="color:var(--text-muted);">لا توجد أقسام بعد. أضف أول قسم!</div>';
         return;
     }
-    grid.innerHTML = categories.map(c => {
-        const count = products.filter(p => p.category === c).length;
+    grid.innerHTML = categoriesData.map(c => {
+        const count = products.filter(p => p.category === c.name).length;
         return `<div class="cat-chip">
             <div>
-                <div class="cat-chip-name">${c}</div>
+                <div class="cat-chip-name">${c.name}</div>
                 <div class="cat-chip-count">${count} منتج</div>
             </div>
-            <button class="cat-del" onclick="deleteCat('${c}')" title="حذف القسم">
+            <button class="cat-del" onclick="deleteCat('${c.id || c.name}', '${c.name}')" title="حذف القسم">
                 <i class="fa-solid fa-trash-can"></i>
             </button>
         </div>`;
@@ -690,32 +698,56 @@ function renderCategories() {
     updateCatSelect();
 }
 
-function addCategory() {
+async function addCategory() {
     const input = document.getElementById('new-cat');
     const name  = input.value.trim();
     if (!name) { toast('يرجى إدخال اسم القسم', true); return; }
-    if (categories.includes(name)) { toast('هذا القسم موجود بالفعل', true); return; }
-    categories.push(name);
+    if (categoriesData.some(c => c.name === name)) { toast('هذا القسم موجود بالفعل', true); return; }
+
+    if (!db) { toast('غير متصل بقاعدة البيانات', true); return; }
+
+    const { data, error } = await db.from('categories')
+        .insert([{ name, sort_order: categoriesData.length + 1 }])
+        .select();
+
+    if (error) {
+        toast('خطأ في إضافة القسم: ' + error.message, true);
+        return;
+    }
     input.value = '';
-    renderCategories();
     toast('تم إضافة قسم: ' + name);
+    await loadCategories();
 }
 
-function deleteCat(name) {
+async function deleteCat(idOrName, name) {
     const count = products.filter(p => p.category === name).length;
     if (count > 0) {
         if (!confirm(`هذا القسم يحتوي على ${count} منتج. هل أنت متأكد من حذفه؟`)) return;
+    } else {
+        if (!confirm(`هل أنت متأكد من حذف قسم "${name}"؟`)) return;
     }
-    categories = categories.filter(c => c !== name);
-    renderCategories();
+
+    if (!db) { toast('غير متصل', true); return; }
+
+    let error;
+    // Try delete by ID first, then by name
+    if (idOrName && idOrName !== name) {
+        ({ error } = await db.from('categories').delete().eq('id', idOrName));
+    } else {
+        ({ error } = await db.from('categories').delete().eq('name', name));
+    }
+
+    if (error) { toast('فشل الحذف: ' + error.message, true); return; }
     toast('تم حذف القسم: ' + name);
+    await loadCategories();
 }
 
 function updateCatSelect() {
     const sel = document.getElementById('p-cat');
     const current = sel.value;
+    const names = (categoriesData || []).map(c => c.name);
     sel.innerHTML = '<option value="">-- اختر قسماً --</option>' +
-        categories.map(c => `<option ${c===current?'selected':''}>${c}</option>`).join('');
+        names.map(c => `<option ${c===current?'selected':''}>${c}</option>`).join('');
 }
 
 // ============================================================
