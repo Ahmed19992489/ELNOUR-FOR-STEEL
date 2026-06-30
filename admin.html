@@ -155,7 +155,9 @@
                 <div class="admin-tabs">
                     <button class="atab active" onclick="switchTab('tab-crm',this)"><i class="fa-solid fa-clipboard-list"></i> الطلبات والـ CRM</button>
                     <button class="atab" onclick="switchTab('tab-products',this)"><i class="fa-solid fa-store"></i> إدارة المنتجات</button>
-                    <button class="atab" onclick="switchTab('tab-categories',this)"><i class="fa-solid fa-tags"></i> الأقسام والفئات</button>
+                    <button class="atab" onclick="switchTab('tab-categories',this)"><i class="fa-solid fa-tags"></i> الأقسام</button>
+                    <button class="atab" onclick="switchTab('tab-coupons',this);loadCoupons();"><i class="fa-solid fa-ticket"></i> الكوبونات</button>
+                    <button class="atab" onclick="switchTab('tab-reviews',this);loadReviewsAdmin();"><i class="fa-solid fa-star"></i> التقييمات</button>
                 </div>
 
                 <!-- ======= CRM TAB ======= -->
@@ -299,6 +301,72 @@
                                 <div style="color:var(--text-muted);font-size:0.9rem;">جاري تحميل الأقسام...</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ======= COUPONS TAB ======= -->
+                <div id="tab-coupons" class="apane">
+                    <div style="max-width:900px;">
+                        <div class="pm-card" style="margin-bottom:20px;">
+                            <div class="pm-title"><i class="fa-solid fa-plus gold-text"></i> إضافة كود خصم جديد</div>
+                            <form id="coupon-form" onsubmit="saveCoupon(event)">
+                                <input type="hidden" id="coup-id">
+                                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                                    <div class="form-group">
+                                        <label class="form-label" for="coup-code">الكود *</label>
+                                        <input type="text" id="coup-code" class="form-input" placeholder="ELNOUR10" style="text-transform:uppercase;" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="coup-type">نوع الخصم</label>
+                                        <select id="coup-type" class="form-input">
+                                            <option value="percentage">نسبة مئوية (%)</option>
+                                            <option value="fixed">مبلغ ثابت (جنيه)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="coup-val">قيمة الخصم *</label>
+                                        <input type="number" id="coup-val" class="form-input" placeholder="10" required>
+                                    </div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                    <div class="form-group">
+                                        <label class="form-label" for="coup-max">أقصى عدد استخدامات (فارغ = غير محدود)</label>
+                                        <input type="number" id="coup-max" class="form-input" placeholder="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="coup-until">صلاحية حتى (فارغ = دائم)</label>
+                                        <input type="date" id="coup-until" class="form-input">
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:10px;">
+                                    <button type="submit" class="btn-submit" style="flex-grow:1;"><i class="fa-solid fa-floppy-disk"></i> حفظ الكوبون</button>
+                                    <button type="button" class="btn-secondary" style="padding:10px 18px;" onclick="resetCouponForm()">إلغاء</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="pm-card">
+                            <div class="pm-title"><i class="fa-solid fa-ticket gold-text"></i> الكوبونات الحالية</div>
+                            <div class="tbl-wrap">
+                                <table>
+                                    <thead><tr><th>الكود</th><th>نوع الخصم</th><th>القيمة</th><th>الاستخدامات</th><th>الصلاحية</th><th>الحالة</th><th>تعديل</th><th>حذف</th></tr></thead>
+                                    <tbody id="coupons-table"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ======= REVIEWS TAB ======= -->
+                <div id="tab-reviews" class="apane">
+                    <div class="tbl-controls">
+                        <h4 style="color:var(--gold-secondary);margin:0;">تقييمات العملاء — في انتظار الموافقة والمنشورة</h4>
+                        <button class="btn-secondary" style="padding:9px 16px;" onclick="loadReviewsAdmin()"><i class="fa-solid fa-rotate"></i> تحديث</button>
+                    </div>
+                    <div class="tbl-wrap">
+                        <table>
+                            <thead><tr><th>التاريخ</th><th>المنتج</th><th>الاسم</th><th>التقييم</th><th>التعليق</th><th>الحالة</th><th>قرار</th><th>حذف</th></tr></thead>
+                            <tbody id="reviews-table"></tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -759,6 +827,132 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
 window.addEventListener('scroll', () => {
     document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
 });
+
+// ============================================================
+// COUPONS
+// ============================================================
+async function loadCoupons() {
+    if (!db) return;
+    const { data, error } = await db.from('coupons').select('*').order('created_at', {ascending:false});
+    const tbody = document.getElementById('coupons-table');
+    if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:25px;color:var(--text-muted);">لا توجد كوبونات بعد</td></tr>';
+        return;
+    }
+    tbody.innerHTML = data.map(c => {
+        const typeLabel  = c.discount_type === 'percentage' ? `${c.discount_value}%` : `${c.discount_value} جنيه`;
+        const usageLabel = c.max_uses ? `${c.current_uses} / ${c.max_uses}` : `${c.current_uses} / ∞`;
+        const until      = c.valid_until ? new Date(c.valid_until).toLocaleDateString('ar-EG') : 'دائم';
+        const statusBadge = c.is_active
+            ? '<span style="color:#28a745;font-weight:700;">نشط</span>'
+            : '<span style="color:#dc3545;font-weight:700;">معطّل</span>';
+        return `<tr>
+            <td><b style="color:var(--gold-primary);font-family:monospace;">${c.code}</b></td>
+            <td>${c.discount_type === 'percentage' ? 'نسبة' : 'مبلغ ثابت'}</td>
+            <td>${typeLabel}</td>
+            <td>${usageLabel}</td>
+            <td style="font-size:0.82rem;">${until}</td>
+            <td>${statusBadge}</td>
+            <td><button class="edit-btn" onclick="editCoupon('${c.id}')"><i class="fa-solid fa-pen"></i></button></td>
+            <td><button class="del-btn" onclick="deleteCoupon('${c.id}')"><i class="fa-solid fa-trash-can"></i></button></td>
+        </tr>`;
+    }).join('');
+}
+
+async function saveCoupon(e) {
+    e.preventDefault();
+    const id = document.getElementById('coup-id').value;
+    const payload = {
+        code:          document.getElementById('coup-code').value.toUpperCase().trim(),
+        discount_type: document.getElementById('coup-type').value,
+        discount_value: parseFloat(document.getElementById('coup-val').value),
+        max_uses:      document.getElementById('coup-max').value ? parseInt(document.getElementById('coup-max').value) : null,
+        valid_until:   document.getElementById('coup-until').value || null,
+        is_active:     true
+    };
+
+    let error;
+    if (id) {
+        ({ error } = await db.from('coupons').update(payload).eq('id', id));
+    } else {
+        ({ error } = await db.from('coupons').insert([payload]));
+    }
+
+    if (error) { toast('خطأ: ' + error.message, true); return; }
+    toast(id ? 'تم تحديث الكوبون' : 'تم إضافة الكوبون');
+    resetCouponForm();
+    loadCoupons();
+}
+
+async function editCoupon(id) {
+    const { data } = await db.from('coupons').select('*').eq('id', id).single();
+    if (!data) return;
+    document.getElementById('coup-id').value    = data.id;
+    document.getElementById('coup-code').value  = data.code;
+    document.getElementById('coup-type').value  = data.discount_type;
+    document.getElementById('coup-val').value   = data.discount_value;
+    document.getElementById('coup-max').value   = data.max_uses || '';
+    document.getElementById('coup-until').value = data.valid_until ? data.valid_until.substring(0,10) : '';
+}
+
+async function deleteCoupon(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا الكوبون؟')) return;
+    await db.from('coupons').delete().eq('id', id);
+    toast('تم حذف الكوبون');
+    loadCoupons();
+}
+
+function resetCouponForm() {
+    document.getElementById('coupon-form').reset();
+    document.getElementById('coup-id').value = '';
+}
+
+// ============================================================
+// REVIEWS
+// ============================================================
+async function loadReviewsAdmin() {
+    if (!db) return;
+    const { data, error } = await db.from('reviews').select('*').order('created_at', {ascending:false});
+    const tbody = document.getElementById('reviews-table');
+    if (error || !data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:25px;color:var(--text-muted);">لا توجد تقييمات بعد</td></tr>';
+        return;
+    }
+    tbody.innerHTML = data.map(r => {
+        const d = new Date(r.created_at).toLocaleDateString('ar-EG');
+        let stars = '';
+        for(let i=1;i<=5;i++) stars += `<i class="fa-solid fa-star" style="color:${i<=r.rating?'var(--gold-primary)':'var(--border-color)'};font-size:0.75rem;"></i>`;
+        const badge = r.is_approved
+            ? '<span style="color:#28a745;font-size:0.8rem;font-weight:700;">منشور</span>'
+            : '<span style="color:#ffc107;font-size:0.8rem;font-weight:700;">ينتظر</span>';
+        const actionBtn = r.is_approved
+            ? `<button class="edit-btn" style="border-color:#ffc107;color:#ffc107;" onclick="toggleReview('${r.id}',false)">إلغاء النشر</button>`
+            : `<button class="edit-btn" onclick="toggleReview('${r.id}',true)"><i class="fa-solid fa-check"></i> نشر</button>`;
+        return `<tr>
+            <td style="font-size:0.78rem;color:var(--text-muted);">${d}</td>
+            <td style="font-size:0.82rem;color:var(--gold-secondary);">${r.product_title || '—'}</td>
+            <td style="font-weight:700;">${r.customer_name}</td>
+            <td>${stars}</td>
+            <td style="font-size:0.82rem;max-width:180px;">${r.comment || '—'}</td>
+            <td>${badge}</td>
+            <td>${actionBtn}</td>
+            <td><button class="del-btn" onclick="deleteReview('${r.id}')"><i class="fa-solid fa-trash-can"></i></button></td>
+        </tr>`;
+    }).join('');
+}
+
+async function toggleReview(id, approved) {
+    await db.from('reviews').update({ is_approved: approved }).eq('id', id);
+    toast(approved ? 'تم نشر التقييم' : 'تم إلغاء النشر');
+    loadReviewsAdmin();
+}
+
+async function deleteReview(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا التقييم نهائياً؟')) return;
+    await db.from('reviews').delete().eq('id', id);
+    toast('تم حذف التقييم');
+    loadReviewsAdmin();
+}
 </script>
 </body>
 </html>

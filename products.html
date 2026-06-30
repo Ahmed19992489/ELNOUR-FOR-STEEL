@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تصفح كتالوج منتجات النور للحديد والديكور. اختر لوحتك المعدنية المفضلة واحجزها فوراً.">
+    <meta name="description" content="تصفح كتالوج منتجات النور للحديد والديكور. اختر لوحتك المعدنية المفضلة واحجزها فوراً بأفضل الأسعار.">
     <title>معرض المنتجات | النور للحديد</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,408 +12,666 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <link rel="stylesheet" href="./style.css">
     <style>
-        .tabs-container { display:flex; justify-content:center; gap:12px; margin-bottom:45px; flex-wrap:wrap; }
-        .tab-btn { background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-secondary); padding:9px 22px; font-size:0.92rem; font-weight:700; border-radius:50px; cursor:pointer; transition:var(--transition-smooth); font-family:var(--font-arabic); }
-        .tab-btn:hover, .tab-btn.active { border-color:var(--gold-primary); color:var(--gold-primary); box-shadow:0 0 15px rgba(212,175,55,0.15); }
-        .catalog-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:28px; min-height:300px; }
-        .empty-state { grid-column:1/-1; text-align:center; padding:60px; color:var(--text-muted); font-size:1rem; }
-        /* Modal Styles */
-        .detail-modal { display:none; position:fixed; z-index:2000; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); backdrop-filter:blur(8px); align-items:center; justify-content:center; overflow-y:auto; padding:30px 15px; }
-        .detail-modal.open { display:flex; }
-        .detail-card { background:var(--bg-card); border:1px solid rgba(212,175,55,0.25); border-radius:12px; max-width:880px; width:100%; display:grid; grid-template-columns:1.1fr 1fr; box-shadow:0 20px 60px rgba(0,0,0,0.8); position:relative; overflow:hidden; max-height:90vh; }
-        .modal-close { position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.5); border:none; color:#fff; font-size:1.6rem; width:38px; height:38px; border-radius:50%; cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center; transition:var(--transition-smooth); }
-        .modal-close:hover { background:var(--gold-primary); color:#000; }
-        .modal-img-side { background:#0d0d0d; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-        .modal-img-side img { width:100%; height:100%; object-fit:cover; max-height:90vh; }
-        .modal-info { padding:35px; overflow-y:auto; text-align:right; display:flex; flex-direction:column; }
-        .modal-cat { color:var(--gold-primary); font-size:0.8rem; font-weight:700; letter-spacing:1px; display:block; margin-bottom:8px; }
-        .modal-title { font-size:1.7rem; margin-bottom:12px; line-height:1.3; }
-        .modal-spec { background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:4px; padding:10px 14px; font-size:0.88rem; color:var(--text-secondary); margin-bottom:10px; }
-        .modal-sizes { background:rgba(212,175,55,0.05); border:1px solid rgba(212,175,55,0.2); border-radius:4px; padding:10px 14px; font-size:0.88rem; color:var(--gold-secondary); margin-bottom:12px; }
-        .modal-desc { font-size:0.93rem; color:var(--text-secondary); font-weight:300; margin-bottom:20px; flex-grow:1; }
-        .modal-pricing { display:flex; align-items:baseline; gap:14px; border-top:1px solid rgba(255,255,255,0.05); padding-top:18px; margin-bottom:20px; }
-        .price-new { font-size:2rem; font-weight:900; }
-        .price-old { font-size:1.2rem; color:var(--text-muted); text-decoration:line-through; }
-        .booking-sub { border-top:1px solid rgba(255,255,255,0.06); padding-top:20px; }
-        .booking-sub h4 { font-size:1.1rem; color:var(--gold-secondary); margin-bottom:14px; }
-        @media(max-width:800px){ .detail-card{grid-template-columns:1fr; max-height:85vh;} .modal-img-side{max-height:240px;} .modal-info{padding:22px;} }
+        /* Search Bar */
+        .search-bar-wrap { max-width: 520px; margin: 0 auto 30px; position: relative; }
+        .search-bar-wrap input { width: 100%; padding: 12px 20px 12px 50px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 50px; color: var(--text-primary); font-family: var(--font-arabic); font-size: 0.95rem; transition: border-color 0.2s; }
+        .search-bar-wrap input:focus { outline: none; border-color: var(--gold-primary); }
+        .search-bar-wrap .s-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        /* Tabs */
+        .tabs-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
+        .tab-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 20px; font-size: 0.88rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); font-family: var(--font-arabic); }
+        .tab-btn:hover, .tab-btn.active { border-color: var(--gold-primary); color: var(--gold-primary); background: rgba(212,175,55,0.05); }
+
+        /* Grid */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 25px; min-height: 250px; }
+        .empty-state { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); }
+
+        /* Stars */
+        .stars { color: var(--gold-primary); font-size: 0.8rem; }
+        .stars .empty { color: var(--border-color); }
+
+        /* Modal */
+        .detail-modal { display: none; position: fixed; z-index: 2000; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .detail-modal.open { display: flex; }
+        .detail-card { background: var(--bg-card); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; max-width: 900px; width: 100%; display: grid; grid-template-columns: 1.1fr 1fr; position: relative; overflow: hidden; max-height: 90vh; }
+        .modal-close { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); border: none; color: #fff; font-size: 1.5rem; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .modal-close:hover { background: var(--gold-primary); color: #000; }
+        .modal-img-side { background: #0d0d0d; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .modal-img-side img { width: 100%; height: 100%; object-fit: cover; max-height: 90vh; }
+        .modal-info { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; }
+        .modal-cat { color: var(--gold-primary); font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; }
+        .modal-title { font-size: 1.5rem; margin: 6px 0 10px; line-height: 1.3; }
+        .modal-spec, .modal-sizes { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 4px; padding: 9px 13px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+        .modal-sizes { color: var(--gold-secondary); border-color: rgba(212,175,55,0.2); background: rgba(212,175,55,0.04); }
+        .modal-desc { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px; flex-grow: 1; }
+        .modal-stars { margin-bottom: 12px; }
+        .modal-pricing { display: flex; align-items: baseline; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; margin-bottom: 16px; }
+        .price-new { font-size: 1.9rem; font-weight: 900; }
+        .price-old { color: var(--text-muted); text-decoration: line-through; font-size: 1.1rem; }
+        .booking-section { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; }
+        .booking-section h4 { color: var(--gold-secondary); font-size: 1rem; margin-bottom: 12px; }
+
+        /* Coupon */
+        .coupon-row { display: flex; gap: 8px; margin-bottom: 10px; }
+        .coupon-row input { flex-grow: 1; }
+        .coupon-apply { background: none; border: 1px solid var(--gold-primary); color: var(--gold-primary); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-family: var(--font-arabic); font-size: 0.85rem; font-weight: 700; white-space: nowrap; transition: 0.2s; }
+        .coupon-apply:hover { background: var(--gold-primary); color: #000; }
+        .coupon-msg { font-size: 0.8rem; margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; display: none; }
+        .coupon-msg.ok { background: rgba(40,167,69,0.1); color: #28a745; display: block; }
+        .coupon-msg.err { background: rgba(220,53,69,0.1); color: #dc3545; display: block; }
+        .price-after-disc { color: #28a745; font-weight: 700; font-size: 0.9rem; }
+
+        /* Reviews */
+        .reviews-section { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; margin-top: 10px; }
+        .reviews-section h4 { color: var(--gold-secondary); font-size: 0.95rem; margin-bottom: 10px; }
+        .review-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .review-item:last-child { border-bottom: none; }
+        .review-name { font-weight: 700; font-size: 0.85rem; }
+        .review-text { font-size: 0.82rem; color: var(--text-secondary); margin-top: 3px; }
+        .review-form-toggle { background: none; border: 1px dashed var(--border-color); color: var(--text-muted); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-family: var(--font-arabic); font-size: 0.82rem; margin-top: 10px; width: 100%; }
+        .star-pick { display: flex; gap: 6px; margin: 8px 0; font-size: 1.4rem; cursor: pointer; }
+        .star-pick span { color: var(--border-color); transition: color 0.1s; }
+        .star-pick span.lit { color: var(--gold-primary); }
+
+        @media(max-width:800px){ .detail-card{grid-template-columns:1fr;} .modal-img-side{max-height:220px;} .modal-info{padding:20px;} }
     </style>
 </head>
 <body>
 
-    <header id="main-header">
-        <div class="container nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-title">Elnour for Steel</span>
-                <span class="logo-subtitle">النور للحديد والـديكـور</span>
-            </a>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="about.html">من نحن</a></li>
-                <li><a href="products.html" class="active">المنتجات</a></li>
-                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
-            </ul>
-            <div style="display:flex;align-items:center;gap:15px;">
-                <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
-                <div class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+<header id="main-header">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-title">Elnour for Steel</span>
+            <span class="logo-subtitle">النور للحديد والـديكـور</span>
+        </a>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="products.html" class="active">المنتجات</a></li>
+            <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:15px;">
+            <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+            <div class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="page-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">المعرض الرقمي</span>
+                <h2 class="section-title">اختر لوحتك الفنية الفاخرة</h2>
+            </div>
+
+            <!-- Search -->
+            <div class="search-bar-wrap">
+                <input type="text" id="search-input" placeholder="ابحث عن لوحة بالاسم أو القسم..." oninput="applyFilter()">
+                <i class="fa-solid fa-search s-icon"></i>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="tabs-container" id="tabs-container">
+                <button class="tab-btn active" data-cat="الكل">الكل</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="catalog-grid" id="products-grid">
+                <div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="color:var(--gold-primary);font-size:2rem;"></i><br><br>جاري التحميل...</div>
             </div>
         </div>
-    </header>
+    </section>
+</main>
 
-    <main>
-        <section class="page-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">المعرض الرقمي</span>
-                    <h2 class="section-title">اختر لوحتك الفنية الفاخرة</h2>
-                </div>
-
-                <!-- Category Tabs (populated dynamically) -->
-                <div class="tabs-container" id="tabs-container">
-                    <button class="tab-btn active" data-cat="الكل">الكل</button>
-                    <button class="tab-btn" data-cat="ماندالا">ماندالا</button>
-                    <button class="tab-btn" data-cat="ساعات حائط">ساعات حائط</button>
-                    <button class="tab-btn" data-cat="جداريات طبيعة">جداريات طبيعة</button>
-                    <button class="tab-btn" data-cat="تجريد وهندسة">تجريد وهندسة</button>
-                    <button class="tab-btn" data-cat="خط عربي وإسلامي">خط عربي وإسلامي</button>
-                </div>
-
-                <div class="catalog-grid" id="products-grid">
-                    <div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="color:var(--gold-primary);font-size:2rem;"></i><br><br>جاري تحميل المعرض...</div>
+<!-- Product Detail + Booking Modal -->
+<div id="detail-modal" class="detail-modal">
+    <div class="detail-card">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal-img-side">
+            <img id="modal-img" src="" alt="">
+        </div>
+        <div class="modal-info">
+            <div>
+                <div class="modal-cat" id="modal-cat"></div>
+                <h3 class="modal-title" id="modal-title"></h3>
+                <div class="modal-spec" id="modal-spec"></div>
+                <div class="modal-sizes" id="modal-sizes" style="display:none;"></div>
+                <div class="modal-stars" id="modal-stars"></div>
+                <p class="modal-desc" id="modal-desc"></p>
+                <div class="modal-pricing">
+                    <span class="price-new" id="modal-price-new"></span>
+                    <span style="color:var(--gold-primary);font-size:0.9rem;">جنيه</span>
+                    <span class="price-old" id="modal-price-old" style="display:none;"></span>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <!-- Product Details + Booking Modal -->
-    <div id="detail-modal" class="detail-modal">
-        <div class="detail-card">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <div class="modal-img-side">
-                <img id="modal-img" src="" alt="">
-            </div>
-            <div class="modal-info">
-                <div>
-                    <span class="modal-cat" id="modal-cat"></span>
-                    <h3 class="modal-title" id="modal-title"></h3>
-                    <div class="modal-spec" id="modal-spec"></div>
-                    <div class="modal-sizes" id="modal-sizes" style="display:none;"></div>
-                    <p class="modal-desc" id="modal-desc"></p>
-                    <div class="modal-pricing">
-                        <span class="price-new" id="modal-price-new"></span>
-                        <span style="color:var(--gold-primary);font-size:0.9rem;">جنيه</span>
-                        <span class="price-old" id="modal-price-old" style="display:none;"></span>
+            <!-- Booking Form -->
+            <div class="booking-section">
+                <h4>احجز هذه اللوحة الآن</h4>
+                <form id="booking-form" onsubmit="submitBooking(event)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div class="form-group" style="margin-bottom:8px;">
+                            <label class="form-label" style="font-size:0.78rem;">الاسم *</label>
+                            <input type="text" id="b-name" class="form-input" style="padding:8px;" placeholder="اسمك الكريم" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom:8px;">
+                            <label class="form-label" style="font-size:0.78rem;">الواتساب *</label>
+                            <input type="tel" id="b-phone" class="form-input" style="padding:8px;" placeholder="01xxxxxxxxx" required>
+                        </div>
                     </div>
-                </div>
-                <div class="booking-sub">
-                    <h4>احجز هذا المنتج الآن</h4>
-                    <form id="booking-form" onsubmit="submitBooking(event)">
-                        <div class="form-group" style="margin-bottom:10px;">
-                            <label class="form-label" style="font-size:0.8rem;">الاسم الكامل *</label>
-                            <input type="text" id="b-name" class="form-input" style="padding:8px 12px;" placeholder="اسمك الكريم" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom:10px;">
-                            <label class="form-label" style="font-size:0.8rem;">رقم الواتساب *</label>
-                            <input type="tel" id="b-phone" class="form-input" style="padding:8px 12px;" placeholder="01xxxxxxxxx" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom:10px;">
-                            <label class="form-label" style="font-size:0.8rem;">المحافظة *</label>
-                            <select id="b-gov" class="form-input" style="padding:8px 12px;" required>
-                                <option value="" disabled selected>اختر محافظتك</option>
-                                <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>القليوبية</option><option>أخرى</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-bottom:14px;">
-                            <label class="form-label" style="font-size:0.8rem;">ملاحظات (مقاس / لون خاص)</label>
-                            <textarea id="b-notes" class="form-input" style="padding:8px 12px;" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
-                        </div>
-                        <button type="submit" class="btn-submit" id="book-btn" style="padding:10px;">احجز الآن وسجّل طلبك</button>
-                    </form>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label class="form-label" style="font-size:0.78rem;">المحافظة *</label>
+                        <select id="b-gov" class="form-input" style="padding:8px;" required>
+                            <option value="" disabled selected>اختر محافظتك</option>
+                            <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                            <option>القليوبية</option><option>المنوفية</option><option>البحيرة</option>
+                            <option>الغربية</option><option>الشرقية</option><option>الدقهلية</option>
+                            <option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option>
+                            <option>أسيوط</option><option>سوهاج</option><option>قنا</option>
+                            <option>الأقصر</option><option>أسوان</option><option>أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label class="form-label" style="font-size:0.78rem;">ملاحظات (مقاس / لون خاص)</label>
+                        <textarea id="b-notes" class="form-input" style="padding:8px;" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
+                    </div>
+
+                    <!-- Coupon Code -->
+                    <label class="form-label" style="font-size:0.78rem;">كود خصم (اختياري)</label>
+                    <div class="coupon-row">
+                        <input type="text" id="coupon-input" class="form-input" style="padding:8px;" placeholder="مثال: ELNOUR10">
+                        <button type="button" class="coupon-apply" onclick="applyCoupon()">تطبيق</button>
+                    </div>
+                    <div id="coupon-msg" class="coupon-msg"></div>
+
+                    <button type="submit" class="btn-submit" id="book-btn" style="padding:10px;margin-top:4px;">
+                        <i class="fa-solid fa-check"></i> تأكيد الحجز
+                    </button>
+                </form>
+            </div>
+
+            <!-- Reviews -->
+            <div class="reviews-section">
+                <h4><i class="fa-solid fa-star" style="color:var(--gold-primary);"></i> تقييمات العملاء</h4>
+                <div id="reviews-list"><div style="color:var(--text-muted);font-size:0.82rem;">لا توجد تقييمات بعد</div></div>
+                <button class="review-form-toggle" onclick="toggleReviewForm()" id="rev-toggle">
+                    <i class="fa-solid fa-plus"></i> أضف تقييمك
+                </button>
+                <div id="review-form-wrap" style="display:none;margin-top:10px;">
+                    <div class="star-pick" id="star-pick">
+                        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+                    </div>
+                    <input type="text" id="rev-name" class="form-input" style="padding:8px;margin-bottom:8px;" placeholder="اسمك">
+                    <textarea id="rev-text" class="form-input" style="padding:8px;margin-bottom:8px;" rows="2" placeholder="اكتب تقييمك هنا..."></textarea>
+                    <button onclick="submitReview()" class="btn-submit" style="padding:8px;">إرسال التقييم</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="https://wa.me/201114323218" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <footer>
-        <div class="container">
-            <div class="footer-logo">Elnour for Steel</div>
-            <p class="footer-desc">لوحات معدنية مقطوعة بالليزر بخامات فاخرة تدوم للأبد.</p>
-            <div class="footer-contacts">
-                <a href="https://wa.me/201114323218" class="footer-contact-item" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01114323218</a>
-                <a href="https://wa.me/201118182424" class="footer-contact-item" target="_blank"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> 01118182424</a>
-            </div>
-            <div class="social-links">
-                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-            </div>
-            <p class="copyright">&copy; 2026 النور للحديد والديكور. جميع الحقوق محفوظة.</p>
+<footer>
+    <div class="container">
+        <div class="footer-logo">Elnour for Steel</div>
+        <p class="footer-desc">لوحات معدنية مقطوعة بالليزر بخامات فاخرة تدوم للأبد.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://wa.me/201114323218" class="social-link" target="_blank" style="color:#25D366;"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
-    </footer>
+        <p class="copyright">&copy; 2026 النور للحديد والديكور. جميع الحقوق محفوظة.</p>
+    </div>
+</footer>
 
-    <script>
-    // ============================================================
-    // CONFIG
-    // ============================================================
-    const SUPA_URL  = "https://tsdkhsgkqwaewfgldquj.supabase.co";
-    const SUPA_KEY  = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SUPA_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+const SUPA_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
 
-    // ============================================================
-    // STATIC FALLBACK (always available if Supabase is slow/down)
-    // ============================================================
-    const STATIC_PRODUCTS = [
-        {id:1,  title:'لوحة الماندالا الإمبراطورية',    category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود مطفي',        sizes:'100×100 سم | 80×80 سم',  description:'تصميم هندسي متماثل يعكس الجمال المعماري العريق بدقة ليزر عالية.',           image_url:'138415094_3570390389744771_4471194102370214083_n.jpg'},
-        {id:2,  title:'شجرة الحياة العصرية',             category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود مطفي',        sizes:'120×60 سم | 100×50 سم',  description:'تعبر عن النماء بتفاصيل غصون وأوراق دقيقة للغاية.',                         image_url:'147027646_3634796373304172_1994186618855657670_n.jpg'},
-        {id:3,  title:'تجريد هندسي فاخر',                category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | أسود وذهبي',         sizes:'90×90 سم | 70×70 سم',    description:'مزيج راقٍ من المربعات المتداخلة لأروقة الشركات الكبرى.',                   image_url:'147048085_3637165356400607_8500838532714615099_n.jpg'},
-        {id:4,  title:'لوحة أوراق النخيل النحاسية',     category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | أسود كربوني',         sizes:'ثلاثية 60×40 سم',         description:'ثلاثية مميزة تمنح الجدار شعوراً بالطبيعة والحيوية.',                       image_url:'147461279_3637165129733963_8065104657155936065_n.jpg'},
-        {id:5,  title:'رسم الخط العربي الفاخر',          category:'خط عربي وإسلامي', price:3600, original_price:5600, specifications:'حديد 3 مم | ذهبي ملكي',           sizes:'100×50 سم | 80×40 سم',   description:'آيات قرآنية بخطوط ثلث وديواني بتناغم رائع.',                               image_url:'147761050_3637165273067282_1986388173094055197_n.jpg'},
-        {id:6,  title:'أوريجامي معدني ثلاثي الأبعاد',   category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'80×80 سم | 60×60 سم',    description:'تصميم هندسي متقاطع يوحي بالعمق والمستقبلية.',                              image_url:'148077638_3644916748958801_578184065420658285_n.jpg'},
-        {id:7,  title:'ساعة حائط ليزر كلاسيك',          category:'ساعات حائط',       price:3600, original_price:5600, specifications:'حديد 2.5 مم | ذهبي عتيق',        sizes:'قطر 60 سم | قطر 80 سم',  description:'تجمع بين دقة الوقت والديكور الجداري المعدني المبهر.',                      image_url:'149283602_3657800764337066_3353076662042815228_n.jpg'},
-        {id:8,  title:'بوابة الماندالا المضيئة',         category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود ونحاسي',      sizes:'120×60 سم | 100×50 سم',  description:'نصف ماندالا متقاطعة لمداخل الفيلات والصالونات الكبرى.',                   image_url:'149285864_3657799814337161_851325079872750151_n.jpg'},
-        {id:9,  title:'لوحة غابة الصنوبر المعدنية',     category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'ثلاثية 50×150 سم',        description:'تجسد هدوء الغابة في لوحة جدارية ثلاثية التجميع.',                          image_url:'149304511_3657799997670476_4523278991004266834_n.jpg'},
-        {id:10, title:'بوصلة الجدران الفاخرة',           category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود وفولاذ',      sizes:'80×80 سم | 100×100 سم',  description:'تصميم الاتجاهات يعطي انطباعاً فريداً لمدخل المنزل.',                      image_url:'149460830_3657797761004033_2264862436402025805_n.jpg'},
-        {id:11, title:'لوحة أجنحة الملاك الذهبية',      category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي متلألئ',         sizes:'ثنائية 60×80 سم',         description:'ثنائية فاخرة تبرز الدقة الملائكية في الريش المعدني.',                     image_url:'149823765_3657798654337277_3023586860438066297_n.jpg'},
-        {id:12, title:'لوحة التماثل الإسلامي المعاصر',  category:'خط عربي وإسلامي', price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'90×90 سم | 70×70 سم',    description:'أشكال مستوحاة من الأرابيسك العتيق برؤية عصرية.',                          image_url:'150581359_3657800951003714_5774651280782390148_n.jpg'},
-        {id:13, title:'لوحة أوراق الخريف الذهبية',      category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي برونزي',         sizes:'100×50 سم | 80×40 سم',   description:'تصوير فني لتساقط الأوراق يضفي دفئاً ورونقاً.',                            image_url:'150896222_3657800674337075_2627193728236000839_n.jpg'},
-        {id:14, title:'ماندالا زهرة اللوتس',             category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود فاخر',        sizes:'قطر 80 سم | قطر 100 سم', description:'تعبير عن النقاء في انحناءات بالغة التعقيد والجمال.',                       image_url:'138415094_3570390389744771_4471194102370214083_n.jpg'},
-        {id:15, title:'ساعة فلكية ذهبية فاخرة',         category:'ساعات حائط',       price:3600, original_price:5600, specifications:'حديد 2.5 مم | ذهبي مقاوم للخدش', sizes:'قطر 80 سم | قطر 100 سم', description:'يدمج النجوم والمسارات الفلكية مع الأرقام الرومانية المذهبة.',             image_url:'177246292_3853255551458252_4296967141844374899_n.jpg'},
-        {id:16, title:'لوحة خريطة العالم المعدنية',     category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'120×80 سم | 100×65 سم',  description:'لعشاق السفر بمظهر ثلاثي الأبعاد يعلو قطع الأثاث.',                       image_url:'177259325_3853255114791629_3146672698085540784_n.jpg'},
-        {id:17, title:'المجموعة الهندسية المتداخلة',    category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | أسود برونزي',         sizes:'ثلاثية 40×120 سم',        description:'ترابط هندسي معقد يجذب الأبصار في غرف الجلوس.',                            image_url:'177522937_3853255888124885_1799276773283670991_n.jpg'},
-        {id:18, title:'أبراج وكواكب معدنية',             category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود وذهبي',       sizes:'100×100 سم | 80×80 سم',  description:'تجمع الخطوط الفلكية والكواكب في تحفة لعشاق الفلك.',                        image_url:'177609579_3853255728124901_8842065650060331883_n.jpg'},
-        {id:19, title:'لوحة السنابل والخيرات',           category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي كلاسيكي',       sizes:'100×60 سم | 80×50 سم',   description:'تفاصيل حقل القمح تتمايل بجمال على جدران صالونك الدافئ.',                   image_url:'177778125_3853255384791602_4698410874283073780_n.jpg'},
-        {id:20, title:'تجريد أوراق الموز الاستوائية',   category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | أسود مع لمعة حرارية', sizes:'120×80 سم | 90×60 سم',   description:'عصرية وأنيقة للغاية للتصاميم الاسكندنافية والمعاصرة.',                     image_url:'181091750_3881372841979856_2988810552694393247_n.jpg'}
-    ];
+// WhatsApp notification for admin (CallMeBot)
+// To activate: send "I allow callmebot to send me messages" to +34644597069 on WhatsApp
+// Then set your phone and API key below:
+const ADMIN_WHATSAPP_PHONE = "201114323218"; // رقم الأدمن بدون +
+const ADMIN_WHATSAPP_APIKEY = ""; // ضع مفتاح CallMeBot هنا بعد التفعيل
 
-    let allProducts  = [];
-    let activeFilter = 'الكل';
-    let selectedProd = null;
-    let dbClient     = null;
+// ============================================================
+// STATIC FALLBACK PRODUCTS
+// ============================================================
+const STATIC_PRODUCTS = [
+    {id:1,  title:'لوحة الماندالا الإمبراطورية',    category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود مطفي',        sizes:'100×100 سم | 80×80 سم',  description:'تصميم هندسي متماثل يعكس الجمال المعماري العريق بدقة ليزر عالية.',           image_url:'138415094_3570390389744771_4471194102370214083_n.jpg'},
+    {id:2,  title:'شجرة الحياة العصرية',             category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود مطفي',        sizes:'120×60 سم | 100×50 سم',  description:'تعبر عن النماء بتفاصيل غصون وأوراق دقيقة للغاية.',                         image_url:'147027646_3634796373304172_1994186618855657670_n.jpg'},
+    {id:3,  title:'تجريد هندسي فاخر',                category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | أسود وذهبي',         sizes:'90×90 سم | 70×70 سم',    description:'مزيج راقٍ من المربعات المتداخلة لأروقة الشركات الكبرى.',                   image_url:'147048085_3637165356400607_8500838532714615099_n.jpg'},
+    {id:4,  title:'لوحة أوراق النخيل النحاسية',     category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | أسود كربوني',         sizes:'ثلاثية 60×40 سم',         description:'ثلاثية مميزة تمنح الجدار شعوراً بالطبيعة والحيوية.',                       image_url:'147461279_3637165129733963_8065104657155936065_n.jpg'},
+    {id:5,  title:'رسم الخط العربي الفاخر',          category:'خط عربي وإسلامي', price:3600, original_price:5600, specifications:'حديد 3 مم | ذهبي ملكي',           sizes:'100×50 سم | 80×40 سم',   description:'آيات قرآنية بخطوط ثلث وديواني بتناغم رائع.',                               image_url:'147761050_3637165273067282_1986388173094055197_n.jpg'},
+    {id:6,  title:'أوريجامي معدني ثلاثي الأبعاد',   category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'80×80 سم | 60×60 سم',    description:'تصميم هندسي متقاطع يوحي بالعمق والمستقبلية.',                              image_url:'148077638_3644916748958801_578184065420658285_n.jpg'},
+    {id:7,  title:'ساعة حائط ليزر كلاسيك',          category:'ساعات حائط',       price:3600, original_price:5600, specifications:'حديد 2.5 مم | ذهبي عتيق',        sizes:'قطر 60 سم | قطر 80 سم',  description:'تجمع بين دقة الوقت والديكور الجداري المعدني المبهر.',                      image_url:'149283602_3657800764337066_3353076662042815228_n.jpg'},
+    {id:8,  title:'بوابة الماندالا المضيئة',         category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود ونحاسي',      sizes:'120×60 سم | 100×50 سم',  description:'نصف ماندالا متقاطعة لمداخل الفيلات والصالونات الكبرى.',                   image_url:'149285864_3657799814337161_851325079872750151_n.jpg'},
+    {id:9,  title:'لوحة غابة الصنوبر المعدنية',     category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'ثلاثية 50×150 سم',        description:'تجسد هدوء الغابة في لوحة جدارية ثلاثية التجميع.',                          image_url:'149304511_3657799997670476_4523278991004266834_n.jpg'},
+    {id:10, title:'بوصلة الجدران الفاخرة',           category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود وفولاذ',      sizes:'80×80 سم | 100×100 سم',  description:'تصميم الاتجاهات يعطي انطباعاً فريداً لمدخل المنزل.',                      image_url:'149460830_3657797761004033_2264862436402025805_n.jpg'},
+    {id:11, title:'لوحة أجنحة الملاك الذهبية',      category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي متلألئ',         sizes:'ثنائية 60×80 سم',         description:'ثنائية فاخرة تبرز الدقة الملائكية في الريش المعدني.',                     image_url:'149823765_3657798654337277_3023586860438066297_n.jpg'},
+    {id:12, title:'لوحة التماثل الإسلامي المعاصر',  category:'خط عربي وإسلامي', price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'90×90 سم | 70×70 سم',    description:'أشكال مستوحاة من الأرابيسك العتيق برؤية عصرية.',                          image_url:'150581359_3657800951003714_5774651280782390148_n.jpg'},
+    {id:13, title:'لوحة أوراق الخريف الذهبية',      category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي برونزي',         sizes:'100×50 سم | 80×40 سم',   description:'تصوير فني لتساقط الأوراق يضفي دفئاً ورونقاً.',                            image_url:'150896222_3657800674337075_2627193728236000839_n.jpg'},
+    {id:14, title:'ماندالا زهرة اللوتس',             category:'ماندالا',           price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود فاخر',        sizes:'قطر 80 سم | قطر 100 سم', description:'تعبير عن النقاء في انحناءات بالغة التعقيد والجمال.',                       image_url:'138415094_3570390389744771_4471194102370214083_n.jpg'},
+    {id:15, title:'ساعة فلكية ذهبية فاخرة',         category:'ساعات حائط',       price:3600, original_price:5600, specifications:'حديد 2.5 مم | ذهبي مقاوم للخدش', sizes:'قطر 80 سم | قطر 100 سم', description:'يدمج النجوم والمسارات الفلكية مع الأرقام الرومانية المذهبة.',             image_url:'177246292_3853255551458252_4296967141844374899_n.jpg'},
+    {id:16, title:'لوحة خريطة العالم المعدنية',     category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود داكن',        sizes:'120×80 سم | 100×65 سم',  description:'لعشاق السفر بمظهر ثلاثي الأبعاد يعلو قطع الأثاث.',                       image_url:'177259325_3853255114791629_3146672698085540784_n.jpg'},
+    {id:17, title:'المجموعة الهندسية المتداخلة',    category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2 مم | أسود برونزي',         sizes:'ثلاثية 40×120 سم',        description:'ترابط هندسي معقد يجذب الأبصار في غرف الجلوس.',                            image_url:'177522937_3853255888124885_1799276773283670991_n.jpg'},
+    {id:18, title:'أبراج وكواكب معدنية',             category:'تجريد وهندسة',     price:3600, original_price:5600, specifications:'حديد 2.5 مم | أسود وذهبي',       sizes:'100×100 سم | 80×80 سم',  description:'تجمع الخطوط الفلكية والكواكب في تحفة لعشاق الفلك.',                        image_url:'177609579_3853255728124901_8842065650060331883_n.jpg'},
+    {id:19, title:'لوحة السنابل والخيرات',           category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | ذهبي كلاسيكي',       sizes:'100×60 سم | 80×50 سم',   description:'تفاصيل حقل القمح تتمايل بجمال على جدران صالونك الدافئ.',                   image_url:'177778125_3853255384791602_4698410874283073780_n.jpg'},
+    {id:20, title:'تجريد أوراق الموز الاستوائية',   category:'جداريات طبيعة',    price:3600, original_price:5600, specifications:'حديد 2 مم | أسود مع لمعة حرارية', sizes:'120×80 سم | 90×60 سم',   description:'عصرية وأنيقة للغاية للتصاميم الاسكندنافية والمعاصرة.',                     image_url:'181091750_3881372841979856_2988810552694393247_n.jpg'}
+];
 
-    // ============================================================
-    // BOOT: Show static products immediately, then refresh from DB
-    // ============================================================
-    (function boot() {
-        // 1. Show static products right away so page is never empty
-        allProducts = STATIC_PRODUCTS;
-        renderProducts();
-        buildTabs();
+// ============================================================
+// STATE
+// ============================================================
+let allProducts   = [];
+let activeFilter  = 'الكل';
+let searchQuery   = '';
+let selectedProd  = null;
+let selectedRating = 0;
+let appliedCoupon = null;
+let dbClient      = null;
 
-        // 2. Try to connect Supabase in background
-        try {
-            dbClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-            fetchFromDB();
-        } catch(e) {
-            console.warn('Supabase not available, using static data.', e.message);
+// ============================================================
+// BOOT
+// ============================================================
+(function boot() {
+    allProducts = STATIC_PRODUCTS;
+    renderProducts();
+    buildTabs();
+
+    // Check URL for product ID (SEO deep link)
+    const params = new URLSearchParams(window.location.search);
+    const idParam  = params.get('id');
+    const catParam = params.get('category');
+    if (catParam) { activeFilter = catParam; applyFilter(); }
+
+    try {
+        dbClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        fetchFromDB(idParam);
+    } catch(e) {
+        console.warn('Supabase unavailable, using static data.', e.message);
+        if (idParam) openModal(idParam);
+    }
+})();
+
+async function fetchFromDB(openId) {
+    try {
+        const { data, error } = await dbClient.from('products').select('*').order('created_at');
+        if (error) throw error;
+        if (data && data.length > 0) {
+            allProducts = data.map(p => ({...p, image_url: p.image_url ? p.image_url.replace(/^\.\//, '') : ''}));
+            renderProducts();
+            buildTabs();
         }
-    })();
+        if (openId) openModal(openId);
+    } catch(e) {
+        console.warn('DB fetch failed:', e.message);
+        if (openId) openModal(openId);
+    }
+}
 
-    async function fetchFromDB() {
-        try {
-            const { data, error } = await dbClient
-                .from('products')
-                .select('*')
-                .order('created_at');
+// ============================================================
+// RENDER & FILTER
+// ============================================================
+function getBaseUrl() {
+    return window.location.href.replace(/[?#].*/, '').replace(/\/[^/]*$/, '/');
+}
 
-            if (error) throw error;
-            if (data && data.length > 0) {
-                // Fix image URLs from DB if they start with ./
-                allProducts = data.map(p => ({
-                    ...p,
-                    image_url: p.image_url ? p.image_url.replace(/^\.\//, '') : ''
-                }));
-                renderProducts();
-                buildTabs();
-                console.log('Products loaded from Supabase DB:', allProducts.length);
-            }
-        } catch(e) {
-            console.warn('DB fetch failed, keeping static data:', e.message);
-        }
+function getImgSrc(p) {
+    if (!p.image_url) return '';
+    return p.image_url.startsWith('http') ? p.image_url : getBaseUrl() + p.image_url;
+}
+
+function starsHTML(rating, total) {
+    if (!total) return '';
+    let s = '';
+    for (let i=1; i<=5; i++) s += `<i class="fa-solid fa-star ${i<=Math.round(rating)?'':'empty'}"></i>`;
+    return `<span class="stars">${s}</span> <span style="font-size:0.75rem;color:var(--text-muted);">(${total})</span>`;
+}
+
+function applyFilter() {
+    searchQuery = document.getElementById('search-input').value.toLowerCase();
+    renderProducts();
+}
+
+function renderProducts() {
+    const grid = document.getElementById('products-grid');
+    let list = activeFilter === 'الكل' ? allProducts : allProducts.filter(p => p.category === activeFilter);
+    if (searchQuery) list = list.filter(p => p.title.toLowerCase().includes(searchQuery) || (p.category||'').toLowerCase().includes(searchQuery));
+
+    if (list.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-search" style="font-size:2rem;color:var(--gold-primary);"></i><br><br>لا توجد نتائج مطابقة</div>';
+        return;
+    }
+    grid.innerHTML = list.map(p => {
+        const img = getImgSrc(p);
+        const avgRating = p.avg_rating || 0;
+        const ratingHTML = avgRating ? starsHTML(avgRating, p.review_count || 0) : '';
+        return `<div class="product-card" onclick="openModal(${p.id})" style="cursor:pointer;">
+            <div class="product-img-wrapper">
+                ${img ? `<img src="${img}" alt="${p.title}" class="product-img" loading="lazy" onerror="this.parentElement.innerHTML='<div style=width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem><i class=fa-solid fa-image></i></div>'">` 
+                      : `<div style="width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;"><i class="fa-solid fa-image"></i></div>`}
+                <div class="product-overlay"><button class="view-btn"><i class="fa-solid fa-eye"></i> التفاصيل</button></div>
+            </div>
+            <div class="product-info">
+                <div>
+                    <span style="font-size:0.7rem;color:var(--gold-secondary);font-weight:700;">${p.category}</span>
+                    <h3 class="product-title">${p.title}</h3>
+                    ${ratingHTML ? `<div style="margin:3px 0;">${ratingHTML}</div>` : ''}
+                    <div class="product-price-row">
+                        <span class="product-price-new">${Number(p.price).toLocaleString()} جنيه</span>
+                        ${p.original_price ? `<span class="product-price-old">${Number(p.original_price).toLocaleString()}</span>` : ''}
+                    </div>
+                </div>
+                <div class="product-meta">
+                    <span class="product-spec" style="font-size:0.73rem;">${p.specifications||''}</span>
+                    <button class="order-btn-sm">طلب</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function buildTabs() {
+    const cats = [...new Set(allProducts.map(p => p.category))].filter(Boolean);
+    const container = document.getElementById('tabs-container');
+    container.innerHTML =
+        `<button class="tab-btn ${activeFilter==='الكل'?'active':''}" data-cat="الكل">الكل (${allProducts.length})</button>` +
+        cats.map(c => {
+            const count = allProducts.filter(p => p.category === c).length;
+            return `<button class="tab-btn ${activeFilter===c?'active':''}" data-cat="${c}">${c} (${count})</button>`;
+        }).join('');
+    container.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeFilter = btn.dataset.cat;
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            searchQuery = '';
+            document.getElementById('search-input').value = '';
+            renderProducts();
+        });
+    });
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+async function openModal(id) {
+    selectedProd = allProducts.find(p => p.id == id);
+    if (!selectedProd) return;
+
+    // Update URL for SEO / shareable link
+    const url = new URL(window.location);
+    url.searchParams.set('id', id);
+    window.history.pushState({}, '', url);
+
+    // Fill modal
+    const img = getImgSrc(selectedProd);
+    document.getElementById('modal-img').src   = img;
+    document.getElementById('modal-img').alt   = selectedProd.title;
+    document.getElementById('modal-cat').innerText   = selectedProd.category;
+    document.getElementById('modal-title').innerText = selectedProd.title;
+    document.getElementById('modal-spec').innerText  = selectedProd.specifications || 'حديد ممتاز مقاوم للصدأ';
+    document.getElementById('modal-desc').innerText  = selectedProd.description || '';
+    document.getElementById('modal-price-new').innerText = Number(selectedProd.price).toLocaleString();
+
+    const sizesEl = document.getElementById('modal-sizes');
+    if (selectedProd.sizes) { sizesEl.style.display='block'; sizesEl.innerHTML=`<i class="fa-solid fa-ruler-combined" style="margin-left:8px;"></i> المقاسات: ${selectedProd.sizes}`; }
+    else { sizesEl.style.display='none'; }
+
+    const oldEl = document.getElementById('modal-price-old');
+    if (selectedProd.original_price) { oldEl.style.display='inline'; oldEl.innerText=Number(selectedProd.original_price).toLocaleString()+' جنيه'; }
+    else { oldEl.style.display='none'; }
+
+    // Reset coupon state
+    appliedCoupon = null;
+    document.getElementById('coupon-input').value = '';
+    document.getElementById('coupon-msg').className = 'coupon-msg';
+    document.getElementById('coupon-msg').innerText = '';
+
+    document.getElementById('detail-modal').classList.add('open');
+    document.getElementById('booking-form').reset();
+    document.getElementById('review-form-wrap').style.display = 'none';
+    resetStarPick();
+
+    // Load reviews
+    loadReviews(id);
+
+    // Update page title for SEO
+    document.title = `${selectedProd.title} | النور للحديد`;
+}
+
+function closeModal() {
+    document.getElementById('detail-modal').classList.remove('open');
+    selectedProd = null;
+    appliedCoupon = null;
+    const url = new URL(window.location);
+    url.searchParams.delete('id');
+    window.history.pushState({}, '', url);
+    document.title = 'معرض المنتجات | النور للحديد';
+}
+
+window.addEventListener('click', e => {
+    if (e.target === document.getElementById('detail-modal')) closeModal();
+});
+
+// ============================================================
+// COUPON
+// ============================================================
+async function applyCoupon() {
+    const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+    const msg  = document.getElementById('coupon-msg');
+    if (!code) { msg.className='coupon-msg err'; msg.innerText='يرجى إدخال كود الخصم'; return; }
+    if (!dbClient) { msg.className='coupon-msg err'; msg.innerText='غير متصل بقاعدة البيانات'; return; }
+
+    const { data, error } = await dbClient.from('coupons')
+        .select('*').eq('code', code).eq('is_active', true).single();
+
+    if (error || !data) {
+        msg.className='coupon-msg err';
+        msg.innerText='كود الخصم غير صحيح أو منتهي الصلاحية';
+        appliedCoupon = null;
+        return;
     }
 
-    // ============================================================
-    // RENDER PRODUCTS
-    // ============================================================
-    function renderProducts() {
-        const grid = document.getElementById('products-grid');
-        if (!grid) return;
+    if (data.valid_until && new Date(data.valid_until) < new Date()) {
+        msg.className='coupon-msg err';
+        msg.innerText='انتهت صلاحية هذا الكود';
+        return;
+    }
+    if (data.max_uses && data.current_uses >= data.max_uses) {
+        msg.className='coupon-msg err';
+        msg.innerText='تم استنفاد هذا الكود';
+        return;
+    }
 
-        const list = activeFilter === 'الكل'
-            ? allProducts
-            : allProducts.filter(p => p.category === activeFilter);
+    appliedCoupon = data;
+    const basePrice  = selectedProd ? selectedProd.price : 0;
+    const discount   = data.discount_type === 'percentage' ? basePrice * data.discount_value / 100 : data.discount_value;
+    const finalPrice = basePrice - discount;
 
-        if (list.length === 0) {
-            grid.innerHTML = '<div class="empty-state">لا توجد منتجات في هذا القسم حالياً.</div>';
+    msg.className='coupon-msg ok';
+    msg.innerHTML=`✅ خصم ${data.discount_type==='percentage' ? data.discount_value+'%' : data.discount_value+' جنيه'} — 
+        السعر بعد الخصم: <span class="price-after-disc">${finalPrice.toLocaleString()} جنيه</span>`;
+}
+
+// ============================================================
+// BOOKING
+// ============================================================
+async function submitBooking(e) {
+    e.preventDefault();
+    if (!selectedProd) return;
+    const btn = document.getElementById('book-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التسجيل...';
+    btn.disabled  = true;
+
+    const basePrice   = selectedProd.price;
+    const discount    = appliedCoupon
+        ? (appliedCoupon.discount_type==='percentage' ? basePrice*appliedCoupon.discount_value/100 : appliedCoupon.discount_value)
+        : 0;
+    const finalPrice  = basePrice - discount;
+
+    const payload = {
+        customer_name: document.getElementById('b-name').value,
+        whatsapp:      document.getElementById('b-phone').value,
+        governorate:   document.getElementById('b-gov').value,
+        product_title: selectedProd.title,
+        notes:         document.getElementById('b-notes').value,
+        coupon_code:   appliedCoupon ? appliedCoupon.code : '',
+        discount_amount: discount,
+        final_price:   finalPrice,
+        status:        'جديد'
+    };
+
+    // 1. Save to Supabase
+    if (dbClient) {
+        try {
+            const { error } = await dbClient.from('bookings').insert([payload]);
+            if (error) throw error;
+            // Increment coupon usage
+            if (appliedCoupon) {
+                await dbClient.from('coupons').update({ current_uses: appliedCoupon.current_uses + 1 }).eq('id', appliedCoupon.id);
+            }
+        } catch(err) { console.warn('Supabase booking save failed:', err.message); }
+    }
+
+    // 2. Formspree email
+    try {
+        const fd = new FormData();
+        fd.append('الاسم', payload.customer_name);
+        fd.append('الواتساب', payload.whatsapp);
+        fd.append('المحافظة', payload.governorate);
+        fd.append('المنتج', payload.product_title);
+        fd.append('السعر', finalPrice.toLocaleString() + ' جنيه');
+        fd.append('كود خصم', payload.coupon_code || 'لا يوجد');
+        fd.append('ملاحظات', payload.notes);
+        await fetch('https://formspree.io/f/xzdrvblp', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+    } catch(e) {}
+
+    // 3. WhatsApp notification to admin via CallMeBot
+    if (ADMIN_WHATSAPP_APIKEY) {
+        try {
+            const msg = encodeURIComponent(
+                `🔔 طلب جديد على موقع النور للحديد!\n` +
+                `👤 الاسم: ${payload.customer_name}\n` +
+                `📱 واتساب: ${payload.whatsapp}\n` +
+                `📍 المحافظة: ${payload.governorate}\n` +
+                `🖼️ المنتج: ${payload.product_title}\n` +
+                `💰 السعر: ${finalPrice.toLocaleString()} جنيه` +
+                (payload.coupon_code ? `\n🏷️ خصم كود: ${payload.coupon_code}` : '') +
+                (payload.notes ? `\n📝 ملاحظات: ${payload.notes}` : '')
+            );
+            await fetch(`https://api.callmebot.com/whatsapp.php?phone=${ADMIN_WHATSAPP_PHONE}&text=${msg}&apikey=${ADMIN_WHATSAPP_APIKEY}`);
+        } catch(e) { console.warn('WhatsApp notification failed:', e); }
+    }
+
+    // Redirect to thank you
+    const base = getBaseUrl();
+    window.location.href = `${base}thankyou.html?name=${encodeURIComponent(payload.customer_name)}&product=${encodeURIComponent(payload.product_title)}`;
+}
+
+// ============================================================
+// REVIEWS
+// ============================================================
+async function loadReviews(productId) {
+    const list = document.getElementById('reviews-list');
+    list.innerHTML = '<div style="color:var(--text-muted);font-size:0.8rem;">جاري التحميل...</div>';
+
+    if (!dbClient) {
+        list.innerHTML = '<div style="color:var(--text-muted);font-size:0.82rem;">لا توجد تقييمات بعد</div>';
+        return;
+    }
+    try {
+        const { data } = await dbClient.from('reviews')
+            .select('*').eq('product_id', productId).eq('is_approved', true).order('created_at', {ascending:false}).limit(5);
+
+        if (!data || data.length === 0) {
+            list.innerHTML = '<div style="color:var(--text-muted);font-size:0.82rem;">لا توجد تقييمات بعد — كن أول من يقيّم!</div>';
             return;
         }
-
-        // Determine base URL for images
-        const base = window.location.href.replace(/\/[^/]*$/, '/');
-
-        grid.innerHTML = list.map(p => {
-            const imgSrc = p.image_url
-                ? (p.image_url.startsWith('http') ? p.image_url : base + p.image_url)
-                : '';
-            return `
-            <div class="product-card" onclick="openModal(${p.id})">
-                <div class="product-img-wrapper">
-                    ${imgSrc
-                        ? `<img src="${imgSrc}" alt="${p.title}" class="product-img" loading="lazy">`
-                        : `<div style="width:100%;height:240px;display:flex;align-items:center;justify-content:center;background:#111;color:var(--text-muted);font-size:2rem;"><i class="fa-solid fa-image"></i></div>`
-                    }
-                    <div class="product-overlay">
-                        <button class="view-btn"><i class="fa-solid fa-eye"></i> التفاصيل والحجز</button>
-                    </div>
+        list.innerHTML = data.map(r => {
+            let stars = '';
+            for(let i=1;i<=5;i++) stars += `<i class="fa-solid fa-star" style="color:${i<=r.rating?'var(--gold-primary)':'var(--border-color)'};font-size:0.75rem;"></i>`;
+            return `<div class="review-item">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span class="review-name">${r.customer_name}</span>
+                    <span>${stars}</span>
                 </div>
-                <div class="product-info">
-                    <div>
-                        <span style="font-size:0.72rem;color:var(--gold-secondary);font-weight:700;">${p.category}</span>
-                        <h3 class="product-title">${p.title}</h3>
-                        <div class="product-price-row">
-                            <span class="product-price-new">${Number(p.price).toLocaleString()} جنيه</span>
-                            ${p.original_price ? `<span class="product-price-old">${Number(p.original_price).toLocaleString()} جنيه</span>` : ''}
-                        </div>
-                    </div>
-                    <div class="product-meta">
-                        <span class="product-spec" style="font-size:0.75rem;">${p.specifications || ''}</span>
-                        <button class="order-btn-sm">طلب</button>
-                    </div>
-                </div>
+                ${r.comment ? `<div class="review-text">${r.comment}</div>` : ''}
             </div>`;
         }).join('');
+
+        // Update avg rating in modal
+        const avg = data.reduce((s,r)=>s+r.rating,0)/data.length;
+        document.getElementById('modal-stars').innerHTML = starsHTML(avg, data.length);
+    } catch(e) {
+        list.innerHTML = '<div style="color:var(--text-muted);font-size:0.82rem;">لا توجد تقييمات بعد</div>';
     }
+}
 
-    // ============================================================
-    // BUILD DYNAMIC CATEGORY TABS
-    // ============================================================
-    function buildTabs() {
-        const cats = [...new Set(allProducts.map(p => p.category))].filter(Boolean);
-        const container = document.getElementById('tabs-container');
-        container.innerHTML =
-            `<button class="tab-btn ${activeFilter==='الكل'?'active':''}" data-cat="الكل">الكل (${allProducts.length})</button>` +
-            cats.map(c => {
-                const count = allProducts.filter(p => p.category === c).length;
-                return `<button class="tab-btn ${activeFilter===c?'active':''}" data-cat="${c}">${c} (${count})</button>`;
-            }).join('');
+// Star picker
+let pickedRating = 0;
+function resetStarPick() {
+    pickedRating = 0;
+    document.querySelectorAll('#star-pick span').forEach(s => s.classList.remove('lit'));
+}
+document.getElementById('star-pick').addEventListener('mouseover', e => {
+    if (!e.target.dataset.v) return;
+    const v = parseInt(e.target.dataset.v);
+    document.querySelectorAll('#star-pick span').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.v) <= v));
+});
+document.getElementById('star-pick').addEventListener('mouseout', () => {
+    document.querySelectorAll('#star-pick span').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.v) <= pickedRating));
+});
+document.getElementById('star-pick').addEventListener('click', e => {
+    if (!e.target.dataset.v) return;
+    pickedRating = parseInt(e.target.dataset.v);
+    document.querySelectorAll('#star-pick span').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.v) <= pickedRating));
+});
 
-        container.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                activeFilter = btn.dataset.cat;
-                container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderProducts();
-            });
-        });
+function toggleReviewForm() {
+    const wrap = document.getElementById('review-form-wrap');
+    wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+}
+
+async function submitReview() {
+    if (!selectedProd) return;
+    const name = document.getElementById('rev-name').value.trim();
+    const text = document.getElementById('rev-text').value.trim();
+    if (!name) { alert('يرجى إدخال اسمك'); return; }
+    if (!pickedRating) { alert('يرجى اختيار عدد النجوم'); return; }
+
+    const payload = {
+        product_id:    selectedProd.id,
+        product_title: selectedProd.title,
+        customer_name: name,
+        rating:        pickedRating,
+        comment:       text,
+        is_approved:   false
+    };
+
+    if (dbClient) {
+        const { error } = await dbClient.from('reviews').insert([payload]);
+        if (error) { alert('خطأ: ' + error.message); return; }
     }
+    document.getElementById('review-form-wrap').innerHTML = `<div style="text-align:center;padding:12px;color:#28a745;"><i class="fa-solid fa-check-circle"></i> شكراً! سيتم نشر تقييمك بعد المراجعة.</div>`;
+}
 
-    // ============================================================
-    // MODAL
-    // ============================================================
-    function openModal(id) {
-        selectedProd = allProducts.find(p => p.id == id);
-        if (!selectedProd) return;
-
-        const base = window.location.href.replace(/\/[^/]*$/, '/');
-        const imgSrc = selectedProd.image_url
-            ? (selectedProd.image_url.startsWith('http') ? selectedProd.image_url : base + selectedProd.image_url)
-            : '';
-
-        document.getElementById('modal-img').src   = imgSrc;
-        document.getElementById('modal-img').alt   = selectedProd.title;
-        document.getElementById('modal-cat').innerText   = selectedProd.category;
-        document.getElementById('modal-title').innerText = selectedProd.title;
-        document.getElementById('modal-spec').innerText  = selectedProd.specifications || 'حديد ممتاز مقاوم للصدأ';
-        document.getElementById('modal-desc').innerText  = selectedProd.description   || '';
-        document.getElementById('modal-price-new').innerText = Number(selectedProd.price).toLocaleString();
-
-        const sizesEl = document.getElementById('modal-sizes');
-        if (selectedProd.sizes) {
-            sizesEl.style.display = 'block';
-            sizesEl.innerHTML = '<i class="fa-solid fa-ruler-combined" style="margin-left:8px;"></i> المقاسات المتاحة: ' + selectedProd.sizes;
-        } else {
-            sizesEl.style.display = 'none';
-        }
-
-        const oldPriceEl = document.getElementById('modal-price-old');
-        if (selectedProd.original_price) {
-            oldPriceEl.style.display = 'inline';
-            oldPriceEl.innerText = Number(selectedProd.original_price).toLocaleString() + ' جنيه';
-        } else {
-            oldPriceEl.style.display = 'none';
-        }
-
-        document.getElementById('detail-modal').classList.add('open');
-        document.getElementById('booking-form').reset();
-    }
-
-    function closeModal() {
-        document.getElementById('detail-modal').classList.remove('open');
-        selectedProd = null;
-    }
-
-    window.addEventListener('click', e => {
-        if (e.target === document.getElementById('detail-modal')) closeModal();
-    });
-
-    // ============================================================
-    // BOOKING FORM SUBMIT
-    // ============================================================
-    async function submitBooking(e) {
-        e.preventDefault();
-        if (!selectedProd) return;
-
-        const btn = document.getElementById('book-btn');
-        btn.innerText = 'جاري التسجيل...';
-        btn.disabled  = true;
-
-        const payload = {
-            customer_name: document.getElementById('b-name').value,
-            whatsapp:      document.getElementById('b-phone').value,
-            governorate:   document.getElementById('b-gov').value,
-            product_title: selectedProd.title,
-            notes:         document.getElementById('b-notes').value,
-            status:        'جديد'
-        };
-
-        // Save to Supabase if connected
-        if (dbClient) {
-            try {
-                const { error } = await dbClient.from('bookings').insert([payload]);
-                if (error) throw error;
-                console.log('Booking saved to Supabase!');
-            } catch(err) {
-                console.warn('Supabase booking save failed:', err.message);
-            }
-        }
-
-        // Email via Formspree backup
-        try {
-            const fd = new FormData();
-            Object.entries({
-                'الاسم': payload.customer_name,
-                'الواتساب': payload.whatsapp,
-                'المحافظة': payload.governorate,
-                'المنتج': payload.product_title + ' - ' + Number(selectedProd.price).toLocaleString() + ' جنيه',
-                'ملاحظات': payload.notes
-            }).forEach(([k,v]) => fd.append(k,v));
-            await fetch('https://formspree.io/f/xzdrvblp', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
-        } catch(e) {}
-
-        // Redirect to thank-you page
-        const base = window.location.href.replace(/\/[^/]*$/, '/');
-        window.location.href = base + `thankyou.html?name=${encodeURIComponent(payload.customer_name)}&product=${encodeURIComponent(payload.product_title)}`;
-    }
-
-    // ============================================================
-    // NAVIGATION
-    // ============================================================
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-        document.getElementById('nav-menu').classList.toggle('active');
-    });
-    window.addEventListener('scroll', () => {
-        document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
-    });
-    </script>
+// ============================================================
+// NAVIGATION
+// ============================================================
+document.getElementById('menu-toggle').addEventListener('click', () => {
+    document.getElementById('nav-menu').classList.toggle('active');
+});
+window.addEventListener('scroll', () => {
+    document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
+});
+</script>
 </body>
 </html>
