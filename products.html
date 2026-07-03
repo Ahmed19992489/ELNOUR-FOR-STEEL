@@ -123,10 +123,66 @@
                 <div class="empty-state"><i class="fa-solid fa-spinner fa-spin" style="color:var(--gold-primary);font-size:2rem;"></i><br><br>جاري التحميل...</div>
             </div>
         </div>
+            <!-- Custom Request Section -->
+            <div class="custom-request-box">
+                <h3 class="custom-request-title"><i class="fa-solid fa-compass-drafting" style="color:var(--gold-primary);"></i> هل لديك تصميم خاص ترغب في تنفيذه بالليزر؟</h3>
+                <p class="custom-request-desc">يمكننا تفصيل وتصنيع أي لوحة جدارية، يافطة للمكاتب والشركات، أو ماندالا بمقاسات وألوان خاصة حسب طلبك وبأعلى جودة.</p>
+                <form id="custom-design-form" onsubmit="submitCustomRequest(event)" style="max-width: 550px; margin: 0 auto; text-align: right;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size:0.8rem;">الاسم *</label>
+                            <input type="text" id="c-name" class="form-input" style="padding:8px;" placeholder="اسمك الكريم" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size:0.8rem;">رقم الواتساب *</label>
+                            <input type="tel" id="c-phone" class="form-input" style="padding:8px;" placeholder="01xxxxxxxxx" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:10px;">
+                        <label class="form-label" style="font-size:0.8rem;">المحافظة *</label>
+                        <select id="c-gov" class="form-input" style="padding:8px;" required>
+                            <option value="" disabled selected>اختر محافظتك</option>
+                            <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                            <option>القليوبية</option><option>أخرى</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <label class="form-label" style="font-size:0.8rem;">مواصفات اللوحة المطلوبة (المقاس، اللون، تفاصيل التصميم) *</label>
+                        <textarea id="c-desc" class="form-input" style="padding:8px;" rows="3" placeholder="مثال: لوحة آية الكرسي مقاس 120سم بلون ذهبي لامع..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="custom-btn" style="padding:10px; width:100%;">إرسال طلب التصميم الخاص</button>
+                </form>
+            </div>
+        </div>
     </section>
 </main>
 
-<!-- Product Detail + Booking Modal -->
+<!-- Floating Cart Button -->
+<div class="cart-float-btn" id="cart-float-btn" onclick="toggleCartDrawer()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <div class="cart-badge" id="cart-badge-val">0</div>
+</div>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer-overlay" id="cart-overlay" onclick="toggleCartDrawer()"></div>
+<div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+        <span class="cart-title"><i class="fa-solid fa-cart-shopping"></i> سلة المشتريات</span>
+        <button class="cart-close-btn" onclick="toggleCartDrawer()">&times;</button>
+    </div>
+    <div class="cart-items-body" id="cart-drawer-items">
+        <div style="color:var(--text-muted);text-align:center;margin-top:50px;">سلة التسوق فارغة حالياً</div>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total-row">
+            <span>الإجمالي:</span>
+            <span class="cart-total-price" id="cart-total-val">0 جنيه</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="openCheckoutModal()">تأكيد حجز المنتجات</button>
+    </div>
+</div>
+
+<!-- Product Detail Modal -->
 <div id="detail-modal" class="detail-modal">
     <div class="detail-card">
         <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -138,7 +194,13 @@
                 <div class="modal-cat" id="modal-cat"></div>
                 <h3 class="modal-title" id="modal-title"></h3>
                 <div class="modal-spec" id="modal-spec"></div>
-                <div class="modal-sizes" id="modal-sizes" style="display:none;"></div>
+                
+                <!-- Dynamic Size Pickers -->
+                <div class="form-group" style="margin-top:10px; margin-bottom:5px;">
+                    <label class="form-label" style="font-size:0.8rem; font-weight:700;">المقاس المتاح (اضغط للاختيار):</label>
+                    <div class="size-btn-group" id="modal-size-pickers"></div>
+                </div>
+
                 <div class="modal-stars" id="modal-stars"></div>
                 <p class="modal-desc" id="modal-desc"></p>
                 <div class="modal-pricing">
@@ -148,53 +210,12 @@
                 </div>
             </div>
 
-            <!-- Booking Form -->
-            <div class="booking-section">
-                <h4>احجز هذه اللوحة الآن</h4>
-                <form id="booking-form" onsubmit="submitBooking(event)">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                        <div class="form-group" style="margin-bottom:8px;">
-                            <label class="form-label" style="font-size:0.78rem;">الاسم *</label>
-                            <input type="text" id="b-name" class="form-input" style="padding:8px;" placeholder="اسمك الكريم" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom:8px;">
-                            <label class="form-label" style="font-size:0.78rem;">الواتساب *</label>
-                            <input type="tel" id="b-phone" class="form-input" style="padding:8px;" placeholder="01xxxxxxxxx" required>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom:8px;">
-                        <label class="form-label" style="font-size:0.78rem;">المحافظة *</label>
-                        <select id="b-gov" class="form-input" style="padding:8px;" required>
-                            <option value="" disabled selected>اختر محافظتك</option>
-                            <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
-                            <option>القليوبية</option><option>المنوفية</option><option>البحيرة</option>
-                            <option>الغربية</option><option>الشرقية</option><option>الدقهلية</option>
-                            <option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option>
-                            <option>أسيوط</option><option>سوهاج</option><option>قنا</option>
-                            <option>الأقصر</option><option>أسوان</option><option>أخرى</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="margin-bottom:8px;">
-                        <label class="form-label" style="font-size:0.78rem;">ملاحظات (مقاس / لون خاص)</label>
-                        <textarea id="b-notes" class="form-input" style="padding:8px;" rows="2" placeholder="أي تفاصيل إضافية..."></textarea>
-                    </div>
-
-                    <!-- Coupon Code -->
-                    <label class="form-label" style="font-size:0.78rem;">كود خصم (اختياري)</label>
-                    <div class="coupon-row">
-                        <input type="text" id="coupon-input" class="form-input" style="padding:8px;" placeholder="مثال: ELNOUR10">
-                        <button type="button" class="coupon-apply" onclick="applyCoupon()">تطبيق</button>
-                    </div>
-                    <div id="coupon-msg" class="coupon-msg"></div>
-
-                    <button type="submit" class="btn-submit" id="book-btn" style="padding:10px;margin-top:4px;">
-                        <i class="fa-solid fa-check"></i> تأكيد الحجز
-                    </button>
-                </form>
-            </div>
+            <button type="button" class="btn-submit" onclick="addToCartFromModal()" style="padding:12px; margin-top:10px;">
+                <i class="fa-solid fa-cart-plus"></i> إضافة إلى سلة المشتريات
+            </button>
 
             <!-- Reviews -->
-            <div class="reviews-section">
+            <div class="reviews-section" style="margin-top: 20px;">
                 <h4><i class="fa-solid fa-star" style="color:var(--gold-primary);"></i> تقييمات العملاء</h4>
                 <div id="reviews-list"><div style="color:var(--text-muted);font-size:0.82rem;">لا توجد تقييمات بعد</div></div>
                 <button class="review-form-toggle" onclick="toggleReviewForm()" id="rev-toggle">
@@ -209,6 +230,64 @@
                     <button onclick="submitReview()" class="btn-submit" style="padding:8px;">إرسال التقييم</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkout-modal" class="detail-modal">
+    <div class="detail-card" style="grid-template-columns:1fr; max-width:500px;">
+        <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
+        <div class="modal-info" style="padding:30px;">
+            <h3 style="color:var(--gold-secondary); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-truck-fast"></i> إتمام حجز طلبك</h3>
+            
+            <div id="checkout-items-summary" style="background:rgba(255,255,255,0.02); padding:12px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:15px; max-height:120px; overflow-y:auto; font-size:0.85rem;">
+            </div>
+
+            <form id="checkout-form" onsubmit="submitCartBooking(event)">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-size:0.8rem;">الاسم الكامل *</label>
+                        <input type="text" id="ch-name" class="form-input" style="padding:8px;" placeholder="اسمك الكريم" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-size:0.8rem;">رقم الواتساب *</label>
+                        <input type="tel" id="ch-phone" class="form-input" style="padding:8px;" placeholder="01xxxxxxxxx" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:0.8rem;">المحافظة *</label>
+                    <select id="ch-gov" class="form-input" style="padding:8px;" required>
+                        <option value="" disabled selected>اختر محافظتك</option>
+                        <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                        <option>القليوبية</option><option>المنوفية</option><option>البحيرة</option>
+                        <option>الغربية</option><option>الشرقية</option><option>الدقهلية</option>
+                        <option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option>
+                        <option>أخرى</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:0.8rem;">ملاحظات خاصة</label>
+                    <textarea id="ch-notes" class="form-input" style="padding:8px;" rows="2" placeholder="أي مواصفات أو تفاصيل للشحن..."></textarea>
+                </div>
+
+                <!-- Coupon Code -->
+                <label class="form-label" style="font-size:0.8rem;">كود الخصم</label>
+                <div class="coupon-row">
+                    <input type="text" id="coupon-input" class="form-input" style="padding:8px;" placeholder="مثال: ELNOUR10">
+                    <button type="button" class="coupon-apply" onclick="applyCoupon()">تطبيق</button>
+                </div>
+                <div id="coupon-msg" class="coupon-msg" style="margin-top:6px;"></div>
+
+                <div class="cart-total-row" style="margin-top:15px; border-top:1px solid var(--border-color); padding-top:12px;">
+                    <span>السعر النهائي:</span>
+                    <span class="cart-total-price" id="checkout-final-price">0 جنيه</span>
+                </div>
+
+                <button type="submit" class="btn-submit" id="ch-btn" style="padding:12px; width:100%; margin-top:10px;">
+                    <i class="fa-solid fa-circle-check"></i> إرسال وتأكيد الطلب
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -400,7 +479,91 @@ function buildTabs() {
 }
 
 // ============================================================
-// MODAL
+// CART STATE & UTILS
+// ============================================================
+let cart = JSON.parse(localStorage.getItem('elnour_cart')) || [];
+let selectedSize = '';
+let selectedPrice = 0;
+
+// Initialize cart on boot
+saveCart();
+
+function saveCart() {
+    localStorage.setItem('elnour_cart', JSON.stringify(cart));
+    updateCartUI();
+}
+
+function updateCartUI() {
+    // Update Badge
+    const badge = document.getElementById('cart-badge-val');
+    if (badge) badge.innerText = cart.length;
+
+    // Render items in Drawer
+    const drawerItems = document.getElementById('cart-drawer-items');
+    if (!drawerItems) return;
+
+    if (cart.length === 0) {
+        drawerItems.innerHTML = '<div style="color:var(--text-muted);text-align:center;margin-top:50px;">سلة التسوق فارغة حالياً</div>';
+        document.getElementById('cart-total-val').innerText = '0 جنيه';
+        return;
+    }
+
+    const base = getBaseUrl();
+    drawerItems.innerHTML = cart.map((item, idx) => {
+        const img = item.image_url
+            ? (item.image_url.startsWith('http') ? item.image_url : base + item.image_url)
+            : '';
+        return `
+        <div class="cart-item">
+            ${img ? `<img src="${img}" class="cart-item-img" alt="">` : `<div class="cart-item-img" style="background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);"><i class="fa-solid fa-image"></i></div>`}
+            <div class="cart-item-details">
+                <div class="cart-item-name">${item.title}</div>
+                <div class="cart-item-size">المقاس: ${item.size || 'افتراضي'}</div>
+                <div class="cart-item-price">${Number(item.price).toLocaleString()} جنيه</div>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart(${idx})" title="حذف"><i class="fa-solid fa-trash-can"></i></button>
+        </div>`;
+    }).join('');
+
+    // Calc Total
+    const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    document.getElementById('cart-total-val').innerText = total.toLocaleString() + ' جنيه';
+}
+
+function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    saveCart();
+}
+
+function toggleCartDrawer() {
+    document.getElementById('cart-drawer').classList.toggle('active');
+    document.getElementById('cart-overlay').classList.toggle('active');
+}
+
+function openCartDrawer() {
+    document.getElementById('cart-drawer').classList.add('active');
+    document.getElementById('cart-overlay').classList.add('active');
+}
+
+function closeCartDrawer() {
+    document.getElementById('cart-drawer').classList.remove('active');
+    document.getElementById('cart-overlay').classList.remove('active');
+}
+
+// Helper to parse sizes (Format: "100×100 سم:3600 | 80×80 سم:3000")
+function parseSizes(sizesStr, defaultPrice) {
+    if (!sizesStr) return [];
+    const parts = sizesStr.split('|');
+    return parts.map(p => {
+        const sub = p.split(':');
+        const name = sub[0].trim();
+        const price = sub[1] ? parseFloat(sub[1].trim()) : defaultPrice;
+        return { name, price };
+    });
+}
+
+// ============================================================
+// MODAL & SIZES
 // ============================================================
 async function openModal(id) {
     selectedProd = allProducts.find(p => p.id == id);
@@ -419,24 +582,34 @@ async function openModal(id) {
     document.getElementById('modal-title').innerText = selectedProd.title;
     document.getElementById('modal-spec').innerText  = selectedProd.specifications || 'حديد ممتاز مقاوم للصدأ';
     document.getElementById('modal-desc').innerText  = selectedProd.description || '';
-    document.getElementById('modal-price-new').innerText = Number(selectedProd.price).toLocaleString();
 
-    const sizesEl = document.getElementById('modal-sizes');
-    if (selectedProd.sizes) { sizesEl.style.display='block'; sizesEl.innerHTML=`<i class="fa-solid fa-ruler-combined" style="margin-left:8px;"></i> المقاسات: ${selectedProd.sizes}`; }
-    else { sizesEl.style.display='none'; }
+    // Handle Dynamic Sizes
+    const pickerContainer = document.getElementById('modal-size-pickers');
+    const parsedSizes = parseSizes(selectedProd.sizes, selectedProd.price);
+
+    if (parsedSizes.length > 0) {
+        selectedSize = parsedSizes[0].name;
+        selectedPrice = parsedSizes[0].price;
+        pickerContainer.innerHTML = parsedSizes.map((sz, idx) => 
+            `<button class="size-pick-btn ${idx===0?'active':''}" onclick="selectSize(this, '${sz.name}', ${sz.price})">${sz.name}</button>`
+        ).join('');
+    } else {
+        selectedSize = 'افتراضي';
+        selectedPrice = selectedProd.price;
+        pickerContainer.innerHTML = `<button class="size-pick-btn active" disabled>افتراضي</button>`;
+    }
+
+    document.getElementById('modal-price-new').innerText = Number(selectedPrice).toLocaleString();
 
     const oldEl = document.getElementById('modal-price-old');
-    if (selectedProd.original_price) { oldEl.style.display='inline'; oldEl.innerText=Number(selectedProd.original_price).toLocaleString()+' جنيه'; }
-    else { oldEl.style.display='none'; }
-
-    // Reset coupon state
-    appliedCoupon = null;
-    document.getElementById('coupon-input').value = '';
-    document.getElementById('coupon-msg').className = 'coupon-msg';
-    document.getElementById('coupon-msg').innerText = '';
+    if (selectedProd.original_price) { 
+        oldEl.style.display = 'inline'; 
+        oldEl.innerText = Number(selectedProd.original_price).toLocaleString() + ' جنيه'; 
+    } else { 
+        oldEl.style.display = 'none'; 
+    }
 
     document.getElementById('detail-modal').classList.add('open');
-    document.getElementById('booking-form').reset();
     document.getElementById('review-form-wrap').style.display = 'none';
     resetStarPick();
 
@@ -447,10 +620,36 @@ async function openModal(id) {
     document.title = `${selectedProd.title} | النور للحديد`;
 }
 
+function selectSize(btn, sizeName, price) {
+    // Remove active class from siblings
+    btn.parentElement.querySelectorAll('.size-pick-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    selectedSize = sizeName;
+    selectedPrice = price;
+
+    // Update Price Display
+    document.getElementById('modal-price-new').innerText = Number(price).toLocaleString();
+}
+
+function addToCartFromModal() {
+    if (!selectedProd) return;
+    const cartItem = {
+        id: selectedProd.id,
+        title: selectedProd.title,
+        image_url: selectedProd.image_url,
+        size: selectedSize,
+        price: selectedPrice
+    };
+    cart.push(cartItem);
+    saveCart();
+    closeModal();
+    openCartDrawer();
+}
+
 function closeModal() {
     document.getElementById('detail-modal').classList.remove('open');
     selectedProd = null;
-    appliedCoupon = null;
     const url = new URL(window.location);
     url.searchParams.delete('id');
     window.history.pushState({}, '', url);
@@ -459,11 +658,45 @@ function closeModal() {
 
 window.addEventListener('click', e => {
     if (e.target === document.getElementById('detail-modal')) closeModal();
+    if (e.target === document.getElementById('checkout-modal')) closeCheckoutModal();
 });
 
 // ============================================================
-// COUPON
+// CHECKOUT MODAL & COUPON
 // ============================================================
+function openCheckoutModal() {
+    if (cart.length === 0) {
+        alert('سلة التسوق فارغة!');
+        return;
+    }
+    closeCartDrawer();
+
+    // Summary
+    const summary = document.getElementById('checkout-items-summary');
+    summary.innerHTML = cart.map(item => 
+        `<div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span>${item.title} (${item.size})</span>
+            <b>${Number(item.price).toLocaleString()} ج.م</b>
+         </div>`
+    ).join('');
+
+    // Reset discount
+    appliedCoupon = null;
+    document.getElementById('coupon-input').value = '';
+    document.getElementById('coupon-msg').className = 'coupon-msg';
+    document.getElementById('coupon-msg').innerText = '';
+
+    const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    document.getElementById('checkout-final-price').innerText = total.toLocaleString() + ' جنيه';
+
+    document.getElementById('checkout-modal').classList.add('open');
+    document.getElementById('checkout-form').reset();
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkout-modal').classList.remove('open');
+}
+
 async function applyCoupon() {
     const code = document.getElementById('coupon-input').value.trim().toUpperCase();
     const msg  = document.getElementById('coupon-msg');
@@ -492,37 +725,41 @@ async function applyCoupon() {
     }
 
     appliedCoupon = data;
-    const basePrice  = selectedProd ? selectedProd.price : 0;
-    const discount   = data.discount_type === 'percentage' ? basePrice * data.discount_value / 100 : data.discount_value;
-    const finalPrice = basePrice - discount;
+    const baseTotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    const discount  = data.discount_type === 'percentage' ? baseTotal * data.discount_value / 100 : data.discount_value;
+    const finalPrice = Math.max(0, baseTotal - discount);
 
     msg.className='coupon-msg ok';
-    msg.innerHTML=`✅ خصم ${data.discount_type==='percentage' ? data.discount_value+'%' : data.discount_value+' جنيه'} — 
-        السعر بعد الخصم: <span class="price-after-disc">${finalPrice.toLocaleString()} جنيه</span>`;
+    msg.innerHTML = `✅ خصم ${data.discount_type==='percentage' ? data.discount_value+'%' : data.discount_value+' جنيه'}`;
+    document.getElementById('checkout-final-price').innerText = finalPrice.toLocaleString() + ' جنيه';
 }
 
 // ============================================================
-// BOOKING
+// SUBMIT BOOKINGS
 // ============================================================
-async function submitBooking(e) {
+async function submitCartBooking(e) {
     e.preventDefault();
-    if (!selectedProd) return;
-    const btn = document.getElementById('book-btn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التسجيل...';
+    if (cart.length === 0) return;
+
+    const btn = document.getElementById('ch-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الطلب...';
     btn.disabled  = true;
 
-    const basePrice   = selectedProd.price;
-    const discount    = appliedCoupon
-        ? (appliedCoupon.discount_type==='percentage' ? basePrice*appliedCoupon.discount_value/100 : appliedCoupon.discount_value)
+    const baseTotal = cart.reduce((sum, item) => sum + Number(item.price), 0);
+    const discount  = appliedCoupon
+        ? (appliedCoupon.discount_type==='percentage' ? baseTotal*appliedCoupon.discount_value/100 : appliedCoupon.discount_value)
         : 0;
-    const finalPrice  = basePrice - discount;
+    const finalPrice = Math.max(0, baseTotal - discount);
+
+    // Serialize cart items into titles
+    const titles = cart.map(item => `${item.title} (${item.size})`).join(' + ');
 
     const payload = {
-        customer_name: document.getElementById('b-name').value,
-        whatsapp:      document.getElementById('b-phone').value,
-        governorate:   document.getElementById('b-gov').value,
-        product_title: selectedProd.title,
-        notes:         document.getElementById('b-notes').value,
+        customer_name: document.getElementById('ch-name').value,
+        whatsapp:      document.getElementById('ch-phone').value,
+        governorate:   document.getElementById('ch-gov').value,
+        product_title: titles,
+        notes:         document.getElementById('ch-notes').value,
         coupon_code:   appliedCoupon ? appliedCoupon.code : '',
         discount_amount: discount,
         final_price:   finalPrice,
@@ -534,46 +771,103 @@ async function submitBooking(e) {
         try {
             const { error } = await dbClient.from('bookings').insert([payload]);
             if (error) throw error;
-            // Increment coupon usage
             if (appliedCoupon) {
                 await dbClient.from('coupons').update({ current_uses: appliedCoupon.current_uses + 1 }).eq('id', appliedCoupon.id);
             }
-        } catch(err) { console.warn('Supabase booking save failed:', err.message); }
+        } catch(err) { console.warn('Supabase booking error:', err.message); }
     }
 
-    // 2. Formspree email
+    // 2. Formspree Email Backup
     try {
         const fd = new FormData();
         fd.append('الاسم', payload.customer_name);
         fd.append('الواتساب', payload.whatsapp);
         fd.append('المحافظة', payload.governorate);
-        fd.append('المنتج', payload.product_title);
-        fd.append('السعر', finalPrice.toLocaleString() + ' جنيه');
+        fd.append('المنتجات المحجوزة', payload.product_title);
+        fd.append('الإجمالي بعد الخصم', finalPrice.toLocaleString() + ' جنيه');
         fd.append('كود خصم', payload.coupon_code || 'لا يوجد');
-        fd.append('ملاحظات', payload.notes);
+        fd.append('ملاحظات العميل', payload.notes);
         await fetch('https://formspree.io/f/xzdrvblp', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
     } catch(e) {}
 
-    // 3. WhatsApp notification to admin via CallMeBot
+    // 3. Admin WhatsApp Notification
     if (ADMIN_WHATSAPP_APIKEY) {
         try {
             const msg = encodeURIComponent(
-                `🔔 طلب جديد على موقع النور للحديد!\n` +
+                `🔔 حجز جديد من السلة على النور للحديد!\n` +
                 `👤 الاسم: ${payload.customer_name}\n` +
                 `📱 واتساب: ${payload.whatsapp}\n` +
                 `📍 المحافظة: ${payload.governorate}\n` +
-                `🖼️ المنتج: ${payload.product_title}\n` +
-                `💰 السعر: ${finalPrice.toLocaleString()} جنيه` +
-                (payload.coupon_code ? `\n🏷️ خصم كود: ${payload.coupon_code}` : '') +
+                `📦 الطلب: ${payload.product_title}\n` +
+                `💰 السعر النهائي: ${finalPrice.toLocaleString()} جنيه` +
+                (payload.coupon_code ? `\n🏷️ كود خصم: ${payload.coupon_code}` : '') +
                 (payload.notes ? `\n📝 ملاحظات: ${payload.notes}` : '')
             );
             await fetch(`https://api.callmebot.com/whatsapp.php?phone=${ADMIN_WHATSAPP_PHONE}&text=${msg}&apikey=${ADMIN_WHATSAPP_APIKEY}`);
-        } catch(e) { console.warn('WhatsApp notification failed:', e); }
+        } catch(e) {}
     }
 
-    // Redirect to thank you
-    const base = getBaseUrl();
-    window.location.href = `${base}thankyou.html?name=${encodeURIComponent(payload.customer_name)}&product=${encodeURIComponent(payload.product_title)}`;
+    // Clear cart & Redirect
+    cart = [];
+    saveCart();
+    closeCheckoutModal();
+    window.location.href = `${getBaseUrl()}thankyou.html?name=${encodeURIComponent(payload.customer_name)}&product=${encodeURIComponent(titles.substring(0, 35) + '...')}`;
+}
+
+// ============================================================
+// CUSTOM DESIGN REQUEST SUBMIT
+// ============================================================
+async function submitCustomRequest(e) {
+    e.preventDefault();
+    const btn = document.getElementById('custom-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال طلبك...';
+    btn.disabled  = true;
+
+    const payload = {
+        customer_name: document.getElementById('c-name').value,
+        whatsapp:      document.getElementById('c-phone').value,
+        governorate:   document.getElementById('c-gov').value,
+        product_title: 'طلب تصميم خاص بالليزر',
+        notes:         document.getElementById('c-desc').value,
+        status:        'طلب خاص'
+    };
+
+    if (dbClient) {
+        try {
+            await dbClient.from('bookings').insert([payload]);
+        } catch(err) { console.warn('Supabase request save failed:', err.message); }
+    }
+
+    // Formspree email
+    try {
+        const fd = new FormData();
+        fd.append('النوع', 'طلب لوحة وتصميم خاص ليزر');
+        fd.append('الاسم', payload.customer_name);
+        fd.append('الواتساب', payload.whatsapp);
+        fd.append('المحافظة', payload.governorate);
+        fd.append('تفاصيل التصميم المطلوب', payload.notes);
+        await fetch('https://formspree.io/f/xzdrvblp', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+    } catch(e) {}
+
+    // Admin WhatsApp
+    if (ADMIN_WHATSAPP_APIKEY) {
+        try {
+            const msg = encodeURIComponent(
+                `🛠️ طلب تصميم خاص وجديد!\n` +
+                `👤 الاسم: ${payload.customer_name}\n` +
+                `📱 واتساب: ${payload.whatsapp}\n` +
+                `📍 المحافظة: ${payload.governorate}\n` +
+                `📝 التفاصيل المطلوبة:\n${payload.notes}`
+            );
+            await fetch(`https://api.callmebot.com/whatsapp.php?phone=${ADMIN_WHATSAPP_PHONE}&text=${msg}&apikey=${ADMIN_WHATSAPP_APIKEY}`);
+        } catch(e) {}
+    }
+
+    document.getElementById('custom-design-form').innerHTML = 
+        `<div style="text-align:center;padding:30px;color:#28a745;font-weight:700;">
+            <i class="fa-solid fa-check-circle" style="font-size:2.5rem;margin-bottom:12px;display:block;"></i>
+            تم إرسال طلب تصميمك الخاص بنجاح! سنتواصل معك عبر الواتساب فوراً للمناقشة وتحديد السعر.
+         </div>`;
 }
 
 // ============================================================
