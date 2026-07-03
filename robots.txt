@@ -1,0 +1,21 @@
+# Robots.txt for Elnour for Steel
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /product-landing.html
+Allow: /products.html
+Allow: /portfolio.html
+Allow: /about.html
+Allow: /contact.html
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.pdf$
+Disallow: /*.zip$
+
+# Sitemap
+Sitemap: https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1
