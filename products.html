@@ -75,6 +75,33 @@
         .star-pick span.lit { color: var(--gold-primary); }
 
         @media(max-width:800px){ .detail-card{grid-template-columns:1fr;} .modal-img-side{max-height:220px;} .modal-info{padding:20px;} }
+        @media(max-width:576px) {
+            .catalog-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+            }
+            .product-img-wrapper {
+                height: 160px !important;
+                padding: 8px !important;
+            }
+            .product-title {
+                font-size: 0.85rem !important;
+                margin-bottom: 4px !important;
+            }
+            .product-price-new {
+                font-size: 0.95rem !important;
+            }
+            .product-info {
+                padding: 10px !important;
+            }
+            .order-btn-sm {
+                padding: 4px 10px !important;
+                font-size: 0.75rem !important;
+            }
+            .product-meta {
+                margin-top: 6px !important;
+            }
+        }
     </style>
 </head>
 <body>
