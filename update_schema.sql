@@ -38,7 +38,7 @@ ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS discount_amount NUMERIC DEF
 ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS final_price NUMERIC DEFAULT 0;
 
 -- ============================================================
--- 4. إنشاء جدول الكوبونات (coupons) والتقييمات والأقسام
+-- 4. إنشاء وترقية جدول الكوبونات (coupons)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS public.coupons (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -52,6 +52,17 @@ CREATE TABLE IF NOT EXISTS public.coupons (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- إضافة أي أعمدة مفقودة في حال كان جدول الكوبونات قديماً
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS discount_type TEXT DEFAULT 'percentage';
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS discount_value NUMERIC DEFAULT 10;
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS max_uses INTEGER DEFAULT NULL;
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS current_uses INTEGER DEFAULT 0;
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS valid_until TIMESTAMPTZ DEFAULT NULL;
+ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
+
+-- ============================================================
+-- 5. إنشاء وترقية جدول التقييمات والأقسام (reviews & categories)
+-- ============================================================
 CREATE TABLE IF NOT EXISTS public.reviews (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     product_id UUID REFERENCES public.products(id) ON DELETE CASCADE,
@@ -63,6 +74,10 @@ CREATE TABLE IF NOT EXISTS public.reviews (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- إضافة أعمدة مفقودة لجدول التقييمات
+ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS product_title TEXT;
+ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS is_approved BOOLEAN DEFAULT false;
+
 CREATE TABLE IF NOT EXISTS public.categories (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
@@ -70,8 +85,11 @@ CREATE TABLE IF NOT EXISTS public.categories (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- إضافة أعمدة مفقودة للأقسام
+ALTER TABLE public.categories ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+
 -- ============================================================
--- 5. تفعيل وتحديث سياسات الحماية (RLS) لكل الجداول
+-- 6. تفعيل وتحديث سياسات الحماية (RLS) لكل الجداول
 -- ============================================================
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
@@ -126,7 +144,7 @@ DROP POLICY IF EXISTS "Auth manage categories" ON public.categories;
 CREATE POLICY "Auth manage categories" ON public.categories FOR ALL USING (auth.role() = 'authenticated');
 
 -- ============================================================
--- 6. إدخال الأقسام والكوبونات الافتراضية
+-- 7. إدخال الأقسام والكوبونات الافتراضية
 -- ============================================================
 INSERT INTO public.categories (name, sort_order) VALUES
     ('ماندالا', 1),
