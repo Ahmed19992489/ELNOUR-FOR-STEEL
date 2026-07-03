@@ -38,9 +38,12 @@ ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS discount_amount NUMERIC DEF
 ALTER TABLE public.bookings ADD COLUMN IF NOT EXISTS final_price NUMERIC DEFAULT 0;
 
 -- ============================================================
--- 4. إنشاء وترقية جدول الكوبونات (coupons)
+-- 4. إعادة تهيئة جدول الكوبونات (coupons) لتجنب تعارض الأعمدة القديمة
 -- ============================================================
-CREATE TABLE IF NOT EXISTS public.coupons (
+-- نقوم بحذف الجدول القديم لإزالة قيود الأعمدة (مثل value و type) التي تسبب أخطاء
+DROP TABLE IF EXISTS public.coupons CASCADE;
+
+CREATE TABLE public.coupons (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     code TEXT NOT NULL UNIQUE,
     discount_type TEXT DEFAULT 'percentage',
@@ -51,14 +54,6 @@ CREATE TABLE IF NOT EXISTS public.coupons (
     is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
-
--- إضافة أي أعمدة مفقودة في حال كان جدول الكوبونات قديماً
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS discount_type TEXT DEFAULT 'percentage';
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS discount_value NUMERIC DEFAULT 10;
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS max_uses INTEGER DEFAULT NULL;
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS current_uses INTEGER DEFAULT 0;
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS valid_until TIMESTAMPTZ DEFAULT NULL;
-ALTER TABLE public.coupons ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
 
 -- ============================================================
 -- 5. إنشاء وترقية جدول التقييمات والأقسام (reviews & categories)
@@ -103,9 +98,7 @@ DROP POLICY IF EXISTS "Public read products" ON public.products;
 CREATE POLICY "Public read products" ON public.products FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Allow authenticated users full access to products" ON public.products;
-DROP POLICY IF EXISTS "Auth insert products" ON public.products;
-DROP POLICY IF EXISTS "Auth update products" ON public.products;
-DROP POLICY IF EXISTS "Auth delete products" ON public.products;
+DROP POLICY IF EXISTS "Auth manage products" ON public.products;
 CREATE POLICY "Auth manage products" ON public.products FOR ALL USING (auth.role() = 'authenticated');
 
 -- سياسات الحجوزات (Bookings)
