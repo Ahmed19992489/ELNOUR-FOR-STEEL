@@ -387,24 +387,37 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-logo">Elnour for Steel</div>
-            <p class="footer-desc">تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
-            
-            <div class="footer-contacts">
-                <a href="https://wa.me/201114323218" class="footer-contact-item" target="_blank">
-                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01114323218
-                </a>
-                <a href="https://wa.me/201118182424" class="footer-contact-item" target="_blank">
-                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> 01118182424
-                </a>
-            </div>
+            <div class="footer-content">
+                <!-- About Section -->
+                <div class="footer-section">
+                    <h4>النور للحديد</h4>
+                    <p>تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+                </div>
 
-            <div class="social-links">
-                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://www.facebook.com/NOOURSTEEL/" class="social-link" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>الروابط السريعة</h4>
+                    <a href="index.html">الرئيسية</a><br>
+                    <a href="products.html">المنتجات</a><br>
+                    <a href="portfolio.html">سابقة الأعمال</a><br>
+                    <a href="about.html">من نحن</a>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201114323218" target="_blank">01114323218</a></p>
+                    <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201118182424" target="_blank">01118182424</a></p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/NOOURSTEEL/" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
             
-            <p class="copyright">&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
+            </div>
         </div>
     </footer>
 
@@ -414,9 +427,11 @@
         const menuToggle = document.getElementById('menu-toggle');
         const navMenu = document.getElementById('nav-menu');
 
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
 
         // Header Scroll
         window.addEventListener('scroll', function() {
@@ -426,6 +441,20 @@
             } else {
                 header.classList.remove('scrolled');
             }
+        });
+
+        // Scroll to Top Button
+        const scrollToTopBtn = document.querySelector('.scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn?.classList.add('show');
+            } else {
+                scrollToTopBtn?.classList.remove('show');
+            }
+        });
+
+        scrollToTopBtn?.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
