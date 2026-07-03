@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="النور للحديد - ديكورات معدنية فاخرة مقطوعة بالليزر بتشطيب راقٍ وضمان ضد الصدأ. اكتشف تصاميم الماندالا واللوحات الجدارية الفاخرة للفئة الراقية في مصر.">
-    <title>النور للحديد | ديكورات معدنية جدارية فاخرة</title>
+    <meta name="description" content="النور للحديد - معرض أثاث متكامل يضم براويز حديد، ستيل، خشب، أبواب حماية، ديكورات داخلية، سراير وأثاث فاخر. اكتشف أحدث التصاميم بأسعار منافسة.">
+    <meta name="keywords" content="أثاث، حديد، ستيل، خشب، ديكور، براويز، أبواب حماية، سراير، استالس، مصر">
+    <meta name="author" content="Elnour for Steel">
+    <meta name="robots" content="index, follow">
+    <title>النور للحديد | معرض أثاث متكامل - حديد وستيل وخشب وديكور</title>
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="النور للحديد - معرض أثاث متكامل">
+    <meta property="og:description" content="معرض أثاث فاخر يضم براويز حديد، ستيل، خشب، وديكورات داخلية">
+    <meta property="og:url" content="https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,14 +28,26 @@
     <link rel="stylesheet" href="./style.css">
     
     <style>
-        /* Specific Styles for Home Page */
+        /* Specific Styles for Home Page -->
         .hero {
             padding: 180px 0 120px 0;
             position: relative;
-            background: radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             min-height: 90vh;
             display: flex;
             align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .hero-grid {
@@ -33,12 +55,15 @@
             grid-template-columns: 1.2fr 1fr;
             gap: 50px;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-title {
-            font-size: 3rem;
-            line-height: 1.3;
+            font-size: 3.5rem;
+            line-height: 1.2;
             margin-bottom: 20px;
+            color: var(--text-primary);
         }
 
         .hero-description {
@@ -46,27 +71,66 @@
             color: var(--text-secondary);
             margin-bottom: 35px;
             font-weight: 300;
+            line-height: 1.8;
         }
 
         .hero-actions {
             display: flex;
             gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero {
+            padding: 14px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-hero-primary {
+            background-color: var(--gold-primary);
+            color: var(--text-primary);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-hero-primary:hover {
+            background-color: var(--brown-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-hero-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--gold-primary);
+        }
+
+        .btn-hero-secondary:hover {
+            background-color: var(--gold-primary);
+            color: var(--text-primary);
         }
 
         .hero-img-container {
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 2px solid var(--gold-primary);
             padding: 15px;
             border-radius: 12px;
-            background-color: var(--bg-secondary);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 50px var(--glow-color);
+            background-color: var(--bg-card);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             transition: var(--transition-smooth);
             max-width: 100%;
         }
 
         .hero-img-container:hover {
-            border-color: var(--gold-primary);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 60px rgba(212, 175, 55, 0.3);
-            transform: scale(1.02);
+            border-color: var(--brown-primary);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
         }
 
         .hero-img {
@@ -81,168 +145,308 @@
         /* Categories Section */
         .categories-section {
             padding: 100px 0;
-            background-color: var(--bg-secondary);
+            background-color: var(--bg-card);
             border-top: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
         }
 
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-subtitle {
+            color: var(--gold-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 25px;
             margin-top: 40px;
         }
 
         .category-card {
-            background-color: var(--bg-card);
+            background-color: var(--bg-primary);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 35px 25px;
             text-align: center;
             transition: var(--transition-smooth);
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-primary), var(--brown-primary));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: var(--transition-smooth);
         }
 
         .category-card:hover {
-            transform: translateY(-8px);
             border-color: var(--gold-primary);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--glow-color);
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-8px);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .category-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--gold-primary);
             margin-bottom: 20px;
             transition: var(--transition-smooth);
         }
 
         .category-card:hover .category-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
         }
 
         .category-name {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: 10px;
         }
 
         .category-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 300;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
         }
 
-        /* Why Us Section */
-        .why-us {
+        /* Featured Products Section */
+        .featured-section {
             padding: 100px 0;
             background-color: var(--bg-primary);
         }
 
-        .features-grid {
+        .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 30px;
+            margin-top: 50px;
         }
 
-        .feature-card {
+        .product-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            border-color: var(--gold-primary);
+            box-shadow: var(--shadow-heavy);
+            transform: translateY(-8px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--gold-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .product-category {
+            font-size: 0.85rem;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-top: auto;
+            margin-bottom: 15px;
+        }
+
+        .btn-product {
+            background-color: var(--gold-primary);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-product:hover {
+            background-color: var(--brown-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Why Choose Us Section */
+        .why-section {
+            padding: 100px 0;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .why-item {
+            background-color: var(--bg-primary);
             padding: 40px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             text-align: center;
             transition: var(--transition-smooth);
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .why-item:hover {
             border-color: var(--gold-primary);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-5px);
         }
 
-        .feature-icon {
-            width: 65px;
-            height: 65px;
-            background-color: rgba(212, 175, 55, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 25px auto;
+        .why-icon {
+            font-size: 2.5rem;
             color: var(--gold-primary);
-            font-size: 1.6rem;
-        }
-
-        .feature-title {
-            font-size: 1.25rem;
-            margin-bottom: 12px;
-        }
-
-        .feature-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 300;
-        }
-
-        /* Promo Section */
-        .promo-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #121212 0%, #1A1A1A 100%);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .promo-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .promo-title {
-            font-size: 2.2rem;
             margin-bottom: 20px;
         }
 
-        .promo-text {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            font-weight: 300;
+        .why-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
         }
 
+        .why-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive */
         @media (max-width: 991px) {
             .hero-grid {
                 grid-template-columns: 1fr;
                 text-align: center;
-                gap: 40px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
             }
 
             .hero-actions {
                 justify-content: center;
             }
 
-            .hero-title {
-                font-size: 2.4rem;
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             }
         }
 
-        @media (max-width: 576px) {
-            .hero-title {
-                font-size: 1.9rem;
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 0 60px 0;
+                min-height: 70vh;
             }
 
-            .hero-actions {
-                flex-direction: column;
-                gap: 12px;
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 15px;
+            }
+
+            .product-image {
+                height: 180px;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- Header / Navbar -->
+    <!-- Header -->
     <header id="main-header">
         <div class="container nav-container">
             <a href="index.html" class="logo">
@@ -251,15 +455,14 @@
             </a>
             
             <ul class="nav-menu" id="nav-menu">
-                <li><a href="index.html" class="active">الرئيسية</a></li>
-                <li><a href="about.html">من نحن</a></li>
+                <li><a href="index.html">الرئيسية</a></li>
                 <li><a href="products.html">المنتجات</a></li>
                 <li><a href="portfolio.html">سابقة أعمالنا</a></li>
                 <li><a href="contact.html">اتصل بنا</a></li>
             </ul>
 
             <div style="display: flex; align-items: center; gap: 15px;">
-                <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+                <a href="https://wa.me/201114323218" class="nav-cta-btn" target="_blank">اطلب الآن</a>
                 <div class="menu-toggle" id="menu-toggle">
                     <i class="fa-solid fa-bars"></i>
                 </div>
@@ -271,18 +474,23 @@
         <!-- Hero Section -->
         <section class="hero" id="hero">
             <div class="container hero-grid">
-                <div class="hero-content">
-                    <span class="badge" style="background-color: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-primary); color: var(--gold-primary); padding: 6px 14px; font-size: 0.85rem; font-weight: 700; border-radius: 50px; display: inline-block; margin-bottom: 20px;">انطلاقة حصرية بالسوق المصري</span>
-                    <h1 class="hero-title">فن تشكيل المعادن الفاخر لجدران <span class="gold-text">تنبض بالحياة</span></h1>
-                    <p class="hero-description">لوحات جدارية وماندالا مقطوعة بدقة الليزر المتناهية من الفولاذ المقاوم للصدأ. تصاميم تجسد هيبة الفخامة وتناسب أرقى المنازل والفلل المصرية.</p>
+                <div>
+                    <h1 class="hero-title">معرض أثاث متكامل من الحديد إلى الخشب</h1>
+                    <p class="hero-description">اكتشف مجموعة واسعة من الأثاث الفاخر والديكورات الحديثة. براويز حديد، ستيل، خشب، أبواب حماية، وديكورات داخلية بجودة عالية وأسعار منافسة.</p>
+                    
                     <div class="hero-actions">
-                        <a href="products.html" class="btn-primary"><i class="fa-solid fa-store"></i> استعرض منتجاتنا</a>
-                        <a href="contact.html" class="btn-secondary">تواصل معنا الآن</a>
+                        <a href="products.html" class="btn-hero btn-hero-primary">
+                            <i class="fa-solid fa-shopping-bag"></i> تصفح المنتجات
+                        </a>
+                        <a href="https://wa.me/201114323218?text=أريد%20استفسار%20عن%20المنتجات" class="btn-hero btn-hero-secondary" target="_blank">
+                            <i class="fa-brands fa-whatsapp"></i> تواصل معنا
+                        </a>
                     </div>
                 </div>
-                <div class="hero-image-wrapper" style="position: relative; display: flex; justify-content: center; align-items: center;">
-                    <div class="hero-img-container">
-                        <img src="./161841924_3741716299278845_3895684170105190938_n.jpg" alt="لوحة الماندالا الفاخرة" class="hero-img" loading="eager">
+
+                <div class="hero-img-container">
+                    <div class="product-image">
+                        <i class="fa-solid fa-couch"></i>
                     </div>
                 </div>
             </div>
@@ -292,95 +500,208 @@
         <section class="categories-section">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-subtitle">تشكيلة واسعة من الفنون</span>
-                    <h2 class="section-title">أقسام منتجاتنا الفاخرة</h2>
+                    <span class="section-subtitle">فئات المنتجات</span>
+                    <h2 class="section-title">تصفح أقسام معرضنا</h2>
                 </div>
 
                 <div class="categories-grid">
-                    <!-- Category 1 -->
-                    <a href="products.html?category=ماندالا" class="category-card">
-                        <div class="category-icon"><i class="fa-solid fa-dharmachakra"></i></div>
-                        <h3 class="category-name">لوحات الماندالا</h3>
-                        <p class="category-desc">لوحات دائرية متماثلة بدقة ليزر متناهية تعبر عن الجمال الهندسي الراقي.</p>
-                    </a>
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-frame"></i></div>
+                        <div class="category-name">براويز حديد</div>
+                        <div class="category-desc">براويز مقصوصة بالليزر بدقة عالية</div>
+                    </div>
 
-                    <!-- Category 2 -->
-                    <a href="products.html?category=ساعات حائط" class="category-card">
-                        <div class="category-icon"><i class="fa-solid fa-clock"></i></div>
-                        <h3 class="category-name">ساعات حائط فاخرة</h3>
-                        <p class="category-desc">تجمع بين دقة ضبط الوقت والديكور الجداري المعدني الضخم والمبهر.</p>
-                    </a>
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-bars"></i></div>
+                        <div class="category-name">ستيل وستانليس</div>
+                        <div class="category-desc">منتجات ستيل وستانليس ستيل فاخرة</div>
+                    </div>
 
-                    <!-- Category 3 -->
-                    <a href="products.html?category=جداريات طبيعة" class="category-card">
-                        <div class="category-icon"><i class="fa-solid fa-leaf"></i></div>
-                        <h3 class="category-name">جداريات الطبيعة</h3>
-                        <p class="category-desc">تصاميم أوراق الشجر والنخيل تضفي حياة ودفئاً استثنائياً للصالونات.</p>
-                    </a>
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-tree"></i></div>
+                        <div class="category-name">أثاث خشبي</div>
+                        <div class="category-desc">أثاث خشبي فاخر وعصري</div>
+                    </div>
 
-                    <!-- Category 4 -->
-                    <a href="products.html?category=تجريد وهندسة" class="category-card">
-                        <div class="category-icon"><i class="fa-solid fa-cubes"></i></div>
-                        <h3 class="category-name">تجريد وهندسة</h3>
-                        <p class="category-desc">أشكال متداخلة ومستقبلية تمنح الجدار شعوراً بالعمق والابتكار.</p>
-                    </a>
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-door-open"></i></div>
+                        <div class="category-name">أبواب حماية</div>
+                        <div class="category-desc">أبواب حماية شقق وفيلات</div>
+                    </div>
 
-                    <!-- Category 5 -->
-                    <a href="products.html?category=خط عربي وإسلامي" class="category-card">
-                        <div class="category-icon"><i class="fa-solid fa-mosque"></i></div>
-                        <h3 class="category-name">خط عربي وإسلامي</h3>
-                        <p class="category-desc">آيات قرآنية وزخارف إسلامية عتيقة برؤية عصرية مذهبة تليق بمنزلك.</p>
-                    </a>
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-palette"></i></div>
+                        <div class="category-name">ديكورات داخلية</div>
+                        <div class="category-desc">ديكورات وتصاميم داخلية حديثة</div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-bed"></i></div>
+                        <div class="category-name">سراير وأثاث</div>
+                        <div class="category-desc">سراير وأثاث غرف نوم فاخر</div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-square-partition"></i></div>
+                        <div class="category-name">براتيشن حديد</div>
+                        <div class="category-desc">براتيشن وفواصل حديد وستيل</div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <div class="category-name">إضاءة وديكور</div>
+                        <div class="category-desc">إضاءة وإكسسوارات ديكورية</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Why Us Section -->
-        <section class="why-us">
+        <!-- Featured Products Section -->
+        <section class="featured-section">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-subtitle">دقة وفخامة تدوم للأبد</span>
-                    <h2 class="section-title">لماذا تختار النور للحديد؟</h2>
+                    <span class="section-subtitle">المنتجات المميزة</span>
+                    <h2 class="section-title">أحدث التصاميم والعروض</h2>
                 </div>
 
-                <div class="features-grid">
-                    <!-- Feature 1 -->
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3 class="feature-title">ضمان ضد الصدأ</h3>
-                        <p class="feature-desc">جميع قطعنا معالجة كيميائياً ومطلية بدهان إلكتروستاتيك حراري فاخر مقاوم للرطوبة وعوامل التآكل مدى الحياة.</p>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-frame"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">براويز حديد</div>
+                            <div class="product-name">براويز ماندالا فاخرة</div>
+                            <div class="product-price">3,950 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-box-open"></i></div>
-                        <h3 class="feature-title">تغليف حماية فاخر</h3>
-                        <p class="feature-desc">تصلك القطع الفنية داخل صناديق خشبية متينة مبطنة بالإسفنج بالكامل لحمايتها لضمان تسليمها بحالة ممتازة وكأنها خرجت للتو من المصنع.</p>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-bars"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">ستيل</div>
+                            <div class="product-name">رفوف ستيل حديثة</div>
+                            <div class="product-price">2,500 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
                     </div>
 
-                    <!-- Feature 3 -->
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
-                        <h3 class="feature-title">توصيل سريع وآمن</h3>
-                        <p class="feature-desc">شحن مخصص ومؤمن لـ 4 محافظات رئيسية (القاهرة، الجيزة، الإسكندرية، القليوبية) خلال 4 إلى 7 أيام فقط، والدفع فقط بعد المعاينة والاستلام.</p>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-door-open"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">أبواب حماية</div>
+                            <div class="product-name">باب حماية فيلا</div>
+                            <div class="product-price">8,500 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">أثاث خشبي</div>
+                            <div class="product-name">طاولة قهوة خشب فاخرة</div>
+                            <div class="product-price">4,200 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-bed"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">سراير</div>
+                            <div class="product-name">سرير حديد فاخر</div>
+                            <div class="product-price">6,800 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">ديكورات</div>
+                            <div class="product-name">لوحات جدارية ديكورية</div>
+                            <div class="product-price">1,800 جنيه</div>
+                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Promo Section -->
-        <section class="promo-section">
-            <div class="container promo-content">
-                <span class="section-subtitle">افتتاح البراند</span>
-                <h2 class="promo-title">خصم فوري 2000 جنيه على أي لوحة اختيارية</h2>
-                <p class="promo-text">احجز تصميمك المفضل اليوم بسعر 3600 جنيه بدلاً من 5600 جنيه للمستورد مع الاستمتاع بشحن مجاني وضمان مدى الحياة.</p>
-                <a href="products.html" class="btn-primary"><i class="fa-solid fa-cart-shopping"></i> تصفح المنتجات واحجز الآن</a>
+        <!-- Why Choose Us Section -->
+        <section class="why-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">لماذا تختارنا</span>
+                    <h2 class="section-title">مميزات معرضنا</h2>
+                </div>
+
+                <div class="why-grid">
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-award"></i></div>
+                        <div class="why-title">جودة عالية</div>
+                        <div class="why-text">منتجات عالية الجودة من أفضل الخامات والمواد</div>
+                    </div>
+
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-tag"></i></div>
+                        <div class="why-title">أسعار منافسة</div>
+                        <div class="why-text">أسعار مناسبة وعروض خاصة طوال العام</div>
+                    </div>
+
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-truck"></i></div>
+                        <div class="why-title">شحن سريع</div>
+                        <div class="why-text">توصيل آمن وسريع إلى جميع أنحاء مصر</div>
+                    </div>
+
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-shield"></i></div>
+                        <div class="why-title">ضمان شامل</div>
+                        <div class="why-text">ضمان شامل على جميع المنتجات</div>
+                    </div>
+
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-headset"></i></div>
+                        <div class="why-title">خدمة عملاء</div>
+                        <div class="why-text">فريق دعم متخصص وجاهز للمساعدة</div>
+                    </div>
+
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa-solid fa-palette"></i></div>
+                        <div class="why-title">تصاميم حصرية</div>
+                        <div class="why-text">تصاميم فريدة وحصرية لا تجدها في مكان آخر</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="padding: 80px 0; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--accent-dark) 100%); text-align: center; color: white;">
+            <div class="container">
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: white;">اكتشف معرضنا الكامل</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 30px; color: rgba(255, 255, 255, 0.8);">تصفح مئات المنتجات من براويز حديد إلى أثاث فاخر</p>
+                <a href="products.html" style="background-color: var(--gold-primary); color: var(--text-primary); padding: 14px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; transition: var(--transition-smooth);" onmouseover="this.style.backgroundColor='var(--brown-primary)'" onmouseout="this.style.backgroundColor='var(--gold-primary)'">
+                    <i class="fa-solid fa-shopping-bag"></i> تصفح جميع المنتجات
+                </a>
             </div>
         </section>
     </main>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20الديكورات%20المعدنية%20المعروضة" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
+    <a href="https://wa.me/201114323218?text=مرحباً%20النور%20للحديد،%20أود%20الاستفسار%20عن%20المنتجات" class="whatsapp-float" target="_blank" aria-label="تواصل معنا عبر واتساب">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -388,13 +709,11 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <!-- About Section -->
                 <div class="footer-section">
                     <h4>النور للحديد</h4>
-                    <p>تجسيد الرقي والفخامة في جدران منزلك من خلال لوحات معدنية مقطوعة بالليزر بأحدث التكنولوجيا وخامات ممتازة تدوم للأبد.</p>
+                    <p>معرض أثاث متكامل يضم براويز حديد، ستيل، خشب، أبواب حماية، ديكورات داخلية وأثاث فاخر بجودة عالية وأسعار منافسة.</p>
                 </div>
 
-                <!-- Quick Links -->
                 <div class="footer-section">
                     <h4>الروابط السريعة</h4>
                     <a href="index.html">الرئيسية</a><br>
@@ -403,7 +722,6 @@
                     <a href="about.html">من نحن</a>
                 </div>
 
-                <!-- Contact Info -->
                 <div class="footer-section">
                     <h4>تواصل معنا</h4>
                     <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201114323218" target="_blank">01114323218</a></p>
@@ -421,7 +739,26 @@
         </div>
     </footer>
 
-    <!-- Responsive Navigation JS -->
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org/",
+        "@type": "LocalBusiness",
+        "name": "النور للحديد",
+        "image": "https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/logo.png",
+        "description": "معرض أثاث متكامل يضم براويز حديد، ستيل، خشب، أبواب حماية وديكورات",
+        "telephone": "+201114323218",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "EG"
+        },
+        "sameAs": [
+            "https://www.facebook.com/NOOURSTEEL/"
+        ]
+    }
+    </script>
+
+    <!-- JavaScript -->
     <script>
         // Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -443,18 +780,15 @@
             }
         });
 
-        // Scroll to Top Button
-        const scrollToTopBtn = document.querySelector('.scroll-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollToTopBtn?.classList.add('show');
-            } else {
-                scrollToTopBtn?.classList.remove('show');
-            }
-        });
-
-        scrollToTopBtn?.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         });
     </script>
 </body>
