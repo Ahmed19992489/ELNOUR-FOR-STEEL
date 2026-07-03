@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة تحكم حساب العميل لموقع النور للحديد. سجل دخولك لمتابعة حالة شحن وتوصيل طلباتك للوحات الليزر والديكور.">
+    <title>حسابي | النور للحديد</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .auth-container { max-width: 450px; margin: 120px auto 80px; padding: 30px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .auth-toggle { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .auth-toggle-btn { background: none; border: none; color: var(--text-muted); font-size: 1rem; font-weight: 700; cursor: pointer; padding: 5px 10px; font-family: var(--font-arabic); transition: 0.2s; }
+        .auth-toggle-btn.active { color: var(--gold-primary); border-bottom: 2px solid var(--gold-primary); }
+        
+        .dashboard-container { max-width: 1000px; margin: 120px auto 80px; padding: 0 15px; }
+        .welcome-card { background: linear-gradient(135deg, rgba(26,26,26,0.9) 0%, rgba(10,10,10,0.9) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .welcome-title { font-size: 1.5rem; margin-bottom: 5px; }
+        .logout-btn-dash { background: none; border: 1px solid #dc3545; color: #dc3545; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-family: var(--font-arabic); font-size: 0.9rem; font-weight: 700; transition: 0.2s; }
+        .logout-btn-dash:hover { background: #dc3545; color: #fff; }
+
+        .order-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; margin-bottom: 20px; transition: 0.2s; }
+        .order-card:hover { border-color: rgba(212,175,55,0.25); }
+        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .order-id { font-weight: 700; font-size: 0.95rem; color: var(--gold-secondary); }
+        .order-date { color: var(--text-muted); font-size: 0.85rem; }
+        .order-body { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .order-status-wrap { text-align: left; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
+        
+        .status-badge-cust { padding: 6px 14px; border-radius: 50px; font-size: 0.82rem; font-weight: 700; text-align: center; display: inline-block; }
+        .status-new { background: rgba(0, 123, 255, 0.1); color: #007bff; border: 1px solid #007bff; }
+        .status-confirm { background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid #ffc107; }
+        .status-shipping { background: rgba(23, 162, 184, 0.1); color: #17a2b8; border: 1px solid #17a2b8; }
+        .status-delivered { background: rgba(40, 167, 69, 0.1); color: #28a745; border: 1px solid #28a745; }
+        .status-cancelled { background: rgba(220, 53, 69, 0.1); color: #dc3545; border: 1px solid #dc3545; }
+
+        @media(max-width: 768px) {
+            .order-body { grid-template-columns: 1fr; }
+            .order-status-wrap { align-items: flex-start; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="main-header">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-title">Elnour for Steel</span>
+            <span class="logo-subtitle">النور للحديد والـديكـور</span>
+        </a>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="products.html">المنتجات</a></li>
+            <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:15px;">
+            <a href="products.html" class="nav-cta-btn">تصفح المعرض</a>
+            <div class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </div>
+</header>
+
+<main style="flex-grow: 1;">
+    <!-- auth panel -->
+    <div id="auth-panel" class="auth-container">
+        <div class="auth-toggle">
+            <button id="btn-show-login" class="auth-toggle-btn active" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+            <button id="btn-show-signup" class="auth-toggle-btn" onclick="switchAuthTab('signup')">إنشاء حساب جديد</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label" for="l-email">البريد الإلكتروني</label>
+                <input type="email" id="l-email" class="form-input" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="l-pass">كلمة المرور</label>
+                <input type="password" id="l-pass" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" id="l-btn" class="btn-submit" style="width: 100%; padding: 12px; margin-top: 15px;">تسجيل الدخول</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signup-form" onsubmit="handleSignup(event)" style="display: none;">
+            <div class="form-group">
+                <label class="form-label" for="s-name">الاسم الكامل *</label>
+                <input type="text" id="s-name" class="form-input" placeholder="اكتب اسمك الكريم" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="s-email">البريد الإلكتروني *</label>
+                <input type="email" id="s-email" class="form-input" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="s-pass">كلمة المرور (6 أحرف كحد أدنى) *</label>
+                <input type="password" id="s-pass" class="form-input" placeholder="••••••••" minlength="6" required>
+            </div>
+            <button type="submit" id="s-btn" class="btn-submit" style="width: 100%; padding: 12px; margin-top: 15px;">إنشاء حساب</button>
+        </form>
+    </div>
+
+    <!-- dashboard panel -->
+    <div id="dashboard-panel" class="dashboard-container" style="display: none;">
+        <div class="welcome-card">
+            <div>
+                <h2 class="welcome-title">مرحباً بك، <span id="user-display-name" class="gold-text">العميل الفاخر</span> ✨</h2>
+                <p id="user-email-text" style="color:var(--text-muted); font-size:0.9rem;"></p>
+            </div>
+            <button class="logout-btn-dash" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button>
+        </div>
+
+        <h3 style="margin-bottom: 20px; color: var(--gold-secondary);"><i class="fa-solid fa-box-open"></i> طلباتك الجارية وتتبع الشحن</h3>
+        <div id="orders-list-wrap">
+            <div style="color:var(--text-muted); text-align:center; padding:50px;">جاري تحميل طلباتك...</div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-logo">Elnour for Steel</div>
+        <p class="footer-desc">لوحات معدنية مقطوعة بالليزر بخامات فاخرة تدوم للأبد.</p>
+        <p class="copyright">&copy; 2026 النور للحديد والديكور. جميع الحقوق محفوظة.</p>
+    </div>
+</footer>
+
+<script>
+const SUPA_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+const SUPA_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
+
+let db = null;
+let currentUser = null;
+
+// ============================================================
+// BOOT INIT
+// ============================================================
+window.addEventListener('load', async () => {
+    try {
+        db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+        const { data } = await db.auth.getSession();
+        if (data && data.session) {
+            currentUser = data.session.user;
+            showDashboard();
+        } else {
+            showAuth();
+        }
+    } catch(e) {
+        console.error("Supabase fail:", e);
+    }
+});
+
+// ============================================================
+// AUTH NAVIGATION
+// ============================================================
+function switchAuthTab(type) {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const loginBtn = document.getElementById('btn-show-login');
+    const signupBtn = document.getElementById('btn-show-signup');
+
+    if (type === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        loginBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+    } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        loginBtn.classList.remove('active');
+        signupBtn.classList.add('active');
+    }
+}
+
+function showAuth() {
+    document.getElementById('auth-panel').style.display = 'block';
+    document.getElementById('dashboard-panel').style.display = 'none';
+}
+
+// ============================================================
+// LOGIN & REGISTER
+// ============================================================
+async function handleLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('l-btn');
+    btn.innerText = 'جاري التحقق...'; btn.disabled = true;
+    
+    const email = document.getElementById('l-email').value;
+    const password = document.getElementById('l-pass').value;
+
+    try {
+        const { data, error } = await db.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        currentUser = data.user;
+        showDashboard();
+    } catch(err) {
+        alert("خطأ في تسجيل الدخول: " + err.message);
+        btn.innerText = 'تسجيل الدخول'; btn.disabled = false;
+    }
+}
+
+async function handleSignup(e) {
+    e.preventDefault();
+    const btn = document.getElementById('s-btn');
+    btn.innerText = 'جاري التسجيل...'; btn.disabled = true;
+    
+    const name = document.getElementById('s-name').value;
+    const email = document.getElementById('s-email').value;
+    const password = document.getElementById('s-pass').value;
+
+    try {
+        const { data, error } = await db.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { display_name: name }
+            }
+        });
+        if (error) throw error;
+        alert("تم إنشاء حسابك بنجاح! يمكنك الآن تسجيل الدخول.");
+        switchAuthTab('login');
+    } catch(err) {
+        alert("فشل إنشاء الحساب: " + err.message);
+    } finally {
+        btn.innerText = 'إنشاء حساب'; btn.disabled = false;
+    }
+}
+
+async function handleLogout() {
+    await db.auth.signOut();
+    location.reload();
+}
+
+// ============================================================
+// DASHBOARD VIEW
+// ============================================================
+async function showDashboard() {
+    document.getElementById('auth-panel').style.display = 'none';
+    document.getElementById('dashboard-panel').style.display = 'block';
+    
+    const name = currentUser.user_metadata.display_name || currentUser.email.split('@')[0];
+    document.getElementById('user-display-name').innerText = name;
+    document.getElementById('user-email-text').innerText = currentUser.email;
+
+    loadUserOrders();
+}
+
+async function loadUserOrders() {
+    const wrap = document.getElementById('orders-list-wrap');
+    try {
+        const { data, error } = await db.from('bookings').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            wrap.innerHTML = `
+            <div style="text-align:center; padding:40px; border:1px dashed var(--border-color); border-radius:8px;">
+                <i class="fa-solid fa-box-open" style="font-size:2rem; color:var(--gold-primary); margin-bottom:10px;"></i>
+                <p>لم تقم بإجراء أي طلبات حجز بعد.</p>
+                <a href="products.html" class="nav-cta-btn" style="display:inline-block; margin-top:15px; text-decoration:none;">تصفح المعرض واحجز الآن</a>
+            </div>`;
+            return;
+        }
+
+        wrap.innerHTML = data.map(o => {
+            const date = new Date(o.created_at).toLocaleDateString('ar-EG');
+            let badgeClass = 'status-new';
+            if (o.status === 'قيد التأكيد') badgeClass = 'status-confirm';
+            if (o.status === 'تم الشحن') badgeClass = 'status-shipping';
+            if (o.status === 'تم الاستلام') badgeClass = 'status-delivered';
+            if (o.status === 'ملغي') badgeClass = 'status-cancelled';
+
+            return `
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <span class="order-id">طلب حجز #${o.id.substring(0,8)}</span>
+                        <span class="order-date"> بتاريخ ${date}</span>
+                    </div>
+                    <div class="order-status-wrap">
+                        <span class="status-badge-cust ${badgeClass}">${o.status}</span>
+                    </div>
+                </div>
+                <div class="order-body">
+                    <div>
+                        <div style="font-weight:700; margin-bottom:6px;">المنتجات: ${o.product_title}</div>
+                        <div style="font-size:0.85rem; color:var(--text-secondary);">وجهة الشحن: محافظة ${o.governorate}</div>
+                        ${o.notes ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">ملاحظاتك: ${o.notes}</div>` : ''}
+                    </div>
+                    <div style="text-align:left; font-size:1.1rem; font-weight:900; color:var(--gold-primary);">
+                        ${Number(o.final_price || o.price || 3600).toLocaleString()} جنيه
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    } catch(err) {
+        wrap.innerHTML = `<div style="color:#dc3545; text-align:center;">حدث خطأ أثناء تحميل الطلبات: ${err.message}</div>`;
+    }
+}
+
+// ============================================================
+// NAVIGATION RESPONSIVE
+// ============================================================
+document.getElementById('menu-toggle').addEventListener('click', () => {
+    document.getElementById('nav-menu').classList.toggle('active');
+});
+</script>
+</body>
+</html>

@@ -256,6 +256,10 @@
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:0.8rem;">البريد الإلكتروني *</label>
+                    <input type="email" id="ch-email" name="email" class="form-input" style="padding:8px;" placeholder="name@example.com" required>
+                </div>
+                <div class="form-group" style="margin-bottom:10px;">
                     <label class="form-label" style="font-size:0.8rem;">المحافظة *</label>
                     <select id="ch-gov" class="form-input" style="padding:8px;" required>
                         <option value="" disabled selected>اختر محافظتك</option>
@@ -355,6 +359,7 @@ let selectedProd  = null;
 let selectedRating = 0;
 let appliedCoupon = null;
 let dbClient      = null;
+let customerUser  = null;
 
 // ============================================================
 // BOOT
@@ -373,11 +378,32 @@ let dbClient      = null;
     try {
         dbClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
         fetchFromDB(idParam);
+        checkSession();
     } catch(e) {
         console.warn('Supabase unavailable, using static data.', e.message);
         if (idParam) openModal(idParam);
     }
 })();
+
+async function checkSession() {
+    if (!dbClient) return;
+    try {
+        const { data } = await dbClient.auth.getSession();
+        if (data && data.session) {
+            customerUser = data.session.user;
+            updateNavbarAuth();
+        }
+    } catch(e) {}
+}
+
+function updateNavbarAuth() {
+    const nav = document.getElementById('nav-menu');
+    if (!nav) return;
+    if (nav.innerHTML.includes('account.html')) return;
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="account.html"><i class="fa-solid fa-user"></i> حسابي</a>`;
+    nav.appendChild(li);
+}
 
 async function fetchFromDB(openId) {
     try {
@@ -432,7 +458,7 @@ function renderProducts() {
         const img = getImgSrc(p);
         const avgRating = p.avg_rating || 0;
         const ratingHTML = avgRating ? starsHTML(avgRating, p.review_count || 0) : '';
-        return `<div class="product-card" onclick="openModal(${p.id})" style="cursor:pointer;">
+        return `<div class="product-card" onclick="openModal('${p.id}')" style="cursor:pointer;">
             <div class="product-img-wrapper">
                 ${img ? `<img src="${img}" alt="${p.title}" class="product-img" loading="lazy" onerror="this.parentElement.innerHTML='<div style=width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem><i class=fa-solid fa-image></i></div>'">` 
                       : `<div style="width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;"><i class="fa-solid fa-image"></i></div>`}
@@ -757,6 +783,8 @@ async function submitCartBooking(e) {
     const payload = {
         customer_name: document.getElementById('ch-name').value,
         whatsapp:      document.getElementById('ch-phone').value,
+        email:         document.getElementById('ch-email').value,
+        user_id:       customerUser ? customerUser.id : null,
         governorate:   document.getElementById('ch-gov').value,
         product_title: titles,
         notes:         document.getElementById('ch-notes').value,
@@ -782,6 +810,8 @@ async function submitCartBooking(e) {
         const fd = new FormData();
         fd.append('الاسم', payload.customer_name);
         fd.append('الواتساب', payload.whatsapp);
+        fd.append('email', payload.email); // Formspree recipient for autoresponder
+        fd.append('البريد الإلكتروني', payload.email);
         fd.append('المحافظة', payload.governorate);
         fd.append('المنتجات المحجوزة', payload.product_title);
         fd.append('الإجمالي بعد الخصم', finalPrice.toLocaleString() + ' جنيه');
