@@ -743,6 +743,11 @@ footer {
 }
 
 @media (max-width: 576px) {
+    .product-img-wrapper {
+        height: 220px;
+        padding: 10px;
+    }
+
     .hero-title {
         font-size: 1.8rem;
     }
@@ -796,16 +801,23 @@ footer {
 .product-img-wrapper {
     position: relative;
     overflow: hidden;
-    background: #0d0d0d;
+    background: var(--bg-secondary);
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
 }
 .product-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     transition: var(--transition-smooth);
-    /* 3D shadow simulation for the actual metal art image */
-    filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.65));
+    filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.25));
 }
 .product-card:hover .product-img {
-    transform: scale(1.05) rotate(1deg);
-    filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.85));
+    transform: scale(1.04) translateY(-4px);
+    filter: drop-shadow(0px 16px 24px rgba(0, 0, 0, 0.35));
 }
 
 /* 2. Slide-out Cart Drawer */

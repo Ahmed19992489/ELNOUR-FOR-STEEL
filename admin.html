@@ -829,7 +829,12 @@ function updateCatSelect() {
 // NAVIGATION
 // ============================================================
 document.getElementById('menu-toggle').addEventListener('click', () => {
-    document.getElementById('nav-menu').classList.toggle('active');
+    const nav = document.getElementById('nav-menu');
+    nav.classList.toggle('active');
+    const icon = document.getElementById('menu-toggle').querySelector('i');
+    if (icon) {
+        icon.className = nav.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
 });
 window.addEventListener('scroll', () => {
     document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
