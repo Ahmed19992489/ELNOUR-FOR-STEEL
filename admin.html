@@ -580,9 +580,16 @@ function renderProdsList() {
         return;
     }
     list.innerHTML = products.map(p => {
-        const imgSrc = p.image_url
-            ? (p.image_url.startsWith('http') ? p.image_url : './' + p.image_url)
-            : '';
+        let imgSrc = '';
+        if (p.image_url) {
+            if (p.image_url.startsWith('http')) {
+                imgSrc = p.image_url;
+            } else if (p.image_url.startsWith('products-images/')) {
+                imgSrc = `${SUPA_URL}/storage/v1/object/public/products-images/${p.image_url.replace('products-images/', '')}`;
+            } else {
+                imgSrc = './' + p.image_url;
+            }
+        }
         return `<div class="pm-item">
             <div class="pm-meta">
                 ${imgSrc
@@ -621,9 +628,16 @@ function editProd(id) {
 
     // Show image preview
     const prev = document.getElementById('img-preview');
-    const src = p.image_url
-        ? (p.image_url.startsWith('http') ? p.image_url : './' + p.image_url)
-        : '';
+    let src = '';
+    if (p.image_url) {
+        if (p.image_url.startsWith('http')) {
+            src = p.image_url;
+        } else if (p.image_url.startsWith('products-images/')) {
+            src = `${SUPA_URL}/storage/v1/object/public/products-images/${p.image_url.replace('products-images/', '')}`;
+        } else {
+            src = './' + p.image_url;
+        }
+    }
     if (src) { prev.src = src; prev.style.display = 'block'; }
     else      { prev.style.display = 'none'; }
 

@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-    <link rel="stylesheet" href="./style.css?v=4">
+    <link rel="stylesheet" href="./style.css?v=5">
     <style>
         /* Search Bar */
         .search-bar-wrap { max-width: 520px; margin: 0 auto 30px; position: relative; }
@@ -457,7 +457,11 @@ function getBaseUrl() {
 
 function getImgSrc(p) {
     if (!p.image_url) return '';
-    return p.image_url.startsWith('http') ? p.image_url : getBaseUrl() + p.image_url;
+    if (p.image_url.startsWith('http')) return p.image_url;
+    if (p.image_url.startsWith('products-images/')) {
+        return `${SUPA_URL}/storage/v1/object/public/products-images/${p.image_url.replace('products-images/', '')}`;
+    }
+    return getBaseUrl() + p.image_url;
 }
 
 function starsHTML(rating, total) {
