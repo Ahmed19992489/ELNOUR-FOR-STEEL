@@ -3,6 +3,7 @@ import re
 import urllib.request
 import json
 import ssl
+import sys
 
 # ============================================================
 # CONFIGURATION
@@ -19,7 +20,6 @@ def make_request(url, method="GET", headers=None, data=None):
         headers = {}
     headers["apikey"] = ANON_KEY
     
-    # Disable SSL verification issues if any
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
@@ -56,60 +56,62 @@ def make_request(url, method="GET", headers=None, data=None):
 # ============================================================
 def main():
     print("============================================================")
-    print("🚀 سكريبت أتمتة رفع صور المنتجات لـ Supabase - النور للحديد")
+    print("Starting product image upload automation script...")
     print("============================================================")
     
-    # 1. Login with Admin credentials
-    email = input("أدخل بريد الأدمن الإلكتروني (Supabase Auth): ").strip()
-    password = input("أدخل كلمة المرور: ").strip()
+    # 1. Login with Admin credentials from sys.argv or input
+    if len(sys.argv) > 2:
+        email = sys.argv[1].strip()
+        password = sys.argv[2].strip()
+    else:
+        email = input("Enter admin email: ").strip()
+        password = input("Enter admin password: ").strip()
     
-    print("\n🔑 جاري تسجيل الدخول والحصول على رمز الوصول...")
+    print("\n[AUTH] Logging in and fetching access token...")
     login_url = f"{SUPABASE_URL}/auth/v1/token?grant_type=password"
     login_payload = {"email": email, "password": password}
     
     res, err = make_request(login_url, method="POST", data=login_payload)
     if err:
-        print(f"❌ فشل تسجيل الدخول: {err}")
+        print(f"[ERROR] Login failed: {err}")
         return
         
     access_token = res.get("access_token")
     if not access_token:
-        print("❌ لم يتم العثور على رمز الوصول في الاستجابة.")
+        print("[ERROR] Access token not found in response.")
         return
-    print("✅ تم تسجيل الدخول بنجاح.")
+    print("[SUCCESS] Logged in successfully.")
     
     auth_headers = {
         "Authorization": f"Bearer {access_token}"
     }
     
-    # 2. Create the "لوحات جديدة" category
-    print("\n🏷️ جاري إنشاء قسم 'لوحات جديدة'...")
+    # 2. Create the "New Paintings" category
+    print("\n[CATEGORY] Ensuring category 'New Paintings' exists...")
     cat_url = f"{SUPABASE_URL}/rest/v1/categories"
     cat_payload = {"name": "لوحات جديدة", "sort_order": 6}
     
-    # We use PUT or POST with On Conflict to avoid duplicate key error
-    # but we can try POST, if it fails because it exists, it's fine
     _, err = make_request(cat_url, method="POST", headers=auth_headers, data=cat_payload)
     if err:
-        print("ℹ️ قسم 'لوحات جديدة' موجود بالفعل أو تم إنشاؤه مسبقاً.")
+        print("[INFO] New paintings category already exists.")
     else:
-        print("✅ تم إنشاء قسم 'لوحات جديدة' بنجاح.")
+        print("[SUCCESS] New paintings category created.")
         
     # 3. Scan workspace for downloaded Facebook images
-    print("\n📂 جاري فحص مجلد المشروع بحثاً عن صور جديدة...")
+    print("\n[SCAN] Scanning project folder for downloaded Facebook images...")
     img_pattern = re.compile(r"^\d+_\d+_\d+_n\.jpg$")
     files = [f for f in os.listdir(WORKSPACE_DIR) if img_pattern.match(f)]
     
     if not files:
-        print("ℹ️ لم يتم العثور على صور جديدة بنمط أسماء فيسبوك (أرقام_n.jpg) في مجلد المشروع.")
+        print("[INFO] No new downloaded Facebook images found (pattern: numbers_n.jpg).")
         return
         
-    print(f"📋 تم العثور على {len(files)} صورة جديدة جاهزة للرفع.")
+    print(f"[FOUND] Found {len(files)} new images ready for upload.")
     
     success_count = 0
     for idx, filename in enumerate(files):
         file_path = os.path.join(WORKSPACE_DIR, filename)
-        print(f"\n[{idx+1}/{len(files)}] جاري معالجة الصورة: {filename}")
+        print(f"\n[{idx+1}/{len(files)}] Processing image: {filename}")
         
         # A. Upload Image to Supabase Storage
         upload_url = f"{SUPABASE_URL}/storage/v1/object/products-images/{filename}"
@@ -119,42 +121,40 @@ def main():
         upload_headers = auth_headers.copy()
         upload_headers["Content-Type"] = "image/jpeg"
         
-        # Check if already uploaded
-        # Upload using POST
         _, upload_err = make_request(upload_url, method="POST", headers=upload_headers, data=img_bytes)
         if upload_err:
-            print(f"⚠️ تنبيه أثناء رفع الصورة (قد تكون مرفوعة بالفعل): {upload_err}")
+            print(f"[WARNING] Image upload warning (might be already uploaded): {upload_err}")
             
         # B. Insert Product into database
-        prod_url = f"{SUPABASE_URL}/rest/v1/products"
         prod_payload = {
-            "title": f"لوحة معدنية ليزر راقية #{filename.split('_')[0]}",
+            "title": f"لوحة معدنية راقية #{filename.split('_')[0]}",
             "category": "لوحات جديدة",
             "price": 3600,
             "original_price": 5600,
             "specifications": "حديد 2.5 مم | أسود مطفي فاخر",
-            "sizes": "100×100 سم:3600 | 80×80 سم:3000",
+            "sizes": "100\u00d7100 سم:3600 | 80\u00d780 سم:3000",
             "image_url": f"products-images/{filename}",
             "description": "لوحة جدارية فاخرة مقطوعة بالليزر بدقة متناهية ومطلية بدهان حراري مقاوم للرطوبة والصدأ."
         }
         
         # Check if product with this image already exists to avoid duplicates
+        prod_url = f"{SUPABASE_URL}/rest/v1/products"
         check_url = f"{SUPABASE_URL}/rest/v1/products?image_url=eq.products-images/{filename}"
         check_res, _ = make_request(check_url, method="GET", headers=auth_headers)
         if check_res and len(check_res) > 0:
-            print(f"ℹ️ المنتج الخاص بهذه الصورة موجود بالفعل في قاعدة البيانات.")
+            print(f"[INFO] Product for this image already exists in database.")
             continue
             
         _, insert_err = make_request(prod_url, method="POST", headers=auth_headers, data=prod_payload)
         if insert_err:
-            print(f"❌ فشل إضافة المنتج في قاعدة البيانات: {insert_err}")
+            print(f"[ERROR] Failed to insert product in database: {insert_err}")
         else:
-            print(f"✅ تم رفع الصورة وإدراج المنتج بنجاح.")
+            print(f"[SUCCESS] Image uploaded and product inserted successfully.")
             success_count += 1
             
     print("\n============================================================")
-    print(f"🎉 انتهت المهمة بنجاح! تم رفع وإضافة {success_count} لوحة جديدة للمعرض.")
-    print("💡 يمكنك الآن الدخول للوحة الأدمن وتعديل تصنيفاتهم وأسمائهم بسهولة.")
+    print(f"[DONE] Automation task complete! Uploaded and added {success_count} new metal art products.")
+    print("TIP: You can now log into the admin panel to customize their titles, categories, and prices.")
     print("============================================================")
 
 if __name__ == "__main__":
