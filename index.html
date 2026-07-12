@@ -25,6 +25,9 @@
     
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     
     <!-- Unified Stylesheet -->
     <link rel="stylesheet" href="./style.css?v=5">
@@ -565,78 +568,17 @@
                     <h2 class="section-title">أحدث التصاميم والعروض</h2>
                 </div>
 
-                <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-frame"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">براويز حديد</div>
-                            <div class="product-name">براويز ماندالا فاخرة</div>
-                            <div class="product-price">3,950 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
+                <div class="products-grid" id="featured-grid">
+                    <!-- سيتم تحميل المنتجات من قاعدة البيانات تلقائياً -->
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:var(--gold-primary);"></i>
+                        <p style="margin-top:12px;">جاري تحميل المنتجات...</p>
                     </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-bars"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">ستيل</div>
-                            <div class="product-name">رفوف ستيل حديثة</div>
-                            <div class="product-price">2,500 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-door-open"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">أبواب حماية</div>
-                            <div class="product-name">باب حماية فيلا</div>
-                            <div class="product-price">8,500 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-couch"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">أثاث خشبي</div>
-                            <div class="product-name">طاولة قهوة خشب فاخرة</div>
-                            <div class="product-price">4,200 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-bed"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">سراير</div>
-                            <div class="product-name">سرير حديد فاخر</div>
-                            <div class="product-price">6,800 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <i class="fa-solid fa-palette"></i>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">ديكورات</div>
-                            <div class="product-name">لوحات جدارية ديكورية</div>
-                            <div class="product-price">1,800 جنيه</div>
-                            <a href="https://wa.me/201114323218" class="btn-product" target="_blank">اطلب الآن</a>
-                        </div>
-                    </div>
+                </div>
+                <div style="text-align:center;margin-top:32px;">
+                    <a href="products.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--gold-primary);font-weight:700;text-decoration:none;font-size:1rem;border:1px solid var(--gold-primary);padding:10px 28px;border-radius:50px;transition:all 0.2s;" onmouseover="this.style.background='var(--gold-primary)';this.style.color='#000'" onmouseout="this.style.background='transparent';this.style.color='var(--gold-primary)'">
+                        <i class="fa-solid fa-grid"></i> عرض جميع المنتجات (111+)
+                    </a>
                 </div>
             </div>
         </section>
@@ -761,40 +703,98 @@
 
     <!-- JavaScript -->
     <script>
+        // ============================================================
+        // CONFIG
+        // ============================================================
+        const SUPA_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+        const SUPA_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
+        const IMG_BASE  = SUPA_URL + "/storage/v1/object/public/products-images/";
+
+        // ============================================================
+        // LOAD FEATURED PRODUCTS FROM SUPABASE
+        // ============================================================
+        async function loadFeaturedProducts() {
+            const grid = document.getElementById('featured-grid');
+            try {
+                const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+                const { data, error } = await db
+                    .from('products')
+                    .select('id, title, category, price, image_url, description')
+                    .eq('is_available', true)
+                    .not('image_url', 'is', null)
+                    .limit(6);
+
+                if (error || !data || data.length === 0) throw new Error('no data');
+
+                grid.innerHTML = data.map(p => {
+                    let imgSrc = '';
+                    if (p.image_url) {
+                        if (p.image_url.startsWith('http')) {
+                            imgSrc = p.image_url;
+                        } else if (p.image_url.startsWith('products-images/')) {
+                            imgSrc = IMG_BASE + p.image_url.replace('products-images/', '');
+                        } else {
+                            imgSrc = IMG_BASE + p.image_url;
+                        }
+                    }
+                    const waMsg = encodeURIComponent('مرحباً، أريد الاستفسار عن: ' + p.title);
+                    return `
+                        <div class="product-card" onclick="window.open('products.html','_self')" style="cursor:pointer;">
+                            <div class="product-image" style="padding:0;overflow:hidden;background:#0d0d0d;">
+                                ${imgSrc
+                                    ? `<img src="${imgSrc}" alt="${p.title}" loading="lazy"
+                                        style="width:100%;height:100%;object-fit:cover;display:block;"
+                                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                                        ><div style="display:none;align-items:center;justify-content:center;height:100%;font-size:2.5rem;color:var(--gold-primary);"><i class='fa-solid fa-image'></i></div>`
+                                    : `<i class="fa-solid fa-image" style="color:var(--gold-primary);"></i>`
+                                }
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">${p.category || 'منتجاتنا'}</div>
+                                <div class="product-name">${p.title}</div>
+                                <div class="product-price">${Number(p.price).toLocaleString('ar-EG')} جنيه</div>
+                                <a href="https://wa.me/201114323218?text=${waMsg}" class="btn-product" target="_blank" onclick="event.stopPropagation()">اطلب الآن</a>
+                            </div>
+                        </div>`;
+                }).join('');
+
+            } catch(e) {
+                // Fallback: show link to products page
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:40px;">
+                        <i class="fa-solid fa-store" style="font-size:3rem;color:var(--gold-primary);margin-bottom:16px;"></i>
+                        <p style="color:var(--text-secondary);margin-bottom:20px;">تصفح مئات المنتجات في معرضنا الكامل</p>
+                        <a href="products.html" class="btn-product" style="display:inline-block;">تصفح المنتجات</a>
+                    </div>`;
+            }
+        }
+
         // Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
         const navMenu = document.getElementById('nav-menu');
-
         if (menuToggle && navMenu) {
             menuToggle.addEventListener('click', () => {
                 navMenu.classList.toggle('active');
                 const icon = menuToggle.querySelector('i');
-                if (icon) {
-                    icon.className = navMenu.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
-                }
+                if (icon) icon.className = navMenu.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
             });
         }
 
         // Header Scroll
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+        window.addEventListener('scroll', () => {
+            document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
             });
         });
+
+        // Load products on page load
+        window.addEventListener('DOMContentLoaded', loadFeaturedProducts);
     </script>
 </body>
 </html>
