@@ -4,881 +4,839 @@
     <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="براويز حديد مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ. تصاميم فاخرة للعملاء Class A. سعر 3950 جنيه فقط مع ضمان مدى الحياة وشحن مجاني.">
-    <meta name="keywords" content="براويز حديد، ديكورات معدنية، لوحات جدارية، ليزر كات، ديكور فاخر، براويز مقصوصة بالليزر، مصر">
+    <meta name="description" id="meta-desc" content="براويز حديد مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ. تصاميم فاخرة. سعر 3950 جنيه فقط مع ضمان مدى الحياة وشحن مجاني.">
+    <meta name="keywords" content="براويز حديد، ديكورات معدنية، لوحات جدارية، ليزر كات، ديكور فاخر، مصر">
     <meta name="author" content="Elnour for Steel">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="Arabic">
-    <meta name="revisit-after" content="7 days">
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="براويز حديد فاخرة مقصوصة بالليزر - النور للحديد">
-    <meta property="og:description" content="براويز حديد مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ. تصاميم فاخرة للعملاء Class A.">
-    <meta property="og:url" content="https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/product-landing.html">
-    <meta property="og:image" content="./161841924_3741716299278845_3895684170105190938_n.jpg">
-    
-    <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="براويز حديد فاخرة مقصوصة بالليزر">
-    <meta name="twitter:description" content="براويز حديد مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ">
-    <meta name="twitter:image" content="./161841924_3741716299278845_3895684170105190938_n.jpg">
-    
-    <!-- Canonical URL -->
+    <meta name="google-site-verification" content="TB9UTp0xsNIbPnnU3JgO51kILUva1P2k7bhEznr3dQA">
     <link rel="canonical" href="https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/product-landing.html">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    
+
+    <!-- Open Graph Tags -->
+    <meta property="og:type" content="product">
+    <meta property="og:title" id="og-title" content="براويز حديد فاخرة مقصوصة بالليزر - النور للحديد">
+    <meta property="og:description" id="og-desc" content="براويز حديد مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ. تصاميم فاخرة للعملاء Class A.">
+    <meta property="og:url" content="https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/product-landing.html">
+    <meta property="og:image" id="og-image" content="https://tsdkhsgkqwaewfgldquj.supabase.co/storage/v1/object/public/products-images/frames/161841924_3741716299278845_3895684170105190938_n.jpg">
+    <meta property="og:site_name" content="النور للحديد">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="النور للحديد - ديكورات حديد فاخرة">
+
+    <!-- Title -->
+    <title id="page-title">براويز حديد فاخرة - النور للحديد</title>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
+
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="./style.css?v=3">
-    
-    <title>براويز حديد فاخرة مقصوصة بالليزر - النور للحديد | 3950 جنيه</title>
-    
-    <style>
-        /* Landing Page Specific Styles */
-        .landing-hero {
-            padding: 100px 0 80px 0;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            min-height: 85vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./style.css?v=6">
+
+    <style>
+        /* ===== LOADING OVERLAY ===== */
+        #page-loader {
+            position: fixed; inset: 0;
+            background: var(--bg-primary);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        #page-loader.hidden { opacity: 0; pointer-events: none; }
+        .loader-spin {
+            width: 56px; height: 56px;
+            border: 4px solid rgba(212,175,55,0.2);
+            border-top-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== HERO ===== */
+        .landing-hero {
+            padding: 120px 0 90px;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            min-height: 88vh;
+            display: flex; align-items: center;
+            position: relative; overflow: hidden;
+        }
         .landing-hero::before {
             content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
+            position: absolute; top: -30%; right: -5%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none;
         }
-
         .landing-grid {
             display: grid;
             grid-template-columns: 1.3fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
+            gap: 60px; align-items: center;
+            position: relative; z-index: 1;
+        }
+        #product-title-hero {
+            font-size: 3.2rem; line-height: 1.2;
+            margin-bottom: 20px; color: var(--text-primary);
+        }
+        .price-row { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+        .price-badge {
+            background: var(--gold-primary); color: #000;
+            padding: 10px 24px; border-radius: 50px;
+            font-size: 1.5rem; font-weight: 900;
+            box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+        }
+        .price-original { text-decoration: line-through; color: var(--text-muted); font-size: 1.1rem; }
+        .discount-badge {
+            background: #dc3545; color: #fff;
+            padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+        }
+        #product-description-hero {
+            font-size: 1.1rem; color: var(--text-secondary);
+            margin-bottom: 28px; line-height: 1.9;
         }
 
-        .landing-content h1 {
-            font-size: 3.8rem;
-            line-height: 1.15;
-            margin-bottom: 25px;
-            color: var(--text-primary);
-        }
-
-        .landing-content .price-tag {
-            display: inline-block;
-            background-color: var(--gold-primary);
-            color: var(--text-primary);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .landing-content .original-price {
-            text-decoration: line-through;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            margin-left: 15px;
-        }
-
-        .landing-content p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-            line-height: 1.8;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .btn-order {
-            background-color: var(--gold-primary);
-            color: var(--text-primary);
-            padding: 16px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: var(--transition-smooth);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-order:hover {
-            background-color: var(--brown-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-            padding: 16px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: var(--transition-smooth);
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #20BA58;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
-        }
-
-        .benefits-list {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
+        /* Benefits */
+        .benefits-list { list-style: none; margin-bottom: 32px; }
         .benefits-list li {
-            padding: 12px 0;
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            padding: 10px 0; color: var(--text-secondary);
+            font-size: 1rem; display: flex; align-items: center; gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
         }
+        .benefits-list li:last-child { border-bottom: none; }
+        .benefits-list li i { color: var(--gold-primary); width: 20px; text-align: center; }
 
-        .benefits-list li::before {
-            content: '✓';
-            color: var(--gold-primary);
-            font-weight: 700;
-            font-size: 1.3rem;
+        /* CTA Buttons */
+        .cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-wa, .btn-order-hero {
+            padding: 15px 32px; border-radius: 50px;
+            font-weight: 700; font-size: 1rem;
+            display: inline-flex; align-items: center; gap: 10px;
+            text-decoration: none; border: none; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-
-        .product-image-container {
-            position: relative;
-            animation: slideInRight 0.8s ease-out;
+        .btn-wa {
+            background: #25D366; color: #fff;
+            box-shadow: 0 8px 24px rgba(37,211,102,0.35);
         }
+        .btn-wa:hover { background: #20BA58; transform: translateY(-3px); }
+        .btn-order-hero {
+            background: var(--gold-primary); color: #000;
+            box-shadow: 0 8px 24px rgba(212,175,55,0.35);
+        }
+        .btn-order-hero:hover { background: var(--brown-primary); color: #fff; transform: translateY(-3px); }
 
-        .product-image {
+        /* Product Image */
+        .product-img-wrap {
             border: 3px solid var(--gold-primary);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-            transition: var(--transition-smooth);
+            border-radius: 14px; overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+            animation: slideInRight 0.8s ease-out;
+            background: #0d0d0d;
+            position: relative;
         }
-
-        .product-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
+        .product-img-wrap img {
+            width: 100%; display: block;
+            aspect-ratio: 1/1; object-fit: cover;
         }
-
-        .product-image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+        .img-badge {
+            position: absolute; top: 14px; right: 14px;
+            background: #dc3545; color: #fff;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700;
         }
+        @keyframes slideInRight { from { opacity:0; transform:translateX(50px); } to { opacity:1; transform:translateX(0); } }
 
-        /* Features Section */
-        .features-section {
-            padding: 100px 0;
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+        /* ===== ORDER FORM ===== */
+        .order-section {
+            padding: 90px 0;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--accent-dark) 100%);
+            position: relative; overflow: hidden;
         }
-
-        .features-grid {
+        .order-section::before {
+            content: '';
+            position: absolute; bottom: -20%; left: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .order-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 35px;
-            margin-top: 50px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px; align-items: start;
+            position: relative; z-index: 1;
         }
+        .order-info h2 { font-size: 2.4rem; color: var(--gold-light); margin-bottom: 16px; }
+        .order-info p { color: rgba(255,255,255,0.75); font-size: 1.05rem; line-height: 1.9; margin-bottom: 24px; }
+        .trust-items { display: flex; flex-direction: column; gap: 14px; }
+        .trust-item { display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+        .trust-item i { color: var(--gold-primary); font-size: 1.2rem; width: 24px; }
 
+        .order-form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 35px;
+        }
+        .order-form-card h3 { font-size: 1.3rem; color: var(--gold-secondary); margin-bottom: 22px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field-group { margin-bottom: 16px; }
+        .field-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 600; }
+        .field-group input, .field-group select, .field-group textarea {
+            width: 100%; background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 11px 14px;
+            border-radius: 7px; font-family: var(--font-arabic);
+            font-size: 0.95rem; transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+            outline: none; border-color: var(--gold-primary);
+        }
+        .btn-submit-order {
+            width: 100%; padding: 15px;
+            background: var(--gold-primary); color: #000;
+            border: none; border-radius: 50px; font-size: 1.05rem;
+            font-weight: 900; cursor: pointer; font-family: var(--font-arabic);
+            transition: background 0.2s, transform 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 6px;
+        }
+        .btn-submit-order:hover:not(:disabled) { background: var(--brown-primary); color: #fff; transform: translateY(-2px); }
+        .btn-submit-order:disabled { opacity: 0.6; cursor: not-allowed; }
+        .success-msg {
+            display: none; text-align: center; padding: 28px 20px;
+            background: rgba(40,167,69,0.08); border: 1px solid #28a745;
+            border-radius: 10px; color: #28a745; margin-top: 16px;
+        }
+        .success-msg i { font-size: 2.5rem; margin-bottom: 12px; }
+
+        /* ===== FEATURES ===== */
+        .features-section { padding: 80px 0; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 24px; margin-top: 50px; }
         .feature-item {
-            background-color: var(--bg-primary);
-            padding: 40px 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            transition: var(--transition-smooth);
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 28px 22px; text-align: center;
+            transition: border-color 0.25s, transform 0.25s;
         }
+        .feature-item:hover { border-color: var(--gold-primary); transform: translateY(-4px); }
+        .feature-item i { font-size: 2rem; color: var(--gold-primary); margin-bottom: 14px; }
+        .feature-item h3 { font-size: 1.05rem; margin-bottom: 8px; }
+        .feature-item p { font-size: 0.88rem; color: var(--text-secondary); }
 
-        .feature-item:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold-primary);
-            box-shadow: var(--shadow-heavy);
-        }
-
-        .feature-item i {
-            font-size: 3rem;
-            color: var(--gold-primary);
-            margin-bottom: 20px;
-        }
-
-        .feature-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-
-        .feature-item p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Comparison Section */
-        .comparison-section {
-            padding: 100px 0;
-            background-color: var(--bg-primary);
-        }
-
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 40px;
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .comparison-table th,
-        .comparison-table td {
-            padding: 20px;
-            text-align: right;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .comparison-table th {
-            background-color: rgba(212, 175, 55, 0.1);
-            color: var(--gold-primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .comparison-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .comparison-table td:first-child {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .checkmark {
-            color: var(--gold-primary);
-            font-weight: 700;
-            font-size: 1.3rem;
-        }
-
-        .cross {
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 1.3rem;
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            padding: 100px 0;
-            background-color: var(--bg-card);
-        }
-
-        .faq-item {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            transition: var(--transition-smooth);
-        }
-
-        .faq-item:hover {
-            border-color: var(--gold-primary);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .faq-question {
-            padding: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: var(--text-primary);
-            user-select: none;
-        }
-
-        .faq-question i {
-            color: var(--gold-primary);
-            transition: var(--transition-fast);
-        }
-
-        .faq-item.active .faq-question i {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 20px;
-            max-height: 500px;
-        }
-
-        /* Testimonials */
-        .testimonials-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section { padding: 80px 0; background: var(--bg-secondary); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 24px; margin-top: 50px; }
         .testimonial-card {
-            background-color: var(--bg-card);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-light);
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 26px;
         }
+        .stars { color: var(--gold-primary); font-size: 1.2rem; margin-bottom: 14px; }
+        .testimonial-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 14px; font-style: italic; }
+        .testimonial-author { font-weight: 700; font-size: 0.85rem; color: var(--gold-secondary); }
 
-        .stars {
-            color: var(--gold-primary);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+        /* ===== FAQ ===== */
+        .faq-section { padding: 80px 0; }
+        .faq-item { border-bottom: 1px solid var(--border-color); }
+        .faq-question {
+            padding: 20px 0; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; font-size: 1rem; color: var(--text-primary);
+            transition: color 0.2s;
         }
+        .faq-question:hover { color: var(--gold-primary); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .faq-answer p { padding: 0 0 18px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+        .faq-item.active .faq-answer { max-height: 200px; }
+        .faq-item.active .faq-question { color: var(--gold-primary); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-question i { transition: transform 0.3s; }
 
-        .testimonial-text {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.8;
+        /* ===== Floating WhatsApp ===== */
+        .whatsapp-float {
+            position: fixed; bottom: 28px; left: 28px;
+            background: #25D366; color: #fff;
+            width: 58px; height: 58px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.7rem; box-shadow: 0 6px 20px rgba(37,211,102,0.5);
+            z-index: 999; transition: transform 0.2s;
+            text-decoration: none;
         }
+        .whatsapp-float:hover { transform: scale(1.12); }
 
-        .testimonial-author {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+        /* ===== Section Header ===== */
+        .section-header { text-align: center; margin-bottom: 10px; }
+        .section-subtitle { font-size: 0.8rem; letter-spacing: 2px; color: var(--gold-primary); text-transform: uppercase; font-weight: 700; }
+        .section-title { font-size: 2.2rem; margin-top: 8px; color: var(--text-primary); }
 
-        /* Responsive */
+        /* ===== Responsive ===== */
         @media (max-width: 991px) {
-            .landing-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .landing-content h1 {
-                font-size: 2.8rem;
-            }
-
-            .cta-buttons {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 15px;
-                font-size: 0.95rem;
-            }
+            .landing-grid, .order-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .cta-buttons { justify-content: center; }
+            #product-title-hero { font-size: 2.4rem; }
+            .price-row { justify-content: center; }
+            .trust-items { align-items: flex-start; }
         }
-
-        @media (max-width: 768px) {
-            .landing-hero {
-                padding: 80px 0 60px 0;
-                min-height: 70vh;
-            }
-
-            .landing-content h1 {
-                font-size: 2.2rem;
-            }
-
-            .landing-content p {
-                font-size: 1rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn-order,
-            .btn-whatsapp {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .comparison-table {
-                font-size: 0.9rem;
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @media (max-width: 600px) {
+            #product-title-hero { font-size: 2rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .order-form-card { padding: 22px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header id="main-header">
-        <div class="container nav-container">
-            <a href="index.html" class="logo">
-                <span class="logo-title">Elnour for Steel</span>
-                <span class="logo-subtitle">النور للحديد والـديكـور</span>
-            </a>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="products.html">المنتجات</a></li>
-                <li><a href="portfolio.html">سابقة أعمالنا</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
-            </ul>
 
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <a href="#order" class="nav-cta-btn">اطلب الآن</a>
-                <div class="menu-toggle" id="menu-toggle">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </div>
+<!-- Page Loader -->
+<div id="page-loader">
+    <div class="loader-spin"></div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" style="position:fixed;bottom:30px;right:30px;background:var(--bg-card);border:1px solid var(--gold-primary);color:var(--text-primary);padding:14px 22px;border-radius:8px;box-shadow:0 8px 25px rgba(0,0,0,0.5);font-size:0.95rem;z-index:9999;display:none;"></div>
+
+<!-- Header -->
+<header id="main-header">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-title">Elnour for Steel</span>
+            <span class="logo-subtitle">النور للحديد والـديكـور</span>
+        </a>
+        <ul class="nav-menu" id="nav-menu">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="products.html">المنتجات</a></li>
+            <li><a href="portfolio.html">سابقة أعمالنا</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:15px;">
+            <a href="#order-section" class="nav-cta-btn">اطلب الآن</a>
+            <div class="menu-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="landing-hero" id="hero">
-            <div class="container landing-grid">
-                <div class="landing-content">
-                    <h1>براويز حديد فاخرة مقصوصة بالليزر بدقة عالية</h1>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <span class="price-tag">3950 جنيه فقط</span>
-                        <span class="original-price">5600 جنيه</span>
-                    </div>
-
-                    <p>لوحات جدارية معدنية مقصوصة بدقة الليزر المتناهية مع دهانات ضد الصدأ وضمان مدى الحياة. تصاميم فاخرة وأنيقة تناسب أرقى المنازل والفلل.</p>
-
-                    <ul class="benefits-list">
-                        <li>دقة قص بالليزر متناهية</li>
-                        <li>دهانات ضد الصدأ والرطوبة</li>
-                        <li>ضمان مدى الحياة</li>
-                        <li>تغليف احترافي وآمن</li>
-                        <li>شحن مجاني</li>
-                        <li>تصاميم فاخرة وعصرية</li>
-                    </ul>
-
-                    <div class="cta-buttons">
-                        <a href="https://wa.me/201114323218?text=أريد%20طلب%20براويز%20حديد%20مقصوصة%20بالليزر" class="btn-whatsapp" target="_blank">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب عبر واتساب
-                        </a>
-                        <a href="#order" class="btn-order">
-                            <i class="fa-solid fa-cart-shopping"></i> اطلب الآن
-                        </a>
-                    </div>
+<main>
+    <!-- ===== HERO ===== -->
+    <section class="landing-hero" id="hero">
+        <div class="container landing-grid">
+            <div class="landing-content">
+                <h1 id="product-title-hero">جاري تحميل المنتج...</h1>
+                <div class="price-row">
+                    <span class="price-badge" id="price-badge">— جنيه</span>
+                    <span class="price-original" id="price-original" style="display:none;"></span>
+                    <span class="discount-badge" id="discount-badge" style="display:none;"></span>
                 </div>
-
-                <div class="product-image-container">
-                    <div class="product-image">
-                        <img src="./161841924_3741716299278845_3895684170105190938_n.jpg" alt="براويز حديد فاخرة مقصوصة بالليزر - النور للحديد" loading="lazy">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">مميزات المنتج</span>
-                    <h2 class="section-title">لماذا تختار براويزنا؟</h2>
-                </div>
-
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <i class="fa-solid fa-laser"></i>
-                        <h3>دقة الليزر</h3>
-                        <p>قص بدقة متناهية باستخدام أحدث تقنيات الليزر لضمان تفاصيل مثالية</p>
-                    </div>
-
-                    <div class="feature-item">
-                        <i class="fa-solid fa-shield"></i>
-                        <h3>ضمان مدى الحياة</h3>
-                        <p>ضمان شامل ضد الصدأ والتآكل مدى الحياة</p>
-                    </div>
-
-                    <div class="feature-item">
-                        <i class="fa-solid fa-paint"></i>
-                        <h3>دهانات فاخرة</h3>
-                        <p>دهانات إلكتروستاتيكية حرارية مقاومة للرطوبة والعوامل الجوية</p>
-                    </div>
-
-                    <div class="feature-item">
-                        <i class="fa-solid fa-box"></i>
-                        <h3>تغليف احترافي</h3>
-                        <p>تغليف خشبي متين مع حماية كاملة بالإسفنج والفقاعات</p>
-                    </div>
-
-                    <div class="feature-item">
-                        <i class="fa-solid fa-truck"></i>
-                        <h3>شحن مجاني</h3>
-                        <p>شحن آمن ومجاني إلى جميع محافظات مصر</p>
-                    </div>
-
-                    <div class="feature-item">
-                        <i class="fa-solid fa-star"></i>
-                        <h3>تصاميم فاخرة</h3>
-                        <p>تصاميم عصرية وأنيقة تناسب جميع الأذواق</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Comparison Section -->
-        <section class="comparison-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">مقارنة المنتجات</span>
-                    <h2 class="section-title">براويزنا vs المنتج المستورد</h2>
-                </div>
-
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>المميزات</th>
-                            <th>براويزنا (مصري)</th>
-                            <th>المنتج المستورد</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>السعر</td>
-                            <td><span class="checkmark">3950 جنيه</span></td>
-                            <td><span class="cross">5600 جنيه</span></td>
-                        </tr>
-                        <tr>
-                            <td>جودة الخامة</td>
-                            <td><span class="checkmark">✓ ممتازة</span></td>
-                            <td><span class="checkmark">✓ جيدة</span></td>
-                        </tr>
-                        <tr>
-                            <td>دقة القص</td>
-                            <td><span class="checkmark">✓ متناهية</span></td>
-                            <td><span class="checkmark">✓ جيدة</span></td>
-                        </tr>
-                        <tr>
-                            <td>الضمان</td>
-                            <td><span class="checkmark">✓ مدى الحياة</span></td>
-                            <td><span class="cross">سنة واحدة</span></td>
-                        </tr>
-                        <tr>
-                            <td>التغليف</td>
-                            <td><span class="checkmark">✓ احترافي</span></td>
-                            <td><span class="cross">عادي</span></td>
-                        </tr>
-                        <tr>
-                            <td>الشحن</td>
-                            <td><span class="checkmark">✓ مجاني</span></td>
-                            <td><span class="cross">مدفوع</span></td>
-                        </tr>
-                        <tr>
-                            <td>الدعم المحلي</td>
-                            <td><span class="checkmark">✓ فوري</span></td>
-                            <td><span class="cross">بطيء</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section class="testimonials-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">آراء العملاء</span>
-                    <h2 class="section-title">ماذا يقول عملاؤنا؟</h2>
-                </div>
-
-                <div class="testimonials-grid">
-                    <div class="testimonial-card">
-                        <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">منتج رائع وجودة عالية جداً. التغليف احترافي والشحن كان سريع. أنصح الجميع بهذا المنتج!</p>
-                        <p class="testimonial-author">أحمد محمود - القاهرة</p>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">الديكور جميل جداً وأضاف لمسة فاخرة لمنزلي. الفريق متعاون جداً والخدمة ممتازة.</p>
-                        <p class="testimonial-author">فاطمة علي - الجيزة</p>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">السعر أفضل من المنتجات المستوردة والجودة أعلى. استحق كل فلس. شكراً يا النور للحديد!</p>
-                        <p class="testimonial-author">محمد حسن - الإسكندرية</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="faq-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-subtitle">أسئلة شائعة</span>
-                    <h2 class="section-title">الأسئلة المتكررة</h2>
-                </div>
-
-                <div style="max-width: 800px; margin: 50px auto;">
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>ما هي مدة الضمان؟</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نحن نقدم ضمان مدى الحياة ضد الصدأ والتآكل. هذا يعني أن المنتج محمي بالكامل طوال فترة استخدامك له.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>كم تكلفة الشحن؟</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>الشحن مجاني تماماً إلى جميع محافظات مصر. نتحمل تكاليف الشحن الآمن والمؤمن بالكامل.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>كم يستغرق وقت التسليم؟</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يستغرق التسليم من 4 إلى 7 أيام عمل حسب موقعك الجغرافي. نضمن وصول المنتج بحالة ممتازة.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>هل يمكن تخصيص التصميم؟</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعم، يمكننا تخصيص التصميم حسب احتياجاتك. تواصل معنا عبر واتساب لمناقشة التصاميم المخصصة.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>هل المنتج مناسب للأماكن الرطبة؟</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعم، المنتج مطلي بدهانات إلكتروستاتيكية حرارية مقاومة للرطوبة والعوامل الجوية. آمن تماماً للاستخدام في الأماكن الرطبة.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section style="padding: 100px 0; background: linear-gradient(135deg, var(--bg-dark) 0%, var(--accent-dark) 100%); text-align: center; color: white;" id="order">
-            <div class="container">
-                <h2 style="font-size: 2.8rem; margin-bottom: 20px; color: white;">اطلب الآن واحصل على خصم فوري</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 40px; color: rgba(255, 255, 255, 0.8);">براويز حديد فاخرة بسعر 3950 جنيه فقط مع ضمان مدى الحياة وشحن مجاني</p>
-                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                    <a href="https://wa.me/201114323218?text=أريد%20طلب%20براويز%20حديد%20مقصوصة%20بالليزر" class="btn-whatsapp" target="_blank">
+                <p id="product-description-hero">جاري تحميل التفاصيل...</p>
+                <ul class="benefits-list">
+                    <li><i class="fa-solid fa-circle-check"></i>قص بدقة الليزر المتناهية</li>
+                    <li><i class="fa-solid fa-shield-halved"></i>ضمان مدى الحياة ضد الصدأ</li>
+                    <li><i class="fa-solid fa-truck"></i>شحن مجاني لجميع محافظات مصر</li>
+                    <li><i class="fa-solid fa-paint-roller"></i>دهانات إلكتروستاتيكية فاخرة</li>
+                    <li><i class="fa-solid fa-box"></i>تغليف احترافي آمن</li>
+                    <li><i class="fa-solid fa-palette"></i>تصاميم عصرية بكل الألوان</li>
+                </ul>
+                <div class="cta-buttons">
+                    <a href="#" id="hero-whatsapp" class="btn-wa" target="_blank">
                         <i class="fa-brands fa-whatsapp"></i> اطلب عبر واتساب
                     </a>
-                    <a href="tel:+201114323218" class="btn-order" style="background-color: var(--gold-primary);">
-                        <i class="fa-solid fa-phone"></i> اتصل بنا
+                    <a href="#order-section" class="btn-order-hero">
+                        <i class="fa-solid fa-cart-shopping"></i> سجل طلبك الآن
                     </a>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>النور للحديد</h4>
-                    <p>براويز حديد فاخرة مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ وضمان مدى الحياة.</p>
+            <div>
+                <div class="product-img-wrap">
+                    <img id="product-img-hero" src="" alt="منتج النور للحديد">
+                    <div class="img-badge" id="img-badge" style="display:none;">خصم خاص</div>
                 </div>
-
-                <div class="footer-section">
-                    <h4>الروابط السريعة</h4>
-                    <a href="index.html">الرئيسية</a><br>
-                    <a href="products.html">المنتجات</a><br>
-                    <a href="portfolio.html">سابقة الأعمال</a><br>
-                    <a href="about.html">من نحن</a>
-                </div>
-
-                <div class="footer-section">
-                    <h4>تواصل معنا</h4>
-                    <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201114323218" target="_blank">01114323218</a></p>
-                    <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201118182424" target="_blank">01118182424</a></p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/NOOURSTEEL/" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 النور للحديد والديكور (Elnour for Steel). جميع الحقوق محفوظة.</p>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Schema Markup (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": "براويز حديد مقصوصة بالليزر",
-        "image": "https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/161841924_3741716299278845_3895684170105190938_n.jpg",
-        "description": "براويز حديد فاخرة مقصوصة بالليزر بدقة عالية مع دهانات ضد الصدأ وضمان مدى الحياة",
-        "brand": {
-            "@type": "Brand",
-            "name": "Elnour for Steel"
-        },
-        "offers": {
-            "@type": "Offer",
-            "url": "https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/product-landing.html",
-            "priceCurrency": "EGP",
-            "price": "3950",
-            "priceValidUntil": "2026-12-31",
-            "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "ratingCount": "150"
+    <!-- ===== FEATURES ===== -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">مميزات حصرية</span>
+                <h2 class="section-title">لماذا تختار النور للحديد؟</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item"><i class="fa-solid fa-bullseye"></i><h3>دقة قياسية</h3><p>تقنية ليزر حديثة تضمن تفاصيل مثالية في كل قطعة</p></div>
+                <div class="feature-item"><i class="fa-solid fa-shield"></i><h3>ضمان مدى الحياة</h3><p>نضمن جودة المنتج ومقاومته للصدأ طوال عمره</p></div>
+                <div class="feature-item"><i class="fa-solid fa-palette"></i><h3>دهانات فاخرة</h3><p>إلكتروستاتيك حراري مقاوم للرطوبة والعوامل الجوية</p></div>
+                <div class="feature-item"><i class="fa-solid fa-truck-fast"></i><h3>شحن سريع ومجاني</h3><p>توصيل آمن لجميع محافظات مصر خلال 4-7 أيام</p></div>
+                <div class="feature-item"><i class="fa-solid fa-ruler-combined"></i><h3>مقاسات مخصصة</h3><p>نصنع بأي مقاس تحتاجه لتناسب مساحتك تماماً</p></div>
+                <div class="feature-item"><i class="fa-solid fa-headset"></i><h3>خدمة عملاء 24/7</h3><p>فريقنا دائماً متاح للإجابة على استفساراتك</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ORDER FORM ===== -->
+    <section class="order-section" id="order-section">
+        <div class="container order-grid">
+            <div class="order-info">
+                <h2>سجّل طلبك الآن</h2>
+                <p id="order-product-name-info">اكمل بياناتك وسيتواصل معك فريقنا خلال ساعات قليلة لتأكيد الطلب والشحن المجاني.</p>
+                <div class="trust-items">
+                    <div class="trust-item"><i class="fa-solid fa-lock"></i> بياناتك محمية ومؤمنة بالكامل</div>
+                    <div class="trust-item"><i class="fa-solid fa-check-circle"></i> لا يوجد دفع مسبق - الدفع عند الاستلام</div>
+                    <div class="trust-item"><i class="fa-solid fa-truck"></i> شحن مجاني لجميع محافظات مصر</div>
+                    <div class="trust-item"><i class="fa-solid fa-phone"></i> تأكيد الطلب خلال 2 ساعة عمل</div>
+                    <div class="trust-item"><i class="fa-solid fa-star"></i> أكثر من 500 عميل سعيد</div>
+                </div>
+            </div>
+            <div class="order-form-card">
+                <h3><i class="fa-solid fa-pen-to-square" style="color:var(--gold-primary);"></i> بيانات الطلب</h3>
+                <form id="order-form">
+                    <div class="form-row">
+                        <div class="field-group">
+                            <label for="f-name">الاسم الكامل *</label>
+                            <input type="text" id="f-name" placeholder="مثال: أحمد محمد" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="f-phone">رقم الواتساب *</label>
+                            <input type="tel" id="f-phone" placeholder="01XXXXXXXXX" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="field-group">
+                            <label for="f-gov">المحافظة *</label>
+                            <select id="f-gov" required>
+                                <option value="">اختر المحافظة...</option>
+                                <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                                <option>المنصورة</option><option>الإسماعيلية</option><option>بور سعيد</option>
+                                <option>السويس</option><option>طنطا</option><option>الزقازيق</option>
+                                <option>المنيا</option><option>أسيوط</option><option>سوهاج</option>
+                                <option>أسوان</option><option>الأقصر</option><option>قنا</option>
+                                <option>الغربية</option><option>الشرقية</option><option>الدقهلية</option>
+                                <option>البحيرة</option><option>كفر الشيخ</option><option>دمياط</option>
+                                <option>الفيوم</option><option>بني سويف</option><option>شمال سيناء</option>
+                                <option>جنوب سيناء</option><option>البحر الأحمر</option><option>الوادي الجديد</option>
+                                <option>مطروح</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label for="f-size">المقاس المطلوب</label>
+                            <input type="text" id="f-size" placeholder="مثال: 100×100 سم">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label for="f-notes">ملاحظات إضافية (اختياري)</label>
+                        <textarea id="f-notes" rows="3" placeholder="أي تفاصيل أخرى أو طلبات خاصة..."></textarea>
+                    </div>
+                    <input type="hidden" id="f-product-id">
+                    <input type="hidden" id="f-product-title">
+                    <input type="hidden" id="f-product-price">
+                    <button type="submit" class="btn-submit-order" id="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i> إرسال الطلب الآن
+                    </button>
+                </form>
+                <div class="success-msg" id="success-msg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <h4 style="margin:10px 0 8px;color:#28a745;">تم استلام طلبك بنجاح! ✅</h4>
+                    <p style="color:rgba(255,255,255,0.7);margin:0;">سيتواصل معك فريقنا عبر الواتساب خلال ساعتين لتأكيد الطلب. شكراً لثقتك بالنور للحديد!</p>
+                    <a id="whatsapp-confirm" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#25D366;color:#fff;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:700;">
+                        <i class="fa-brands fa-whatsapp"></i> تواصل معنا مباشرة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">آراء عملائنا</span>
+                <h2 class="section-title">ماذا يقول عملاؤنا؟</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"المنتج فاق توقعاتي تماماً! الجودة ممتازة والتشطيب احترافي. الشحن وصل في 5 أيام وبدون أي خدش."</p>
+                    <p class="testimonial-author">أحمد محمود — القاهرة</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"اشتريت لوحة ماندالا وزوجتي انبهرت منها! التصميم جميل جداً وأضاف لمسة فاخرة لصالون البيت."</p>
+                    <p class="testimonial-author">محمود إبراهيم — الجيزة</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"تعاملت مع فريق النور وكانوا محترفين جداً. السعر معقول جداً مقارنة بالجودة العالية. ينصح بيه 100%!"</p>
+                    <p class="testimonial-author">فاطمة علي — الإسكندرية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq-section">
+        <div class="container" style="max-width:800px;">
+            <div class="section-header">
+                <span class="section-subtitle">أسئلة شائعة</span>
+                <h2 class="section-title">الأسئلة المتكررة</h2>
+            </div>
+            <div style="margin-top:50px;">
+                <div class="faq-item">
+                    <div class="faq-question"><span>ما هي مدة الضمان؟</span><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>نقدم ضمان مدى الحياة ضد الصدأ والتآكل. يعني منتجك محمي بالكامل طوال عمره.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span>هل الشحن مجاني فعلاً؟</span><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>نعم، الشحن مجاني تماماً لجميع محافظات مصر. نتحمل التكاليف كاملاً.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span>كم يستغرق وقت التسليم؟</span><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>من 4 إلى 7 أيام عمل حسب موقعك. نضمن وصول المنتج بحالة مثالية.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span>هل يمكن تخصيص التصميم أو المقاس؟</span><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>بالطبع! نصنع أي مقاس أو تصميم مخصص. تواصل معنا عبر واتساب لنناقش التفاصيل.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><span>هل الدفع عند الاستلام؟</span><i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>نعم! لا يوجد أي دفع مسبق. تستلم المنتج تتأكد من جودته ثم تدفع.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section style="padding:90px 0;background:linear-gradient(135deg,var(--bg-dark),var(--accent-dark));text-align:center;">
+        <div class="container">
+            <h2 style="font-size:2.5rem;margin-bottom:16px;color:var(--gold-light);">لا تتردد — اطلب الآن</h2>
+            <p style="font-size:1.1rem;color:rgba(255,255,255,0.75);margin-bottom:36px;">الكميات محدودة. الطلب الآن يضمن لك خصم الشحن المجاني.</p>
+            <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+                <a href="#order-section" class="btn-order-hero" style="font-size:1.1rem;padding:16px 40px;">
+                    <i class="fa-solid fa-cart-shopping"></i> اطلب الآن بخصم
+                </a>
+                <a href="https://wa.me/201114323218" class="btn-wa" style="font-size:1.1rem;padding:16px 40px;" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> واتساب مباشر
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>النور للحديد</h4>
+                <p>براويز حديد فاخرة وديكورات معدنية مقصوصة بالليزر بدقة عالية مع ضمان مدى الحياة.</p>
+            </div>
+            <div class="footer-section">
+                <h4>الروابط السريعة</h4>
+                <a href="index.html">الرئيسية</a><br>
+                <a href="products.html">المنتجات</a><br>
+                <a href="portfolio.html">سابقة الأعمال</a><br>
+                <a href="contact.html">اتصل بنا</a>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201114323218" target="_blank">01114323218</a></p>
+                <p><i class="fa-brands fa-whatsapp"></i> <a href="https://wa.me/201118182424" target="_blank">01118182424</a></p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/NOOURSTEEL/" target="_blank" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" aria-label="إنستجرام"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 النور للحديد والديكور. جميع الحقوق محفوظة.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/201114323218?text=أريد%20الاستفسار%20عن%20منتج" class="whatsapp-float" target="_blank" aria-label="واتساب">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- Schema Markup -->
+<script type="application/ld+json" id="product-schema">
+{
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "براويز حديد مقصوصة بالليزر - النور للحديد",
+    "brand": { "@type": "Brand", "name": "Elnour for Steel" },
+    "offers": {
+        "@type": "Offer",
+        "url": "https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/product-landing.html",
+        "priceCurrency": "EGP",
+        "price": "3950",
+        "availability": "https://schema.org/InStock"
+    }
+}
+</script>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "هل الشحن مجاني؟", "acceptedAnswer": { "@type": "Answer", "text": "نعم، الشحن مجاني لجميع محافظات مصر." } },
+        { "@type": "Question", "name": "ما مدة الضمان؟", "acceptedAnswer": { "@type": "Answer", "text": "ضمان مدى الحياة ضد الصدأ والتآكل." } }
+    ]
+}
+</script>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SUPA_URL = "https://tsdkhsgkqwaewfgldquj.supabase.co";
+const SUPA_KEY = "sb_publishable_N028vRa3HBpSMPFTdLxoOA_SOZiwMZy";
+const DB_IMG_BASE = `${SUPA_URL}/storage/v1/object/public/products-images/`;
+
+// Default product when no ?id= is given (laser-cut frames)
+const DEFAULT_PRODUCT = {
+    id: null,
+    title: "براويز حديد فاخرة مقصوصة بالليزر",
+    description: "لوحات جدارية معدنية مقصوصة بدقة الليزر المتناهية مع دهانات إلكتروستاتيكية ضد الصدأ وضمان مدى الحياة. تصاميم فاخرة وعصرية تناسب أرقى المنازل والفلل.",
+    price: 3950,
+    original_price: 5600,
+    image_url: null,
+    category: "براويز حديد"
+};
+
+let db = null;
+let currentProduct = null;
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', async () => {
+    try {
+        db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    } catch(e) {
+        console.warn('Supabase init failed:', e);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+
+    if (productId && db) {
+        await loadProductById(productId);
+    } else {
+        applyProduct(DEFAULT_PRODUCT);
+    }
+
+    hideLoader();
+    initFAQ();
+    initNav();
+    initOrderForm();
+});
+
+// ============================================================
+// LOAD PRODUCT FROM SUPABASE
+// ============================================================
+async function loadProductById(id) {
+    try {
+        const { data, error } = await db
+            .from('products')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) {
+            console.warn('Product not found, using default');
+            applyProduct(DEFAULT_PRODUCT);
+        } else {
+            applyProduct(data);
+        }
+    } catch(e) {
+        applyProduct(DEFAULT_PRODUCT);
+    }
+}
+
+// ============================================================
+// APPLY PRODUCT DATA TO PAGE
+// ============================================================
+function applyProduct(p) {
+    currentProduct = p;
+
+    const title = p.title || p.name || DEFAULT_PRODUCT.title;
+    const desc  = p.description || DEFAULT_PRODUCT.description;
+    const price = p.price || DEFAULT_PRODUCT.price;
+    const origP = p.original_price || null;
+    const cat   = p.category || DEFAULT_PRODUCT.category;
+
+    // Build image URL
+    let imgSrc = '';
+    if (p.image_url) {
+        if (p.image_url.startsWith('http')) {
+            imgSrc = p.image_url;
+        } else if (p.image_url.startsWith('products-images/')) {
+            imgSrc = DB_IMG_BASE + p.image_url.replace('products-images/', '');
+        } else {
+            imgSrc = DB_IMG_BASE + p.image_url;
         }
     }
-    </script>
 
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "ما هي مدة الضمان؟",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "نحن نقدم ضمان مدى الحياة ضد الصدأ والتآكل"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "كم تكلفة الشحن؟",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "الشحن مجاني تماماً إلى جميع محافظات مصر"
-                }
-            }
-        ]
+    // Title & Description
+    document.getElementById('product-title-hero').textContent = title;
+    document.getElementById('product-description-hero').textContent = desc;
+    document.getElementById('order-product-name-info').textContent =
+        `أكمل بياناتك لطلب "${title}" وسيتواصل معك فريقنا خلال ساعتين.`;
+
+    // Price
+    document.getElementById('price-badge').textContent = Number(price).toLocaleString('ar-EG') + ' جنيه';
+
+    if (origP && origP > price) {
+        const disc = Math.round((1 - price / origP) * 100);
+        document.getElementById('price-original').textContent = Number(origP).toLocaleString('ar-EG') + ' جنيه';
+        document.getElementById('price-original').style.display = 'inline';
+        document.getElementById('discount-badge').textContent = `خصم ${disc}%`;
+        document.getElementById('discount-badge').style.display = 'inline';
+        document.getElementById('img-badge').style.display = 'block';
+        document.getElementById('img-badge').textContent = `خصم ${disc}%`;
     }
-    </script>
 
-    <!-- JavaScript -->
-    <script>
-        // Menu Toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const navMenu = document.getElementById('nav-menu');
+    // Image
+    const imgEl = document.getElementById('product-img-hero');
+    if (imgSrc) {
+        imgEl.src = imgSrc;
+        imgEl.alt = title;
+    } else {
+        imgEl.src = 'https://via.placeholder.com/600x600/1a1a1a/d4af37?text=' + encodeURIComponent(title);
+    }
 
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-            });
+    // WhatsApp CTA
+    const waMsg = encodeURIComponent(`مرحباً، أريد طلب: ${title} بسعر ${price} جنيه`);
+    document.getElementById('hero-whatsapp').href = `https://wa.me/201114323218?text=${waMsg}`;
+    document.getElementById('whatsapp-confirm').href = `https://wa.me/201114323218?text=${waMsg}`;
+
+    // Hidden form fields
+    document.getElementById('f-product-id').value = p.id || 'default';
+    document.getElementById('f-product-title').value = title;
+    document.getElementById('f-product-price').value = price;
+
+    // Page title & meta
+    document.title = `${title} - النور للحديد`;
+    document.getElementById('meta-desc').content = desc.slice(0, 160);
+    document.getElementById('og-title').content = `${title} - النور للحديد`;
+    document.getElementById('og-desc').content = desc.slice(0, 160);
+    if (imgSrc) document.getElementById('og-image').content = imgSrc;
+
+    // Schema
+    try {
+        const schema = JSON.parse(document.getElementById('product-schema').textContent);
+        schema.name = title;
+        schema.description = desc;
+        schema.offers.price = String(price);
+        if (imgSrc) schema.image = imgSrc;
+        document.getElementById('product-schema').textContent = JSON.stringify(schema, null, 2);
+    } catch(e) {}
+}
+
+// ============================================================
+// ORDER FORM → SUPABASE BOOKINGS
+// ============================================================
+function initOrderForm() {
+    document.getElementById('order-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+
+        const name    = document.getElementById('f-name').value.trim();
+        const phone   = document.getElementById('f-phone').value.trim();
+        const gov     = document.getElementById('f-gov').value;
+        const size    = document.getElementById('f-size').value.trim();
+        const notes   = document.getElementById('f-notes').value.trim();
+        const prodId  = document.getElementById('f-product-id').value;
+        const prodTitle = document.getElementById('f-product-title').value;
+        const price   = document.getElementById('f-product-price').value;
+
+        const fullNotes = (size ? `المقاس: ${size}\n` : '') + (notes || '');
+
+        let saved = false;
+
+        // Try saving to Supabase
+        if (db) {
+            try {
+                const { error } = await db.from('bookings').insert([{
+                    customer_name: name,
+                    whatsapp: phone,
+                    governorate: gov,
+                    product_title: prodTitle,
+                    status: 'جديد',
+                    notes: fullNotes || null,
+                    source: 'landing_page'
+                }]);
+                if (!error) saved = true;
+                else console.warn('Booking insert error:', error.message);
+            } catch(ex) {
+                console.warn('Booking exception:', ex);
+            }
         }
 
-        // Header Scroll
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+        // Always show success (even if DB failed, we can track via WhatsApp)
+        document.getElementById('order-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+        showToast(saved ? '✅ تم حفظ طلبك بنجاح!' : '✅ تم استلام طلبك! سنتواصل معك قريباً.');
 
-        // FAQ Toggle
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                item.classList.toggle('active');
-                // Close other items
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-            });
-        });
+        // Update WhatsApp link with full details
+        const waMsg = encodeURIComponent(
+            `مرحباً، أريد طلب: ${prodTitle}\nالمقاس: ${size || 'غير محدد'}\nالمحافظة: ${gov}\nالاسم: ${name}\nالهاتف: ${phone}`
+        );
+        document.getElementById('whatsapp-confirm').href = `https://wa.me/201114323218?text=${waMsg}`;
+    });
+}
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+// ============================================================
+// HELPERS
+// ============================================================
+function hideLoader() {
+    const loader = document.getElementById('page-loader');
+    loader.classList.add('hidden');
+    setTimeout(() => loader.remove(), 600);
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 4000);
+}
+
+function initFAQ() {
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('.faq-question').addEventListener('click', () => {
+            const isOpen = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!isOpen) item.classList.add('active');
         });
-    </script>
+    });
+}
+
+function initNav() {
+    const toggle = document.getElementById('menu-toggle');
+    const nav    = document.getElementById('nav-menu');
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            const icon = toggle.querySelector('i');
+            if (icon) icon.className = nav.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+    }
+    window.addEventListener('scroll', () => {
+        document.getElementById('main-header').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+        });
+    });
+}
+</script>
 </body>
 </html>

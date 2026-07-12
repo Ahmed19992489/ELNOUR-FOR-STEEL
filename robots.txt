@@ -1,21 +1,40 @@
-# Robots.txt for Elnour for Steel
+# Robots.txt for Elnour for Steel - معرض أثاث متكامل
+# Allow all search engines to crawl the site
+
 User-agent: *
 Allow: /
 Allow: /index.html
-Allow: /product-landing.html
 Allow: /products.html
 Allow: /portfolio.html
 Allow: /about.html
 Allow: /contact.html
+Allow: /style.css
+Allow: /script.js
 
-# Disallow admin and private areas
+# Disallow private or admin pages
 Disallow: /admin/
 Disallow: /private/
-Disallow: /*.pdf$
-Disallow: /*.zip$
+Disallow: /*.json$
+Disallow: /*?*sort=
+Disallow: /*?*filter=
 
-# Sitemap
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://ahmed19992489.github.io/ELNOUR-FOR-STEEL/sitemap.xml
 
-# Crawl delay
-Crawl-delay: 1
+# Cache control
+# This helps search engines understand how to cache your pages
