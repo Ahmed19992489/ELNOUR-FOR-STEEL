@@ -74,32 +74,82 @@
         .star-pick span { color: var(--border-color); transition: color 0.1s; }
         .star-pick span.lit { color: var(--gold-primary); }
 
-        @media(max-width:800px){ .detail-card{grid-template-columns:1fr;} .modal-img-side{max-height:220px;} .modal-info{padding:20px;} }
+        /* Order Button Base Styles */
+        .order-btn-sm {
+            background: var(--gold-primary);
+            color: #000 !important;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+            text-decoration: none;
+            font-family: var(--font-arabic);
+        }
+        .order-btn-sm:hover {
+            background: var(--brown-primary);
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        @media(max-width:800px){ 
+            .detail-card{ grid-template-columns:1fr; max-height: 88vh; } 
+            .modal-img-side{ max-height:220px; } 
+            .modal-info{ padding:18px; } 
+        }
         @media(max-width:576px) {
             .catalog-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 12px !important;
+                gap: 10px !important;
             }
             .product-img-wrapper {
-                height: 160px !important;
-                padding: 8px !important;
-            }
-            .product-title {
-                font-size: 0.85rem !important;
-                margin-bottom: 4px !important;
-            }
-            .product-price-new {
-                font-size: 0.95rem !important;
+                height: 155px !important;
+                padding: 6px !important;
             }
             .product-info {
                 padding: 10px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
             }
-            .order-btn-sm {
-                padding: 4px 10px !important;
-                font-size: 0.75rem !important;
+            .product-title {
+                font-size: 0.82rem !important;
+                line-height: 1.25 !important;
+                margin-bottom: 4px !important;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .product-price-new {
+                font-size: 0.9rem !important;
+                font-weight: 800 !important;
             }
             .product-meta {
-                margin-top: 6px !important;
+                margin-top: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 4px !important;
+            }
+            .product-spec {
+                display: none !important;
+            }
+            .order-btn-sm {
+                width: 100% !important;
+                padding: 7px 8px !important;
+                font-size: 0.78rem !important;
+                border-radius: 6px !important;
+                font-weight: 800 !important;
             }
         }
     </style>
@@ -239,9 +289,14 @@
                 </div>
             </div>
 
-            <button type="button" class="btn-submit" onclick="addToCartFromModal()" style="padding:12px; margin-top:10px;">
-                <i class="fa-solid fa-cart-plus"></i> إضافة إلى سلة المشتريات
-            </button>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+                <button type="button" class="btn-submit" onclick="openDirectOrderModalFromModal()" style="padding:14px; font-size:1.05rem; font-weight:800; background:var(--gold-primary); color:#000; box-shadow: 0 6px 20px rgba(212,175,55,0.4); border-radius:50px; width:100%;">
+                    <i class="fa-solid fa-bolt"></i> اطلب الآن (حجز فوري)
+                </button>
+                <button type="button" class="btn-secondary" onclick="addToCartFromModal()" style="padding:10px; width:100%; border:1px solid var(--border-color); background:rgba(255,255,255,0.03); color:var(--text-secondary); border-radius:50px; font-weight:700;">
+                    <i class="fa-solid fa-cart-plus"></i> إضافة إلى سلة المشتريات
+                </button>
+            </div>
 
             <!-- Reviews -->
             <div class="reviews-section" style="margin-top: 20px;">
@@ -259,6 +314,91 @@
                     <button onclick="submitReview()" class="btn-submit" style="padding:8px;">إرسال التقييم</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fast Direct Order Modal (Jumia/Amazon Instant Checkout) -->
+<div id="direct-order-modal" class="detail-modal">
+    <div class="detail-card" style="grid-template-columns:1fr; max-width:520px; max-height:92vh; overflow-y:auto;">
+        <button class="modal-close" onclick="closeDirectOrderModal()">&times;</button>
+        <div class="modal-info" style="padding:24px;">
+            <div style="text-align:center; margin-bottom:14px;">
+                <h3 style="color:var(--gold-secondary); margin-bottom:4px; font-size:1.2rem;"><i class="fa-solid fa-bolt" style="color:var(--gold-primary);"></i> طلب فوري سريع</h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin:0;">أدخل بياناتك وسيصلك تأكيد الطلب فوراً بالشحن المجاني</p>
+            </div>
+
+            <div style="display:flex; gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); padding:12px; border-radius:8px; margin-bottom:16px;">
+                <img id="do-img" src="" alt="" style="width:65px; height:65px; object-fit:cover; border-radius:6px; background:#111; flex-shrink:0;">
+                <div style="flex-grow:1;">
+                    <div id="do-cat" style="font-size:0.7rem; color:var(--gold-secondary); font-weight:700;"></div>
+                    <div id="do-title" style="font-weight:700; font-size:0.95rem; line-height:1.3; color:var(--text-primary);"></div>
+                    <div style="margin-top:4px;">
+                        <span id="do-price" style="color:var(--gold-primary); font-weight:800; font-size:1.1rem;"></span>
+                        <span style="font-size:0.8rem; color:var(--gold-primary);">جنيه</span>
+                        <span id="do-old-price" style="color:var(--text-muted); text-decoration:line-through; font-size:0.85rem; margin-right:8px; display:none;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <form id="direct-order-form" onsubmit="submitDirectOrder(event)">
+                <!-- Size Selector -->
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label class="form-label" style="font-size:0.8rem; font-weight:700; color:var(--gold-secondary);">اختر المقاس المطلوب *</label>
+                    <div class="size-btn-group" id="do-size-pickers"></div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-size:0.8rem;">الاسم الكامل *</label>
+                        <input type="text" id="do-name" class="form-input" style="padding:9px;" placeholder="اسمك الكريم" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-size:0.8rem;">رقم الواتساب / الهاتف *</label>
+                        <input type="tel" id="do-phone" class="form-input" style="padding:9px;" placeholder="01xxxxxxxxx" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:0.8rem;">البريد الإلكتروني (لتأكيد الطلب) *</label>
+                    <input type="email" id="do-email" class="form-input" style="padding:9px;" placeholder="name@example.com" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom:10px;">
+                    <label class="form-label" style="font-size:0.8rem;">المحافظة *</label>
+                    <select id="do-gov" class="form-input" style="padding:9px;" required>
+                        <option value="" disabled selected>اختر المحافظة...</option>
+                        <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+                        <option>القليوبية</option><option>المنوفية</option><option>البحيرة</option>
+                        <option>الغربية</option><option>الشرقية</option><option>الدقهلية</option>
+                        <option>بورسعيد</option><option>الإسماعيلية</option><option>السويس</option>
+                        <option>المنيا</option><option>أسيوط</option><option>سوهاج</option>
+                        <option>قنا</option><option>الأقصر</option><option>أسوان</option>
+                        <option>أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label class="form-label" style="font-size:0.8rem;">العنوان / ملاحظات خاصة للشحن</label>
+                    <textarea id="do-notes" class="form-input" style="padding:8px;" rows="2" placeholder="العنوان التفصيلي أو أي تعليمات خاصة..."></textarea>
+                </div>
+
+                <!-- Coupon Code -->
+                <div class="coupon-row" style="margin-bottom:8px;">
+                    <input type="text" id="do-coupon-input" class="form-input" style="padding:7px; text-transform:uppercase;" placeholder="كود الخصم (إن وجد)">
+                    <button type="button" class="coupon-apply" onclick="applyDirectCoupon()">تطبيق</button>
+                </div>
+                <div id="do-coupon-msg" class="coupon-msg"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.3); padding:10px 14px; border-radius:6px; margin:12px 0;">
+                    <span style="font-weight:700; font-size:0.9rem;">إجمالي الحجز بالشحن المجاني:</span>
+                    <span id="do-final-price" style="font-weight:900; color:var(--gold-primary); font-size:1.15rem;">0 جنيه</span>
+                </div>
+
+                <button type="submit" class="btn-submit" id="do-btn" style="padding:13px; width:100%; font-size:1.05rem; font-weight:800; background:var(--gold-primary); color:#000; border-radius:50px;">
+                    <i class="fa-solid fa-bolt"></i> تأكيد الطلب والشحن المجاني
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -491,14 +631,14 @@ function renderProducts() {
         const img = getImgSrc(p);
         const avgRating = p.avg_rating || 0;
         const ratingHTML = avgRating ? starsHTML(avgRating, p.review_count || 0) : '';
-        return `<div class="product-card" onclick="openModal('${p.id}')" style="cursor:pointer;">
-            <div class="product-img-wrapper">
+        return `<div class="product-card">
+            <div class="product-img-wrapper" onclick="openModal('${p.id}')" style="cursor:pointer;">
                 ${img ? `<img src="${img}" alt="${p.title}" class="product-img" loading="lazy" onerror="this.parentElement.innerHTML='<div style=width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem><i class=fa-solid fa-image></i></div>'">` 
                       : `<div style="width:100%;height:240px;background:#111;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:2rem;"><i class="fa-solid fa-image"></i></div>`}
-                <div class="product-overlay"><button class="view-btn"><i class="fa-solid fa-eye"></i> التفاصيل</button></div>
+                <div class="product-overlay"><button class="view-btn" onclick="event.stopPropagation(); openModal('${p.id}')"><i class="fa-solid fa-eye"></i> التفاصيل</button></div>
             </div>
             <div class="product-info">
-                <div>
+                <div onclick="openModal('${p.id}')" style="cursor:pointer;">
                     <span style="font-size:0.7rem;color:var(--gold-secondary);font-weight:700;">${p.category}</span>
                     <h3 class="product-title">${p.title}</h3>
                     ${ratingHTML ? `<div style="margin:3px 0;">${ratingHTML}</div>` : ''}
@@ -509,11 +649,225 @@ function renderProducts() {
                 </div>
                 <div class="product-meta">
                     <span class="product-spec" style="font-size:0.73rem;">${p.specifications||''}</span>
-                    <button class="order-btn-sm">طلب</button>
+                    <button class="order-btn-sm" onclick="event.stopPropagation(); openDirectOrderModal('${p.id}')">
+                        <i class="fa-solid fa-bolt"></i> اطلب الآن
+                    </button>
                 </div>
             </div>
         </div>`;
     }).join('');
+}
+
+// ============================================================
+// DIRECT FAST ORDER MODAL HANDLERS
+// ============================================================
+let directProd = null;
+let directSelectedSize = '';
+let directSelectedPrice = 0;
+let directAppliedCoupon = null;
+
+function openDirectOrderModal(id, e) {
+    if (e) e.stopPropagation();
+    directProd = allProducts.find(p => p.id == id);
+    if (!directProd) return;
+
+    // Fill Product Info
+    const img = getImgSrc(directProd);
+    document.getElementById('do-img').src = img || '';
+    document.getElementById('do-img').alt = directProd.title;
+    document.getElementById('do-cat').innerText = directProd.category || 'النور للحديد';
+    document.getElementById('do-title').innerText = directProd.title;
+    
+    // Parse sizes
+    const parsedSizes = parseSizes(directProd.sizes, directProd.price);
+    const pickerContainer = document.getElementById('do-size-pickers');
+
+    if (parsedSizes.length > 0) {
+        directSelectedSize = parsedSizes[0].name;
+        directSelectedPrice = parsedSizes[0].price;
+        pickerContainer.innerHTML = parsedSizes.map((sz, idx) => 
+            `<button type="button" class="size-pick-btn ${idx===0?'active':''}" onclick="selectDirectSize(this, '${sz.name}', ${sz.price})">${sz.name}</button>`
+        ).join('');
+    } else {
+        directSelectedSize = 'افتراضي';
+        directSelectedPrice = directProd.price;
+        pickerContainer.innerHTML = `<button type="button" class="size-pick-btn active" disabled>افتراضي</button>`;
+    }
+
+    document.getElementById('do-price').innerText = Number(directSelectedPrice).toLocaleString();
+    
+    const oldPriceEl = document.getElementById('do-old-price');
+    if (directProd.original_price) {
+        oldPriceEl.style.display = 'inline';
+        oldPriceEl.innerText = Number(directProd.original_price).toLocaleString() + ' جنيه';
+    } else {
+        oldPriceEl.style.display = 'none';
+    }
+
+    // Reset Form & Coupon
+    document.getElementById('direct-order-form').reset();
+    directAppliedCoupon = null;
+    document.getElementById('do-coupon-msg').className = 'coupon-msg';
+    document.getElementById('do-coupon-msg').innerText = '';
+    
+    if (customerUser) {
+        document.getElementById('do-email').value = customerUser.email || '';
+    }
+
+    updateDirectFinalPrice();
+    document.getElementById('direct-order-modal').classList.add('open');
+}
+
+function selectDirectSize(btn, sizeName, price) {
+    btn.parentElement.querySelectorAll('.size-pick-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    directSelectedSize = sizeName;
+    directSelectedPrice = price;
+
+    document.getElementById('do-price').innerText = Number(price).toLocaleString();
+    updateDirectFinalPrice();
+}
+
+function updateDirectFinalPrice() {
+    let price = directSelectedPrice;
+    if (directAppliedCoupon) {
+        const discount = directAppliedCoupon.discount_type === 'percentage' 
+            ? price * directAppliedCoupon.discount_value / 100 
+            : directAppliedCoupon.discount_value;
+        price = Math.max(0, price - discount);
+    }
+    document.getElementById('do-final-price').innerText = Number(price).toLocaleString() + ' جنيه';
+}
+
+function closeDirectOrderModal() {
+    document.getElementById('direct-order-modal').classList.remove('open');
+    directProd = null;
+}
+
+function openDirectOrderModalFromModal() {
+    if (!selectedProd) return;
+    const currentId = selectedProd.id;
+    const currentSize = selectedSize;
+    const currentPrice = selectedPrice;
+    closeModal();
+    openDirectOrderModal(currentId);
+    if (currentSize) {
+        directSelectedSize = currentSize;
+        directSelectedPrice = currentPrice;
+        updateDirectFinalPrice();
+    }
+}
+
+async function applyDirectCoupon() {
+    const code = document.getElementById('do-coupon-input').value.trim().toUpperCase();
+    const msg  = document.getElementById('do-coupon-msg');
+    if (!code) { msg.className='coupon-msg err'; msg.innerText='يرجى إدخال كود الخصم'; return; }
+    if (!dbClient) { msg.className='coupon-msg err'; msg.innerText='غير متصل بقاعدة البيانات'; return; }
+
+    const { data, error } = await dbClient.from('coupons')
+        .select('*').eq('code', code).eq('is_active', true).single();
+
+    if (error || !data) {
+        msg.className='coupon-msg err';
+        msg.innerText='كود الخصم غير صحيح أو منتهي الصلاحية';
+        directAppliedCoupon = null;
+        updateDirectFinalPrice();
+        return;
+    }
+
+    if (data.valid_until && new Date(data.valid_until) < new Date()) {
+        msg.className='coupon-msg err';
+        msg.innerText='انتهت صلاحية هذا الكود';
+        return;
+    }
+    if (data.max_uses && data.current_uses >= data.max_uses) {
+        msg.className='coupon-msg err';
+        msg.innerText='تم استنفاد هذا الكود';
+        return;
+    }
+
+    directAppliedCoupon = data;
+    msg.className='coupon-msg ok';
+    msg.innerHTML = `✅ خصم ${data.discount_type==='percentage' ? data.discount_value+'%' : data.discount_value+' جنيه'}`;
+    updateDirectFinalPrice();
+}
+
+async function submitDirectOrder(e) {
+    e.preventDefault();
+    if (!directProd) return;
+
+    const btn = document.getElementById('do-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+    btn.disabled = true;
+
+    const basePrice = directSelectedPrice;
+    const discount  = directAppliedCoupon
+        ? (directAppliedCoupon.discount_type==='percentage' ? basePrice*directAppliedCoupon.discount_value/100 : directAppliedCoupon.discount_value)
+        : 0;
+    const finalPrice = Math.max(0, basePrice - discount);
+
+    const productTitle = `${directProd.title} (${directSelectedSize})`;
+
+    const payload = {
+        customer_name: document.getElementById('do-name').value,
+        whatsapp:      document.getElementById('do-phone').value,
+        email:         document.getElementById('do-email').value,
+        user_id:       customerUser ? customerUser.id : null,
+        governorate:   document.getElementById('do-gov').value,
+        product_title: productTitle,
+        notes:         document.getElementById('do-notes').value,
+        coupon_code:   directAppliedCoupon ? directAppliedCoupon.code : '',
+        discount_amount: discount,
+        final_price:   finalPrice,
+        status:        'جديد'
+    };
+
+    // 1. Save to Supabase DB
+    if (dbClient) {
+        try {
+            const { error } = await dbClient.from('bookings').insert([payload]);
+            if (error) throw error;
+            if (directAppliedCoupon) {
+                await dbClient.from('coupons').update({ current_uses: directAppliedCoupon.current_uses + 1 }).eq('id', directAppliedCoupon.id);
+            }
+        } catch(err) { console.warn('Supabase booking error:', err.message); }
+    }
+
+    // 2. Formspree Backup
+    try {
+        const fd = new FormData();
+        fd.append('الاسم', payload.customer_name);
+        fd.append('الواتساب', payload.whatsapp);
+        fd.append('email', payload.email);
+        fd.append('البريد الإلكتروني', payload.email);
+        fd.append('المحافظة', payload.governorate);
+        fd.append('المنتجات المحجوزة', payload.product_title);
+        fd.append('الإجمالي بعد الخصم', finalPrice.toLocaleString() + ' جنيه');
+        fd.append('كود خصم', payload.coupon_code || 'لا يوجد');
+        fd.append('ملاحظات العميل', payload.notes);
+        await fetch('https://formspree.io/f/xzdrvblp', { method:'POST', body:fd, headers:{'Accept':'application/json'} });
+    } catch(err) {}
+
+    // 3. Admin WhatsApp Notification
+    if (ADMIN_WHATSAPP_APIKEY) {
+        try {
+            const msg = encodeURIComponent(
+                `🔔 حجز مباشر جديد على النور للحديد!\n` +
+                `👤 الاسم: ${payload.customer_name}\n` +
+                `📱 واتساب: ${payload.whatsapp}\n` +
+                `📍 المحافظة: ${payload.governorate}\n` +
+                `📦 الطلب: ${payload.product_title}\n` +
+                `💰 السعر النهائي: ${finalPrice.toLocaleString()} جنيه` +
+                (payload.coupon_code ? `\n🏷️ كود خصم: ${payload.coupon_code}` : '') +
+                (payload.notes ? `\n📝 ملاحظات: ${payload.notes}` : '')
+            );
+            await fetch(`https://api.callmebot.com/whatsapp.php?phone=${ADMIN_WHATSAPP_PHONE}&text=${msg}&apikey=${ADMIN_WHATSAPP_APIKEY}`);
+        } catch(err) {}
+    }
+
+    closeDirectOrderModal();
+    window.location.href = `${getBaseUrl()}thankyou.html?name=${encodeURIComponent(payload.customer_name)}&product=${encodeURIComponent(productTitle)}`;
 }
 
 function buildTabs() {
@@ -718,6 +1072,7 @@ function closeModal() {
 window.addEventListener('click', e => {
     if (e.target === document.getElementById('detail-modal')) closeModal();
     if (e.target === document.getElementById('checkout-modal')) closeCheckoutModal();
+    if (e.target === document.getElementById('direct-order-modal')) closeDirectOrderModal();
 });
 
 // ============================================================
