@@ -818,18 +818,26 @@ async function submitDirectOrder(e) {
     const finalPrice = Math.max(0, basePrice - discount);
 
     const productTitle = `${directProd.title} (${directSelectedSize})`;
+    const rawName  = document.getElementById('do-name').value;
+    const rawPhone = document.getElementById('do-phone').value;
+    const rawEmail = document.getElementById('do-email').value;
+    const rawGov   = document.getElementById('do-gov').value;
+    const userNotes= document.getElementById('do-notes').value;
+    const couponCode = directAppliedCoupon ? directAppliedCoupon.code : '';
+
+    const formattedNotes = [
+        `السعر النهائي: ${finalPrice.toLocaleString()} ج.م`,
+        rawEmail ? `الإيميل: ${rawEmail}` : '',
+        couponCode ? `كود خصم: ${couponCode}` : '',
+        userNotes ? `ملاحظات: ${userNotes}` : ''
+    ].filter(Boolean).join(' | ');
 
     const payload = {
-        customer_name: document.getElementById('do-name').value,
-        whatsapp:      document.getElementById('do-phone').value,
-        email:         document.getElementById('do-email').value,
-        user_id:       customerUser ? customerUser.id : null,
-        governorate:   document.getElementById('do-gov').value,
+        customer_name: rawName,
+        whatsapp:      rawPhone,
+        governorate:   rawGov,
         product_title: productTitle,
-        notes:         document.getElementById('do-notes').value,
-        coupon_code:   directAppliedCoupon ? directAppliedCoupon.code : '',
-        discount_amount: discount,
-        final_price:   finalPrice,
+        notes:         formattedNotes,
         status:        'جديد'
     };
 
@@ -1178,17 +1186,26 @@ async function submitCartBooking(e) {
     // Serialize cart items into titles
     const titles = cart.map(item => `${item.title} (${item.size})`).join(' + ');
 
+    const rawName  = document.getElementById('ch-name').value;
+    const rawPhone = document.getElementById('ch-phone').value;
+    const rawEmail = document.getElementById('ch-email').value;
+    const rawGov   = document.getElementById('ch-gov').value;
+    const userNotes= document.getElementById('ch-notes').value;
+    const couponCode = appliedCoupon ? appliedCoupon.code : '';
+
+    const formattedNotes = [
+        `السعر النهائي: ${finalPrice.toLocaleString()} ج.م`,
+        rawEmail ? `الإيميل: ${rawEmail}` : '',
+        couponCode ? `كود خصم: ${couponCode}` : '',
+        userNotes ? `ملاحظات: ${userNotes}` : ''
+    ].filter(Boolean).join(' | ');
+
     const payload = {
-        customer_name: document.getElementById('ch-name').value,
-        whatsapp:      document.getElementById('ch-phone').value,
-        email:         document.getElementById('ch-email').value,
-        user_id:       customerUser ? customerUser.id : null,
-        governorate:   document.getElementById('ch-gov').value,
+        customer_name: rawName,
+        whatsapp:      rawPhone,
+        governorate:   rawGov,
         product_title: titles,
-        notes:         document.getElementById('ch-notes').value,
-        coupon_code:   appliedCoupon ? appliedCoupon.code : '',
-        discount_amount: discount,
-        final_price:   finalPrice,
+        notes:         formattedNotes,
         status:        'جديد'
     };
 

@@ -767,8 +767,7 @@ function initOrderForm() {
                     governorate: gov,
                     product_title: prodTitle,
                     status: 'جديد',
-                    notes: fullNotes || null,
-                    source: 'landing_page'
+                    notes: (fullNotes ? fullNotes + ' | ' : '') + 'مصدر الطلب: صفحة هبوط'
                 }]);
                 if (!error) saved = true;
                 else console.warn('Booking insert error:', error.message);
