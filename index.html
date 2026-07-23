@@ -737,9 +737,10 @@
                             imgSrc = IMG_BASE + p.image_url;
                         }
                     }
-                    const waMsg = encodeURIComponent('مرحباً، أريد الاستفسار عن: ' + p.title);
+                    const targetUrl = `products.html?id=${p.id}`;
+                    const orderUrl  = `products.html?id=${p.id}&order=true`;
                     return `
-                        <div class="product-card" onclick="window.open('products.html','_self')" style="cursor:pointer;">
+                        <div class="product-card" onclick="window.location.href='${targetUrl}'" style="cursor:pointer;">
                             <div class="product-image" style="padding:0;overflow:hidden;background:#0d0d0d;">
                                 ${imgSrc
                                     ? `<img src="${imgSrc}" alt="${p.title}" loading="lazy"
@@ -753,7 +754,7 @@
                                 <div class="product-category">${p.category || 'منتجاتنا'}</div>
                                 <div class="product-name">${p.title}</div>
                                 <div class="product-price">${Number(p.price).toLocaleString('ar-EG')} جنيه</div>
-                                <a href="https://wa.me/201114323218?text=${waMsg}" class="btn-product" target="_blank" onclick="event.stopPropagation()">اطلب الآن</a>
+                                <a href="${orderUrl}" class="btn-product" onclick="event.stopPropagation()"><i class="fa-solid fa-bolt"></i> اطلب الآن</a>
                             </div>
                         </div>`;
                 }).join('');

@@ -540,17 +540,21 @@ let customerUser  = null;
 
     // Check URL for product ID (SEO deep link)
     const params = new URLSearchParams(window.location.search);
-    const idParam  = params.get('id');
-    const catParam = params.get('category');
+    const idParam    = params.get('id');
+    const catParam   = params.get('category');
+    const orderParam = params.get('order');
     if (catParam) { activeFilter = catParam; applyFilter(); }
 
     try {
         dbClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-        fetchFromDB(idParam);
+        fetchFromDB(idParam, orderParam === 'true');
         checkSession();
     } catch(e) {
         console.warn('Supabase unavailable, using static data.', e.message);
-        if (idParam) openModal(idParam);
+        if (idParam) {
+            if (orderParam === 'true') openDirectOrderModal(idParam);
+            else openModal(idParam);
+        }
     }
 })();
 
@@ -574,7 +578,7 @@ function updateNavbarAuth() {
     nav.appendChild(li);
 }
 
-async function fetchFromDB(openId) {
+async function fetchFromDB(openId, isOrderFlow) {
     try {
         const { data, error } = await dbClient.from('products').select('*').order('created_at');
         if (error) throw error;
@@ -583,10 +587,16 @@ async function fetchFromDB(openId) {
             renderProducts();
             buildTabs();
         }
-        if (openId) openModal(openId);
+        if (openId) {
+            if (isOrderFlow) openDirectOrderModal(openId);
+            else openModal(openId);
+        }
     } catch(e) {
         console.warn('DB fetch failed:', e.message);
-        if (openId) openModal(openId);
+        if (openId) {
+            if (isOrderFlow) openDirectOrderModal(openId);
+            else openModal(openId);
+        }
     }
 }
 
